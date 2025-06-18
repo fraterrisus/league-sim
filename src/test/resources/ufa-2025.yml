@@ -1,0 +1,664 @@
+league:
+  name: 'UFA 2025'
+  type: ufa-2025
+teams:
+  - name: Austin Sol
+    id: AUS
+  - name: Atlanta Hustle
+    id: ATL
+  - name: Boston Glory
+    id: BOS
+  - name: Carolina Flyers
+    id: CAR
+  - name: Colorado Summit
+    id: COL
+  - name: Chicago Union
+    id: CHI
+  - name: DC Breeze
+    id: DCB
+  - name: Detroit Mechanix
+    id: DET
+  - name: Houston Havoc
+    id: HOU
+  - name: Indianpolis AlleyCats
+    id: IND
+  - name: LA Aviators
+    id: LAA
+  - name: Minnesota Wind Chill
+    id: MIN
+  - name: Madison Radicals
+    id: MAD
+  - name: Montreal Royal
+    id: MTL
+  - name: New York Empire
+    id: NYE
+  - name: Pittsburgh Thunderbirds
+    id: PIT
+  - name: Philadelphia Phoenix
+    id: PHL
+  - name: Oakland Spiders
+    id: OAK
+  - name: Oregon Steel
+    id: ORE
+  - name: Salt Lake Shred
+    id: SLS
+  - name: San Diego Growlers
+    id: SDG
+  - name: Seattle Cascades
+    id: SEA
+  - name: Toronto Rush
+    id: TOR
+  - name: Vegas Bighorns
+    id: VEG
+divisions:
+  - name: South
+    teams: [AUS, ATL, CAR, HOU, LAA, SDG]
+  - name: Central
+    teams: [CHI, DET, IND, MAD, MIN, PIT]
+  - name: East
+    teams: [BOS, DCB, MTL, NYE, PHL, TOR]
+  - name: West
+    teams: [COL, OAK, ORE, SEA, SLS, VEG]
+matchdays:
+  - name: 'Week 1'
+    games:
+      - awayTeam: NYE
+        awayScore: 17
+        homeTeam: OAK
+        homeScore: 22
+      - awayTeam: AUS
+        awayScore: 30
+        homeTeam: HOU
+        homeScore: 23
+      - awayTeam: NYE
+        awayScore: 32
+        homeTeam: VEG
+        homeScore: 13
+      - awayTeam: MTL
+        awayScore: 18
+        homeTeam: BOS
+        homeScore: 26
+      - awayTeam: PHL
+        awayScore: 16
+        homeTeam: DCB
+        homeScore: 15
+      - awayTeam: ORE
+        awayScore: 12
+        homeTeam: COL
+        homeScore: 24
+      - awayTeam: SLS
+        awayScore: 21
+        homeTeam: ATL
+        homeScore: 23
+  - name: 'Week 2'
+    games:
+      - awayTeam: IND
+        awayScore: 21
+        homeTeam: PIT
+        homeScore: 25
+      - awayTeam: MAD
+        awayScore: 12
+        homeTeam: HOU
+        homeScore: 10
+      - awayTeam: TOR
+        awayScore: 18
+        homeTeam: DCB
+        homeScore: 19
+      - awayTeam: OAK
+        awayScore: 22
+        homeTeam: SEA
+        homeScore: 21
+      - awayTeam: MAD
+        awayScore: 17
+        homeTeam: AUS
+        homeScore: 22
+      - awayTeam: VEG
+        awayScore: 12
+        homeTeam: SLS
+        homeScore: 22
+      - awayTeam: LAA
+        awayScore: 12
+        homeTeam: SDG
+        homeScore: 19
+      - awayTeam: TOR
+        awayScore: 16
+        homeTeam: PHL
+        homeScore: 19
+      - awayTeam: OAK
+        awayScore: 28
+        homeTeam: ORE
+        homeScore: 13
+      - awayTeam: SDG
+        awayScore: 25
+        homeTeam: LAA
+        homeScore: 16
+  - name: 'Week 3'
+    games:
+      - awayTeam: MTL
+        awayScore: 20
+        homeTeam: NYE
+        homeScore: 22
+      - awayTeam: SEA
+        awayScore: 21
+        homeTeam: OAK
+        homeScore: 26
+      - awayTeam: ATL
+        awayScore: 20
+        homeTeam: SDG
+        homeScore: 19
+      - awayTeam: DCB
+        awayScore: 20
+        homeTeam: CAR
+        homeScore: 18
+      - awayTeam: PHL
+        awayScore: 24
+        homeTeam: TOR
+        homeScore: 21
+      - awayTeam: MIN
+        awayScore: 32
+        homeTeam: IND
+        homeScore: 17
+      - awayTeam: MTL
+        awayScore: 11
+        homeTeam: BOS
+        homeScore: 17
+      - awayTeam: HOU
+        awayScore: 19
+        homeTeam: AUS
+        homeScore: 28
+      - awayTeam: ATL
+        awayScore: 26
+        homeTeam: LAA
+        homeScore: 18
+      - awayTeam: SEA
+        awayScore: 23
+        homeTeam: VEG
+        homeScore: 13
+      - awayTeam: PIT
+        awayScore: 22
+        homeTeam: DET
+        homeScore: 17
+  - name: 'Week 4'
+    games:
+      - awayTeam: NYE
+        awayScore: 18
+        homeTeam: BOS
+        homeScore: 19
+      - awayTeam: COL
+        awayScore: 17
+        homeTeam: HOU
+        homeScore: 23
+      - awayTeam: LAA
+        awayScore: 16
+        homeTeam: SDG
+        homeScore: 21
+      - awayTeam: CAR
+        awayScore: 15
+        homeTeam: ATL
+        homeScore: 19
+      - awayTeam: NYE
+        awayScore: 23
+        homeTeam: MTL
+        homeScore: 24
+      - awayTeam: CHI
+        awayScore: 16
+        homeTeam: MIN
+        homeScore: 11
+      - awayTeam: PIT
+        awayScore: 14
+        homeTeam: MAD
+        homeScore: 20
+      - awayTeam: CAR
+        awayScore: 18
+        homeTeam: ATL
+        homeScore: 22
+      - awayTeam: COL
+        awayScore: 16
+        homeTeam: AUS
+        homeScore: 18
+      - awayTeam: SEA
+        awayScore: 19
+        homeTeam: ORE
+        homeScore: 20
+      - awayTeam: BOS
+        awayScore: 14
+        homeTeam: DCB
+        homeScore: 11
+  - name: 'Week 5'
+    games:
+      - awayTeam: NYE
+        awayScore: 17
+        homeTeam: PHL
+        homeScore: 16
+      - awayTeam: SDG
+        awayScore: 26
+        homeTeam: CAR
+        homeScore: 25
+      - awayTeam: ORE
+        awayScore: 14
+        homeTeam: VEG
+        homeScore: 13
+      - awayTeam: SEA
+        awayScore: 21
+        homeTeam: SLS
+        homeScore: 22
+      - awayTeam: MIN
+        awayScore: 31
+        homeTeam: PIT
+        homeScore: 14
+      - awayTeam: DET
+        awayScore: 18
+        homeTeam: IND
+        homeScore: 21
+      - awayTeam: SEA
+        awayScore: 16
+        homeTeam: OAK
+        homeScore: 21
+      - awayTeam: SDG
+        awayScore: 19
+        homeTeam: ATL
+        homeScore: 23
+      - awayTeam: ORE
+        awayScore: 14
+        homeTeam: COL
+        homeScore: 24
+  - name: 'Week 6'
+    games:
+      - awayTeam: DCB
+        awayScore: 21
+        homeTeam: TOR
+        homeScore: 20
+      - awayTeam: ATL
+        awayScore: 15
+        homeTeam: MIN
+        homeScore: 17
+      - awayTeam: IND
+        awayScore: 11
+        homeTeam: MAD
+        homeScore: 22
+      - awayTeam: OAK
+        awayScore: 21
+        homeTeam: COL
+        homeScore: 24
+      - awayTeam: HOU
+        awayScore: 19
+        homeTeam: LAA
+        homeScore: 20
+      - awayTeam: SLS
+        awayScore: 25
+        homeTeam: SEA
+        homeScore: 20
+      - awayTeam: DCB
+        awayScore: 17
+        homeTeam: MTL
+        homeScore: 22
+      - awayTeam: CAR
+        awayScore: 18
+        homeTeam: PHL
+        homeScore: 15
+      - awayTeam: ATL
+        awayScore: 18
+        homeTeam: CHI
+        homeScore: 19
+      - awayTeam: SLS
+        awayScore: 21
+        homeTeam: ORE
+        homeScore: 17
+      - awayTeam: HOU
+        awayScore: 17
+        homeTeam: SDG
+        homeScore: 25
+      - awayTeam: NYE
+        awayScore: 20
+        homeTeam: TOR
+        homeScore: 22
+      - awayTeam: CAR
+        awayScore: 24
+        homeTeam: PIT
+        homeScore: 12
+  - name: 'Week 7'
+    games:
+      - awayTeam: NYE
+        awayScore: 15
+        homeTeam: DCB
+        homeScore: 23
+      - awayTeam: PHL
+        awayScore: 20
+        homeTeam: MTL
+        homeScore: 29
+      - awayTeam: SLS
+        awayScore: 25
+        homeTeam: OAK
+        homeScore: 24
+      - awayTeam: AUS
+        awayScore: 18
+        homeTeam: LAA
+        homeScore: 17
+      - awayTeam: VEG
+        awayScore: 12
+        homeTeam: SEA
+        homeScore: 23
+      - awayTeam: MTL
+        awayScore: 18
+        homeTeam: TOR
+        homeScore: 28
+      - awayTeam: PHL
+        awayScore: 14
+        homeTeam: BOS
+        homeScore: 22
+      - awayTeam: PIT
+        awayScore: 16
+        homeTeam: MIN
+        homeScore: 21
+      - awayTeam: ATL
+        awayScore: 19
+        homeTeam: CAR
+        homeScore: 21
+      - awayTeam: IND
+        awayScore: 25
+        homeTeam: DET
+        homeScore: 16
+      - awayTeam: VEG
+        awayScore: 17
+        homeTeam: ORE
+        homeScore: 21
+      - awayTeam: AUS
+        awayScore: 23
+        homeTeam: SDG
+        homeScore: 21
+      - awayTeam: MAD
+        awayScore: 16
+        homeTeam: CHI
+        homeScore: 21
+  - name: 'Week 8'
+    games:
+      - awayTeam: MIN
+        awayScore: 22
+        homeTeam: MAD
+        homeScore: 16
+      - awayTeam: ORE
+        awayScore: 19
+        homeTeam: SLS
+        homeScore: 31
+      - awayTeam: BOS
+        awayScore: 16
+        homeTeam: MTL
+        homeScore: 15
+      - awayTeam: MAD
+        awayScore: 31
+        homeTeam: DET
+        homeScore: 20
+      - awayTeam: CHI
+        awayScore: 26
+        homeTeam: IND
+        homeScore: 14
+      - awayTeam: PHL
+        awayScore: 25
+        homeTeam: PIT
+        homeScore: 16
+      - awayTeam: ORE
+        awayScore: 9
+        homeTeam: OAK
+        homeScore: 25
+      - awayTeam: DCB
+        awayScore: 18
+        homeTeam: NYE
+        homeScore: 19
+      - awayTeam: HOU
+        awayScore: 18
+        homeTeam: AUS
+        homeScore: 20
+      - awayTeam: SDG
+        awayScore: 23
+        homeTeam: VEG
+        homeScore: 16
+      - awayTeam: BOS
+        awayScore: 26
+        homeTeam: TOR
+        homeScore: 23
+  - name: 'Week 9'
+    games:
+      - awayTeam: PIT
+        awayScore:
+        homeTeam: CHI
+        homeScore:
+      - awayTeam: HOU
+        awayScore:
+        homeTeam: CAR
+        homeScore:
+      - awayTeam: TOR
+        awayScore:
+        homeTeam: NYE
+        homeScore:
+      - awayTeam: VEG
+        awayScore:
+        homeTeam: COL
+        homeScore:
+      - awayTeam: LAA
+        awayScore:
+        homeTeam: ORE
+        homeScore:
+      - awayTeam: TOR
+        awayScore:
+        homeTeam: BOS
+        homeScore:
+      - awayTeam: CHI
+        awayScore:
+        homeTeam: DET
+        homeScore:
+      - awayTeam: VEG
+        awayScore:
+        homeTeam: OAK
+        homeScore:
+      - awayTeam: IND
+        awayScore:
+        homeTeam: MIN
+        homeScore:
+      - awayTeam: HOU
+        awayScore:
+        homeTeam: ATL
+        homeScore:
+      - awayTeam: LAA
+        awayScore:
+        homeTeam: SEA
+        homeScore:
+      - awayTeam: DET
+        awayScore:
+        homeTeam: PIT
+        homeScore:
+  - name: 'Week 10'
+    games:
+      - awayTeam: IND
+        awayScore:
+        homeTeam: CHI
+        homeScore:
+      - awayTeam: MTL
+        awayScore:
+        homeTeam: DCB
+        homeScore:
+      - awayTeam: AUS
+        awayScore:
+        homeTeam: ATL
+        homeScore:
+      - awayTeam: DET
+        awayScore:
+        homeTeam: MAD
+        homeScore:
+      - awayTeam: OAK
+        awayScore:
+        homeTeam: SLS
+        homeScore:
+      - awayTeam: COL
+        awayScore:
+        homeTeam: SEA
+        homeScore:
+      - awayTeam: CHI
+        awayScore:
+        homeTeam: DET
+        homeScore:
+      - awayTeam: MTL
+        awayScore:
+        homeTeam: PHL
+        homeScore:
+      - awayTeam: MAD
+        awayScore:
+        homeTeam: IND
+        homeScore:
+      - awayTeam: PIT
+        awayScore:
+        homeTeam: TOR
+        homeScore:
+      - awayTeam: AUS
+        awayScore:
+        homeTeam: CAR
+        homeScore:
+      - awayTeam: COL
+        awayScore:
+        homeTeam: ORE
+        homeScore:
+      - awayTeam: OAK
+        awayScore:
+        homeTeam: SDG
+        homeScore:
+  - name: 'Week 11'
+    games:
+      - awayTeam: MIN
+        awayScore:
+        homeTeam: CHI
+        homeScore:
+      - awayTeam: TOR
+        awayScore:
+        homeTeam: MTL
+        homeScore:
+      - awayTeam: SLS
+        awayScore:
+        homeTeam: COL
+        homeScore:
+      - awayTeam: MIN
+        awayScore:
+        homeTeam: DET
+        homeScore:
+      - awayTeam: CHI
+        awayScore:
+        homeTeam: PIT
+        homeScore:
+      - awayTeam: IND
+        awayScore:
+        homeTeam: MAD
+        homeScore:
+      - awayTeam: AUS
+        awayScore:
+        homeTeam: HOU
+        homeScore:
+      - awayTeam: SDG
+        awayScore:
+        homeTeam: LAA
+        homeScore:
+      - awayTeam: SLS
+        awayScore:
+        homeTeam: VEG
+        homeScore:
+      - awayTeam: DCB
+        awayScore:
+        homeTeam: BOS
+        homeScore:
+  - name: 'Week 12'
+    games:
+      - awayTeam: BOS
+        awayScore:
+        homeTeam: PHL
+        homeScore:
+      - awayTeam: LAA
+        awayScore:
+        homeTeam: HOU
+        homeScore:
+      - awayTeam: COL
+        awayScore:
+        homeTeam: SLS
+        homeScore:
+      - awayTeam: DET
+        awayScore:
+        homeTeam: IND
+        homeScore:
+      - awayTeam: MAD
+        awayScore:
+        homeTeam: MIN
+        homeScore:
+      - awayTeam: BOS
+        awayScore:
+        homeTeam: DCB
+        homeScore:
+      - awayTeam: ATL
+        awayScore:
+        homeTeam: CAR
+        homeScore:
+      - awayTeam: LAA
+        awayScore:
+        homeTeam: AUS
+        homeScore:
+      - awayTeam: COL
+        awayScore:
+        homeTeam: VEG
+        homeScore:
+      - awayTeam: PHL
+        awayScore:
+        homeTeam: NYE
+        homeScore:
+  - name: 'Week 13'
+    games:
+      - awayTeam: CAR
+        awayScore:
+        homeTeam: AUS
+        homeScore:
+      - awayTeam: SEA
+        awayScore:
+        homeTeam: COL
+        homeScore:
+      - awayTeam: MIN
+        awayScore:
+        homeTeam: SLS
+        homeScore:
+      - awayTeam: TOR
+        awayScore:
+        homeTeam: MTL
+        homeScore:
+      - awayTeam: DCB
+        awayScore:
+        homeTeam: PHL
+        homeScore:
+      - awayTeam: SDG
+        awayScore:
+        homeTeam: OAK
+        homeScore:
+      - awayTeam: BOS
+        awayScore:
+        homeTeam: NYE
+        homeScore:
+      - awayTeam: PIT
+        awayScore:
+        homeTeam: IND
+        homeScore:
+      - awayTeam: DET
+        awayScore:
+        homeTeam: CHI
+        homeScore:
+      - awayTeam: CAR
+        awayScore:
+        homeTeam: HOU
+        homeScore:
+      - awayTeam: ORE
+        awayScore:
+        homeTeam: SEA
+        homeScore:
+      - awayTeam: VEG
+        awayScore:
+        homeTeam: LAA
+        homeScore:
+      - awayTeam: DET
+        awayScore:
+        homeTeam: MIN
+        homeScore:
+      - awayTeam: CHI
+        awayScore:
+        homeTeam: MAD
+        homeScore:

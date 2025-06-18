@@ -1,0 +1,22 @@
+league:
+  name: 'AFL 2025'
+  type: afl
+teams:
+  - name: Geelong Cats
+    id: GEE
+  - name: Collingwood Magpies
+    id: COL
+divisions:
+  - name: AFL
+    teams: [GEE, COL]
+matchdays:
+  - name: 'Week 1'
+    games:
+      - awayTeam: GEE
+        awayScore:
+          goals: 10
+          behinds: 5
+        homeTeam: COL
+        homeScore:
+          goals: 9
+          behinds: 12
