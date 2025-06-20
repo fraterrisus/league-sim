@@ -2,11 +2,11 @@ package com.hitchhikerprod.league;
 
 import javafx.application.Application;
 import javafx.event.Event;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ProgressBar;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -17,9 +17,6 @@ public class MainFX extends Application {
     private Stage stage;
     private Parent root;
     private LeagueController controller;
-
-    @FXML
-    private ProgressBar loadProgress;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -36,11 +33,14 @@ public class MainFX extends Application {
 
         final FXMLLoader loader = new FXMLLoader(fxmlUrl);
         this.root = loader.load();
+        this.controller = loader.getController();
+        this.controller.setApplication(this);
+
 //        this.root.addEventHandler(LeagueController.LeagueFileReader.ProgressEvent.ANY,
 //                event -> controller.updateProgressBar(event));
 
-        this.controller = loader.getController();
-        this.controller.setApplication(this);
+        // Why does the MenuBar expand when the label shrinks from two lines to one?
+        VBox.setVgrow(this.controller.getMenuBar(), Priority.NEVER);
 
         final Scene scene = new Scene(this.root);
         scene.getStylesheets().add(cssUrl.toExternalForm());
