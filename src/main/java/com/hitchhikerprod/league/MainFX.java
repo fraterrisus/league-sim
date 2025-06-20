@@ -2,9 +2,11 @@ package com.hitchhikerprod.league;
 
 import javafx.application.Application;
 import javafx.event.Event;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ProgressBar;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -15,6 +17,9 @@ public class MainFX extends Application {
     private Stage stage;
     private Parent root;
     private LeagueController controller;
+
+    @FXML
+    private ProgressBar loadProgress;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -31,8 +36,8 @@ public class MainFX extends Application {
 
         final FXMLLoader loader = new FXMLLoader(fxmlUrl);
         this.root = loader.load();
-        this.root.addEventHandler(LeagueController.LeagueFileReader.ProgressEvent.ANY,
-                event -> controller.updateProgressBar(event));
+//        this.root.addEventHandler(LeagueController.LeagueFileReader.ProgressEvent.ANY,
+//                event -> controller.updateProgressBar(event));
 
         this.controller = loader.getController();
         this.controller.setApplication(this);

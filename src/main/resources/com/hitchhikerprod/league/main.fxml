@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import io.github.palexdev.materialfx.controls.*?>
-<?import javafx.geometry.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.input.*?>
-<?import javafx.scene.layout.*?>
-
-<VBox fillWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hitchhikerprod.league.LeagueController">
+<?import javafx.scene.input.KeyCodeCombination?>
+<?import javafx.scene.layout.VBox?>
+<VBox fillWidth="true" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hitchhikerprod.league.LeagueController">
     <padding>
         <Insets bottom="10.0" />
     </padding>
@@ -24,7 +22,6 @@
             </Menu>
         </MenuBar>
         <Label fx:id="label" text="Label" />
-        <MFXProgressBar prefWidth="200.0" progress="0.0" />
-        <ProgressBar fx:id="loadProgress" prefWidth="200.0" progress="0.0" />
+        <ProgressBar fx:id="loadProgress" progress="0.0" prefWidth="400" />
     </children>
 </VBox>
