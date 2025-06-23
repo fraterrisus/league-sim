@@ -1,56 +1,55 @@
 package com.hitchhikerprod.league;
 
+import com.hitchhikerprod.league.ui.RootWindow;
 import javafx.application.Application;
-import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 
 public class MainFX extends Application {
-    private Stage stage;
-    private Parent root;
     private LeagueController controller;
+    private Stage stage;
+    public RootWindow root;
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
         this.stage = stage;
 
-        final URL fxmlUrl = getClass().getResource("main.fxml");
         final URL cssUrl = getClass().getResource("styles.css");
-        if (fxmlUrl == null) {
-            throw new RuntimeException("Can't load FXML file");
-        }
         if (cssUrl == null) {
             throw new RuntimeException("Can't load styles file");
         }
 
-        final FXMLLoader loader = new FXMLLoader(fxmlUrl);
-        this.root = loader.load();
-        this.controller = loader.getController();
+        this.controller = new LeagueController();
         this.controller.setApplication(this);
 
-//        this.root.addEventHandler(LeagueController.LeagueFileReader.ProgressEvent.ANY,
-//                event -> controller.updateProgressBar(event));
-
-        // Why does the MenuBar expand when the label shrinks from two lines to one?
-        VBox.setVgrow(this.controller.getMenuBar(), Priority.NEVER);
-
-        final Scene scene = new Scene(this.root);
+        this.root = new RootWindow(controller);
+        final Scene scene = new Scene(this.root.asParent());
         scene.getStylesheets().add(cssUrl.toExternalForm());
         this.stage.setTitle("LeagueSim");
         this.stage.setScene(scene);
         this.stage.show();
     }
 
-    void fireEvent(Event event) {
-        this.root.fireEvent(event);
+    public RootWindow ui() {
+        return root;
+    }
+
+    private void loadFromFXML(String fxmlFile) throws IOException {
+        final URL fxmlUrl = getClass().getResource(fxmlFile);
+        if (fxmlUrl == null) {
+            throw new RuntimeException("Can't load FXML file");
+        }
+
+        final FXMLLoader loader = new FXMLLoader(fxmlUrl);
+        this.root = loader.load();
+        this.controller = loader.getController();
+        this.controller.setApplication(this);
     }
 
     File runOpenFileDialog() {
