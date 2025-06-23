@@ -28,12 +28,15 @@ public class MainFX extends Application {
         this.controller = new LeagueController();
         this.controller.setApplication(this);
 
-        this.root = new RootWindow(controller);
+        this.root = RootWindow.getInstance();
+        this.root.setController(this.controller);
         final Scene scene = new Scene(this.root.asParent());
         scene.getStylesheets().add(cssUrl.toExternalForm());
         this.stage.setTitle("LeagueSim");
         this.stage.setScene(scene);
         this.stage.show();
+
+        root.noLeaguePane.label.setText("No League file loaded.\nUse File>Open to read a League file.");
     }
 
     public RootWindow ui() {

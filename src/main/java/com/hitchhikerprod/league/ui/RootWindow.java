@@ -1,10 +1,18 @@
 package com.hitchhikerprod.league.ui;
 
 import com.hitchhikerprod.league.LeagueController;
+import javafx.collections.ObservableList;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.layout.VBox;
 
 public class RootWindow {
+    public static final RootWindow INSTANCE = new RootWindow();
+
+    public static RootWindow getInstance() {
+        return INSTANCE;
+    }
+
     public final VBox vbox;
     public final MenuBar menuBar;
 
@@ -12,15 +20,20 @@ public class RootWindow {
 
     private OpenWindow openWindow;
 
-    public RootWindow(LeagueController controller) {
+    private RootWindow() {
         vbox = new VBox();
         vbox.setFillWidth(true);
         vbox.setPrefWidth(600.0);
 
-        menuBar = new MenuBar(controller);
-        noLeaguePane = new NoLeaguePane();
+        menuBar = MenuBar.getInstance();
+        noLeaguePane = NoLeaguePane.getInstance();
         vbox.getChildren().addAll(menuBar.asNode(), noLeaguePane.asNode());
+
         openWindow = OpenWindow.NO_LEAGUE;
+    }
+
+    public void setController(LeagueController controller) {
+        menuBar.setController(controller);
     }
 
     public Parent asParent() {
@@ -37,7 +50,20 @@ public class RootWindow {
         }
     }
 
+    public void activate(OpenWindow desired) {
+        if (desired == openWindow) return;
+
+        ObservableList<Node> visiblePanes = vbox.getChildren();
+        visiblePanes.removeAll(
+                noLeaguePane.asNode()
+        );
+        visiblePanes.add(switch (desired) {
+            case NO_LEAGUE -> noLeaguePane.asNode();
+            case STANDINGS -> null;
+        });
+    }
+
     public enum OpenWindow {
-        NO_LEAGUE;
+        NO_LEAGUE, STANDINGS;
     }
 }

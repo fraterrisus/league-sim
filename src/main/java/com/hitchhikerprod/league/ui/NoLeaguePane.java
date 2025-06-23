@@ -6,13 +6,19 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.VBox;
 
-public class NoLeaguePane {
+public class NoLeaguePane implements Activatable {
+    private static final NoLeaguePane INSTANCE = new NoLeaguePane();
+
+    public static NoLeaguePane getInstance() {
+        return INSTANCE;
+    }
+
     public final Label label;
     public final ProgressBar progressBar;
     public final VBox vBox;
 
-    public NoLeaguePane() {
-        label = new Label("No League file loaded.\nUse File>Open to read a League file.");
+    private NoLeaguePane() {
+        label = new Label("Starting up.\nPlease wait...");
 
         progressBar = new ProgressBar(0.0);
         progressBar.setPrefWidth(400.0);
@@ -23,6 +29,7 @@ public class NoLeaguePane {
         vBox.setFillWidth(true);
     }
 
+    @Override
     public Node asNode() {
         return vBox;
     }

@@ -33,6 +33,12 @@ public class LeagueController {
         final ReadLeagueFile reader = new ReadLeagueFile(selectedFile);
         progressLabel.textProperty().bind(reader.titleProperty());
         progressBar.progressProperty().bind(reader.progressProperty());
+        reader.setOnFailed(event -> {
+            progressBar.setVisible(false);
+            progressLabel.textProperty().unbind();
+            final Alert alert = new Alert(Alert.AlertType.ERROR, reader.getException().getMessage() );
+            alert.showAndWait();
+        });
         reader.setOnSucceeded(event -> {
             progressBar.setVisible(false);
             progressLabel.textProperty().unbind();
@@ -42,13 +48,9 @@ public class LeagueController {
             } catch (InterruptedException | ExecutionException e) {
                 final Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
                 alert.showAndWait();
+                return;
             }
-        });
-        reader.setOnFailed(event -> {
-            progressBar.setVisible(false);
-            progressLabel.textProperty().unbind();
-            final Alert alert = new Alert(Alert.AlertType.ERROR, reader.getException().getMessage() );
-            alert.showAndWait();
+            //app.root.activate(RootWindow.OpenWindow.STANDINGS);
         });
         new Thread(reader).start();
     }
