@@ -7,11 +7,13 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class UFA2025 implements League {
     private static final Map<String, Double> SCORE_MAP = null;
 
-    static class TeamData {
+    public static class TeamData {
         String shortName;
         String fullName;
         int wins = 0;
@@ -19,6 +21,26 @@ public class UFA2025 implements League {
         int goalDifference = 0;
         String lastGame;
         String nextGame;
+
+        public String getFullName() {
+            return fullName;
+        }
+
+        public Integer getWins() {
+            return wins;
+        }
+
+        public Integer getLosses() {
+            return losses;
+        }
+
+        public Double getWinPercentage() {
+            return (double)wins / (double)(wins + losses);
+        }
+
+        public Integer getGoalDifference() {
+            return goalDifference;
+        }
     }
 
     private final Map<String, TeamData> teams;
@@ -79,6 +101,15 @@ public class UFA2025 implements League {
                 homeData.goalDifference += homeScore - awayScore;
             }
         }
+    }
+
+    @Override
+    public Map<Division, List<TeamData>> getDivisionTables() {
+        return leagueData.divisions.stream()
+                .collect(Collectors.toMap(
+                        Function.identity(),
+                        div -> rankTeams(div.teams)
+                ));
     }
 
     @Override

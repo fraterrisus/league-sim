@@ -1,6 +1,7 @@
 package com.hitchhikerprod.league;
 
 import com.hitchhikerprod.league.tasks.ReadLeagueFile;
+import com.hitchhikerprod.league.ui.RootWindow;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
@@ -50,7 +51,9 @@ public class LeagueController {
                 alert.showAndWait();
                 return;
             }
-            //app.root.activate(RootWindow.OpenWindow.STANDINGS);
+            app.root.standingsPane.buildPanels(league.getDivisionTables());
+            app.root.activate(RootWindow.OpenWindow.STANDINGS);
+            app.stage.sizeToScene();
         });
         new Thread(reader).start();
     }

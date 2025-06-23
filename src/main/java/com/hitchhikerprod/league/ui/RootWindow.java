@@ -4,6 +4,7 @@ import com.hitchhikerprod.league.LeagueController;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 public class RootWindow {
@@ -17,6 +18,7 @@ public class RootWindow {
     public final MenuBar menuBar;
 
     public final NoLeaguePane noLeaguePane;
+    public final StandingsPane standingsPane;
 
     private OpenWindow openWindow;
 
@@ -27,6 +29,7 @@ public class RootWindow {
 
         menuBar = MenuBar.getInstance();
         noLeaguePane = NoLeaguePane.getInstance();
+        standingsPane = StandingsPane.getInstance();
         vbox.getChildren().addAll(menuBar.asNode(), noLeaguePane.asNode());
 
         openWindow = OpenWindow.NO_LEAGUE;
@@ -55,12 +58,15 @@ public class RootWindow {
 
         ObservableList<Node> visiblePanes = vbox.getChildren();
         visiblePanes.removeAll(
-                noLeaguePane.asNode()
+                noLeaguePane.asNode(),
+                standingsPane.asNode()
         );
-        visiblePanes.add(switch (desired) {
+        Node desiredPane = switch (desired) {
             case NO_LEAGUE -> noLeaguePane.asNode();
-            case STANDINGS -> null;
-        });
+            case STANDINGS -> standingsPane.asNode();
+        };
+        visiblePanes.add(desiredPane);
+        VBox.setVgrow(desiredPane, Priority.ALWAYS);
     }
 
     public enum OpenWindow {

@@ -13,7 +13,7 @@ import java.net.URL;
 
 public class MainFX extends Application {
     private LeagueController controller;
-    private Stage stage;
+    public Stage stage;
     public RootWindow root;
 
     @Override
@@ -28,10 +28,10 @@ public class MainFX extends Application {
         this.controller = new LeagueController();
         this.controller.setApplication(this);
 
-        this.root = RootWindow.getInstance();
-        this.root.setController(this.controller);
-        final Scene scene = new Scene(this.root.asParent());
-        scene.getStylesheets().add(cssUrl.toExternalForm());
+        root = RootWindow.getInstance();
+        root.setController(this.controller);
+        root.asParent().getStylesheets().add(cssUrl.toExternalForm());
+        final Scene scene = new Scene(root.asParent());
         this.stage.setTitle("LeagueSim");
         this.stage.setScene(scene);
         this.stage.show();

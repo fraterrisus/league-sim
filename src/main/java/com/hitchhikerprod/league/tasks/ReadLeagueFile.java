@@ -39,7 +39,7 @@ public final class ReadLeagueFile extends Task<League> {
         try (final BufferedReader reader = Files.newBufferedReader(Paths.get(inputFile.getPath()), StandardCharsets.UTF_8)) {
             String line;
             while ((line = reader.readLine()) != null) {
-                sleepHelper(5);
+                sleepHelper(1);
                 if (isCancelled()) return null;
                 document.add(line);
                 progress += line.length() + 1;
@@ -54,7 +54,7 @@ public final class ReadLeagueFile extends Task<League> {
         updateTitle("Parsing games...");
         updateProgress(-1, 1);
         final League l = LeagueFactory.fromYaml(String.join("\n", document));
-        sleepHelper(500);
+        //sleepHelper(500);
         updateTitle("Complete.");
         updateProgress(1, 1);
         return l;
