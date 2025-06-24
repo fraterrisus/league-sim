@@ -11,7 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
-public class MainFX extends Application {
+public class LeagueApp extends Application {
     private LeagueController controller;
     public Stage stage;
     public RootWindow root;

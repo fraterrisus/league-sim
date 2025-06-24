@@ -60,12 +60,14 @@ divisions:
   - name: West
     teams: [COL, OAK, ORE, SEA, SLS, VEG]
 matchdays:
-  - name: 'Week 1'
+  - name: 'Week 1 - Thu 4/24'
     games:
       - awayTeam: NYE
         awayScore: 17
         homeTeam: OAK
         homeScore: 22
+  - name: 'Week 1 - Fri 4/25'
+    games:
       - awayTeam: AUS
         awayScore: 30
         homeTeam: HOU
@@ -74,6 +76,8 @@ matchdays:
         awayScore: 32
         homeTeam: VEG
         homeScore: 13
+  - name: 'Week 1 - Sat 4/26'
+    games:
       - awayTeam: MTL
         awayScore: 18
         homeTeam: BOS
@@ -90,7 +94,7 @@ matchdays:
         awayScore: 21
         homeTeam: ATL
         homeScore: 23
-  - name: 'Week 2'
+  - name: 'Week 2 - Fri 5/2'
     games:
       - awayTeam: IND
         awayScore: 21
@@ -100,6 +104,8 @@ matchdays:
         awayScore: 12
         homeTeam: HOU
         homeScore: 10
+  - name: 'Week 2 - Sat 5/3'
+    games:
       - awayTeam: TOR
         awayScore: 18
         homeTeam: DCB
@@ -120,6 +126,8 @@ matchdays:
         awayScore: 12
         homeTeam: SDG
         homeScore: 19
+  - name: 'Week 2 - Sun 5/4'
+    games:
       - awayTeam: TOR
         awayScore: 16
         homeTeam: PHL
@@ -132,7 +140,7 @@ matchdays:
         awayScore: 25
         homeTeam: LAA
         homeScore: 16
-  - name: 'Week 3'
+  - name: 'Week 3 - Fri 5/9'
     games:
       - awayTeam: MTL
         awayScore: 20
@@ -146,6 +154,8 @@ matchdays:
         awayScore: 20
         homeTeam: SDG
         homeScore: 19
+  - name: 'Week 3 - Sat 5/10'
+    games:
       - awayTeam: DCB
         awayScore: 20
         homeTeam: CAR
@@ -174,11 +184,13 @@ matchdays:
         awayScore: 23
         homeTeam: VEG
         homeScore: 13
+  - name: 'Week 3 - Sun 5/11'
+    games:
       - awayTeam: PIT
         awayScore: 22
         homeTeam: DET
         homeScore: 17
-  - name: 'Week 4'
+  - name: 'Week 4 - Fri 5/16'
     games:
       - awayTeam: NYE
         awayScore: 18
@@ -192,6 +204,8 @@ matchdays:
         awayScore: 16
         homeTeam: SDG
         homeScore: 21
+  - name: 'Week 4 - Sat 5/17'
+    games:
       - awayTeam: CAR
         awayScore: 15
         homeTeam: ATL
@@ -220,11 +234,13 @@ matchdays:
         awayScore: 19
         homeTeam: ORE
         homeScore: 20
+  - name: 'Week 4 - Sun 5/18'
+    games:
       - awayTeam: BOS
         awayScore: 14
         homeTeam: DCB
         homeScore: 11
-  - name: 'Week 5'
+  - name: 'Week 5 - Fri 5/23'
     games:
       - awayTeam: NYE
         awayScore: 17
@@ -242,6 +258,8 @@ matchdays:
         awayScore: 21
         homeTeam: SLS
         homeScore: 22
+  - name: 'Week 5 - Sat 5/24'
+    games:
       - awayTeam: MIN
         awayScore: 31
         homeTeam: PIT
@@ -262,7 +280,7 @@ matchdays:
         awayScore: 14
         homeTeam: COL
         homeScore: 24
-  - name: 'Week 6'
+  - name: 'Week 6 - Fri 5/30'
     games:
       - awayTeam: DCB
         awayScore: 21
@@ -288,6 +306,8 @@ matchdays:
         awayScore: 25
         homeTeam: SEA
         homeScore: 20
+  - name: 'Week 6 - Sat 5/31'
+    games:
       - awayTeam: DCB
         awayScore: 17
         homeTeam: MTL
@@ -308,6 +328,8 @@ matchdays:
         awayScore: 17
         homeTeam: SDG
         homeScore: 25
+  - name: 'Week 6 - Sun 6/1'
+    games:
       - awayTeam: NYE
         awayScore: 20
         homeTeam: TOR
@@ -316,7 +338,7 @@ matchdays:
         awayScore: 24
         homeTeam: PIT
         homeScore: 12
-  - name: 'Week 7'
+  - name: 'Week 7 - Fri 6/6'
     games:
       - awayTeam: NYE
         awayScore: 15
@@ -334,6 +356,8 @@ matchdays:
         awayScore: 18
         homeTeam: LAA
         homeScore: 17
+  - name: 'Week 7 - Sat 6/7'
+    games:
       - awayTeam: VEG
         awayScore: 12
         homeTeam: SEA
@@ -366,11 +390,13 @@ matchdays:
         awayScore: 23
         homeTeam: SDG
         homeScore: 21
+  - name: 'Week 7 - Sun 6/8'
+    games:
       - awayTeam: MAD
         awayScore: 16
         homeTeam: CHI
         homeScore: 21
-  - name: 'Week 8'
+  - name: 'Week 8 - Fri 6/13'
     games:
       - awayTeam: MIN
         awayScore: 22
@@ -380,6 +406,8 @@ matchdays:
         awayScore: 19
         homeTeam: SLS
         homeScore: 31
+  - name: 'Week 8 - Sat 6/14'
+    games:
       - awayTeam: BOS
         awayScore: 16
         homeTeam: MTL
@@ -412,11 +440,13 @@ matchdays:
         awayScore: 23
         homeTeam: VEG
         homeScore: 16
+  - name: 'Week 8 - Sun 6/15'
+    games:
       - awayTeam: BOS
         awayScore: 26
         homeTeam: TOR
         homeScore: 23
-  - name: 'Week 9'
+  - name: 'Week 9 - Fri 6/20'
     games:
       - awayTeam: PIT
         awayScore:
@@ -438,6 +468,8 @@ matchdays:
         awayScore:
         homeTeam: ORE
         homeScore:
+  - name: 'Week 9 - Sat 6/21'
+    games:
       - awayTeam: TOR
         awayScore:
         homeTeam: BOS
@@ -462,11 +494,13 @@ matchdays:
         awayScore:
         homeTeam: SEA
         homeScore:
+  - name: 'Week 9 - Sun 6/22'
+    games:
       - awayTeam: DET
         awayScore:
         homeTeam: PIT
         homeScore:
-  - name: 'Week 10'
+  - name: 'Week 10 - Fri 6/27'
     games:
       - awayTeam: IND
         awayScore:
@@ -492,6 +526,8 @@ matchdays:
         awayScore:
         homeTeam: SEA
         homeScore:
+  - name: 'Week 10 - Sat 6/28'
+    games:
       - awayTeam: CHI
         awayScore:
         homeTeam: DET
@@ -520,7 +556,7 @@ matchdays:
         awayScore:
         homeTeam: SDG
         homeScore:
-  - name: 'Week 11'
+  - name: 'Week 11 - Fri 7/4'
     games:
       - awayTeam: MIN
         awayScore:
@@ -534,6 +570,8 @@ matchdays:
         awayScore:
         homeTeam: COL
         homeScore:
+  - name: 'Week 11 - Sat 7/5'
+    games:
       - awayTeam: MIN
         awayScore:
         homeTeam: DET
@@ -558,11 +596,13 @@ matchdays:
         awayScore:
         homeTeam: VEG
         homeScore:
+  - name: 'Week 11 - Sun 7/6'
+    games:
       - awayTeam: DCB
         awayScore:
         homeTeam: BOS
         homeScore:
-  - name: 'Week 12'
+  - name: 'Week 12 - Fri 7/11'
     games:
       - awayTeam: BOS
         awayScore:
@@ -576,6 +616,8 @@ matchdays:
         awayScore:
         homeTeam: SLS
         homeScore:
+  - name: 'Week 12 - Sat 7/12'
+    games:
       - awayTeam: DET
         awayScore:
         homeTeam: IND
@@ -600,11 +642,13 @@ matchdays:
         awayScore:
         homeTeam: VEG
         homeScore:
+  - name: 'Week 12 - Sun 7/13'
+    games:
       - awayTeam: PHL
         awayScore:
         homeTeam: NYE
         homeScore:
-  - name: 'Week 13'
+  - name: 'Week 13 - Fri 7/18'
     games:
       - awayTeam: CAR
         awayScore:
@@ -618,6 +662,8 @@ matchdays:
         awayScore:
         homeTeam: SLS
         homeScore:
+  - name: 'Week 13 - Sat 7/19'
+    games:
       - awayTeam: TOR
         awayScore:
         homeTeam: MTL
@@ -650,6 +696,8 @@ matchdays:
         awayScore:
         homeTeam: SEA
         homeScore:
+  - name: 'Week 13 - Sun 7/20'
+    games:
       - awayTeam: VEG
         awayScore:
         homeTeam: LAA

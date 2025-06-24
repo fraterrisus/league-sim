@@ -42,6 +42,6 @@ jlink {
 }
 
 application {
-    mainClass = "com.hitchhikerprod.league.MainFX"
+    mainClass = "com.hitchhikerprod.league.LeagueApp"
     mainModule = "leaguesim"
 }

@@ -3,24 +3,72 @@ package com.hitchhikerprod.league.definitions;
 import com.hitchhikerprod.league.League;
 import com.hitchhikerprod.league.beans.*;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class UFA2025 implements League {
     private static final Map<String, Double> SCORE_MAP = null;
 
+    public static class UFAMatchDay {
+        final String name;
+        final List<UFAGameData> games;
+        boolean complete;
+
+        public UFAMatchDay(String name) {
+            this.name = name;
+            this.games = new ArrayList<>();
+            this.complete = false;
+        }
+
+        public UFAMatchDay(String name, List<UFAGameData> games) {
+            this.name = name;
+            this.games = new ArrayList<>(games);
+            this.complete = false;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public List<UFAGameData> getGames() {
+            return games;
+        }
+
+        public void addGame(UFAGameData game) {
+            games.add(game);
+        }
+
+        public void setGames(List<UFAGameData> games) {
+            this.games.clear();
+            this.games.addAll(games);
+        }
+    }
+
+    public static class UFAGameData {
+        TeamData awayTeam;
+        TeamData homeTeam;
+        Integer awayScore;
+        Integer homeScore;
+    }
+
     public static class TeamData {
-        String shortName;
-        String fullName;
+        final String shortName;
+        final String fullName;
         int wins = 0;
         int losses = 0;
         int goalDifference = 0;
-        String lastGame;
-        String nextGame;
+
+        public TeamData(String fullName, String shortName) {
+            this.fullName = fullName;
+            this.shortName = shortName;
+        }
+
+        public void reset() {
+            wins = 0;
+            losses = 0;
+            goalDifference = 0;
+        }
 
         public String getFullName() {
             return fullName;
@@ -35,6 +83,7 @@ public class UFA2025 implements League {
         }
 
         public Double getWinPercentage() {
+            if (wins + losses == 0) return 0.0;
             return (double)wins / (double)(wins + losses);
         }
 
@@ -45,66 +94,88 @@ public class UFA2025 implements League {
 
     private final Map<String, TeamData> teams;
     private final LeagueData leagueData;
+    private final List<UFAMatchDay> matchDays;
 
     public UFA2025(LeagueData leagueData) {
         this.leagueData = leagueData;
         this.teams = new HashMap<>();
+        this.matchDays = new ArrayList<>();
 
         for (Team team : leagueData.teams) {
-            TeamData teamData = new TeamData();
-            teamData.shortName = team.id;
-            teamData.fullName = team.name;
+            TeamData teamData = new TeamData(team.name, team.id);
             teams.put(team.id, teamData);
         }
 
         for (MatchDay md : leagueData.matchdays) {
+            final UFAMatchDay matchDay = new UFAMatchDay(md.name);
+            matchDays.add(matchDay);
+            matchDay.complete = true;
+
             for (Game g : md.games) {
-                final TeamData awayData = teams.get(g.awayTeam);
-                if (awayData == null) {
+                final UFAGameData gameData = new UFAGameData();
+
+                gameData.awayTeam = teams.get(g.awayTeam);
+                if (gameData.awayTeam == null) {
                     System.err.println("Unrecognized team ID " + g.awayTeam);
                     continue;
                 }
-                final TeamData homeData = teams.get(g.homeTeam);
-                if (homeData == null) {
+
+                gameData.homeTeam = teams.get(g.homeTeam);
+                if (gameData.homeTeam == null) {
                     System.err.println("Unrecognized team ID " + g.homeTeam);
                     continue;
                 }
+
+                matchDay.addGame(gameData);
+
                 final Double awayValue = g.getAwayValue(SCORE_MAP);
                 final Double homeValue = g.getHomeValue(SCORE_MAP);
 
                 if (awayValue == null || homeValue == null) {
-                    if (awayData.nextGame == null) {
-                        awayData.nextGame = "at " + g.homeTeam;
-                    }
-                    if (homeData.nextGame == null) {
-                        homeData.nextGame = "vs " + g.awayTeam;
-                    }
+                    matchDay.complete = false;
                     continue;
                 }
 
-                final int awayScore = awayValue.intValue();
-                final int homeScore = homeValue.intValue();
-
-                final String lastGame = String.format("%s %2d-%2d %s",
-                        g.awayTeam, awayScore, homeScore, g.homeTeam);
-                awayData.lastGame = lastGame;
-                homeData.lastGame = lastGame;
-
-                if (awayScore > homeScore) {
-                    awayData.wins++;
-                    homeData.losses++;
-                } else {
-                    awayData.losses++;
-                    homeData.wins++;
-                }
-                awayData.goalDifference += awayScore - homeScore;
-                homeData.goalDifference += homeScore - awayScore;
+                gameData.awayScore = awayValue.intValue();
+                gameData.homeScore = homeValue.intValue();
             }
         }
     }
 
     @Override
-    public Map<Division, List<TeamData>> getDivisionTables() {
+    public int getLatestCompleteMatchDay() {
+        for (int idx = 0; idx < matchDays.size(); idx++) {
+            UFAMatchDay matchDay = matchDays.get(idx);
+            if (!matchDay.complete) return idx - 1;
+        }
+        return matchDays.size() - 1;
+    }
+
+    @Override
+    public List<String> getMatchDays() {
+        return matchDays.stream().map(UFAMatchDay::getName).collect(Collectors.toList());
+    }
+
+    @Override
+    public Map<Division, List<TeamData>> getDivisionTables(int matchDayIndex) {
+        teams.values().forEach(TeamData::reset);
+
+        for (int idx = 0; idx <= matchDayIndex; idx++) {
+            final UFAMatchDay matchDay = matchDays.get(idx);
+            for (UFAGameData game : matchDay.getGames()) {
+                if (game.awayScore == null || game.homeScore == null) continue;
+                if (game.awayScore > game.homeScore) {
+                    game.awayTeam.wins++;
+                    game.homeTeam.losses++;
+                } else {
+                    game.awayTeam.losses++;
+                    game.homeTeam.wins++;
+                }
+                game.awayTeam.goalDifference += game.awayScore - game.homeScore;
+                game.homeTeam.goalDifference += game.homeScore - game.awayScore;
+            }
+        }
+
         return leagueData.divisions.stream()
                 .collect(Collectors.toMap(
                         Function.identity(),
@@ -112,32 +183,14 @@ public class UFA2025 implements League {
                 ));
     }
 
-    @Override
-    public String tables() {
-        StringBuilder sb = new StringBuilder();
-        for (Division div : leagueData.divisions) {
-            sb.append(String.format("%-32s", div.name));
-            sb.append("  W  L   Pct  +/-\n");
+    private List<TeamData> rankTeams(List<String> teamsIn) {
+        final TeamComparator tc = new TeamComparator();
 
-            for (TeamData team : rankTeams(div.teams)) {
-                sb.append("  ").append(String.format("%-30s", team.fullName));
-                sb.append(" ").append(String.format("%2d", team.wins));
-                sb.append(" ").append(String.format("%2d", team.losses));
-                final int played = team.wins + team.losses;
-                final double winPercent = (played == 0) ? 0d : (double)team.wins / (double)played;
-                sb.append(" ").append(String.format("%5.3f", winPercent));
-                sb.append(" ").append(String.format("%+4d", team.goalDifference));
-                if (team.lastGame != null) {
-                    sb.append("  Last: ").append(team.lastGame);
-                }
-                if (team.nextGame != null) {
-                    sb.append("  Next: ").append(team.nextGame);
-                }
-                sb.append("\n");
-            }
-            sb.append("\n");
-        }
-        return sb.toString();
+        return teamsIn.stream()
+                .map(teams::get)
+                .sorted(tc)
+                .toList()
+                .reversed();
     }
 
     private class TeamComparator implements Comparator<TeamData> {
@@ -172,15 +225,6 @@ public class UFA2025 implements League {
             }
             return Integer.compare(t1HeadWins, t2HeadWins);
         }
-    }
 
-    private List<TeamData> rankTeams(List<String> teamsIn) {
-        final TeamComparator tc = new TeamComparator();
-
-        return teamsIn.stream()
-                .map(teams::get)
-                .sorted(tc)
-                .toList()
-                .reversed();
     }
 }

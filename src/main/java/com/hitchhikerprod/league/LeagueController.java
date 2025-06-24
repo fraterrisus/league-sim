@@ -2,6 +2,7 @@ package com.hitchhikerprod.league;
 
 import com.hitchhikerprod.league.tasks.ReadLeagueFile;
 import com.hitchhikerprod.league.ui.RootWindow;
+import com.hitchhikerprod.league.ui.StandingsPane;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
@@ -11,10 +12,10 @@ import java.io.File;
 import java.util.concurrent.ExecutionException;
 
 public class LeagueController {
-    private MainFX app;
+    private LeagueApp app;
     private League league;
 
-    public void setApplication(MainFX app) {
+    public void setApplication(LeagueApp app) {
         this.app = app;
     }
 
@@ -51,14 +52,26 @@ public class LeagueController {
                 alert.showAndWait();
                 return;
             }
-            app.root.standingsPane.buildPanels(league.getDivisionTables());
-            app.root.activate(RootWindow.OpenWindow.STANDINGS);
-            app.stage.sizeToScene();
+            openStandings();
         });
         new Thread(reader).start();
     }
 
     public void menuQuit() {
         Platform.exit();
+    }
+
+    public void openStandings() {
+        final StandingsPane standingsPane = app.root.standingsPane;
+        final int latestCompleteMatchDay = league.getLatestCompleteMatchDay();
+        standingsPane.buildPanels(league.getDivisionTables(latestCompleteMatchDay));
+        standingsPane.setMatchDays(league.getMatchDays(), latestCompleteMatchDay);
+        standingsPane.setMatchDayCallback(ev -> {
+            final int matchDayIndex = standingsPane.getSelectedMatchDay();
+            standingsPane.buildPanels(league.getDivisionTables(matchDayIndex));
+        });
+
+        app.root.activate(RootWindow.OpenWindow.STANDINGS);
+        app.stage.sizeToScene();
     }
 }

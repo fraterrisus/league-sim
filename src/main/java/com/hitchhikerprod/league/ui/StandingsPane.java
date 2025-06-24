@@ -5,12 +5,13 @@ import com.hitchhikerprod.league.definitions.UFA2025;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
@@ -26,10 +27,25 @@ public class StandingsPane implements Activatable {
     }
 
     public final VBox vbox;
+    public final HBox matchDayHbox;
     public final List<TableView> teamTables;
 
+    public final ChoiceBox<String> matchDaySelector;
+
     private StandingsPane() {
-        vbox = new VBox();
+        matchDaySelector = new ChoiceBox<>();
+        matchDaySelector.setPrefWidth(200);
+
+        final Button decrementButton = new Button("<");
+        final Button incrementButton = new Button(">");
+        decrementButton.setOnAction(ev -> matchDaySelector.getSelectionModel().selectPrevious());
+        incrementButton.setOnAction(ev -> matchDaySelector.getSelectionModel().selectNext());
+
+        matchDayHbox = new HBox(decrementButton, matchDaySelector, incrementButton);
+        matchDayHbox.setAlignment(Pos.CENTER);
+        matchDayHbox.setSpacing(10);
+
+        vbox = new VBox(matchDayHbox);
         teamTables = new ArrayList<>();
     }
 
@@ -39,15 +55,35 @@ public class StandingsPane implements Activatable {
             public void updateItem(Double item, boolean empty) {
                 super.updateItem(item, empty);
                 setText(empty ? null : String.format(format, item));
-                getStyleClass().forEach(System.out::println);
-                System.out.println();
             }
         };
     }
 
+    public void setMatchDays(List<String> strings, int index) {
+        setMatchDays(strings);
+        setSelectedMatchDay(index);
+    }
+
+    public void setMatchDays(List<String> strings) {
+        matchDaySelector.getItems().clear();
+        matchDaySelector.getItems().addAll(strings);
+    }
+
+    public int getSelectedMatchDay() {
+        return matchDaySelector.getSelectionModel().getSelectedIndex();
+    }
+
+    public void setSelectedMatchDay(int index) {
+        matchDaySelector.getSelectionModel().select(index);
+    }
+
+    public void setMatchDayCallback(EventHandler<ActionEvent> handler) {
+        matchDaySelector.setOnAction(handler);
+    }
+
     public void buildPanels(Map<Division, List<UFA2025.TeamData>> divisions) {
-        ObservableList<Node> children = vbox.getChildren();
-        children.clear();
+        final ObservableList<Node> children = vbox.getChildren();
+        children.remove(1, children.size());
         teamTables.clear();
         for (Division div : divisions.keySet()) {
             Label divName = new Label(div.name);

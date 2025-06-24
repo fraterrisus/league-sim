@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface League {
-    Map<Division, List<UFA2025.TeamData>> getDivisionTables();
-    String tables();
+    int getLatestCompleteMatchDay();
+    List<String> getMatchDays();
+    Map<Division, List<UFA2025.TeamData>> getDivisionTables(int index);
 }
