@@ -50,6 +50,22 @@ public class UFA2025 implements League {
         TeamData homeTeam;
         Integer awayScore;
         Integer homeScore;
+
+        public TeamData getAwayTeam() {
+            return awayTeam;
+        }
+
+        public TeamData getHomeTeam() {
+            return homeTeam;
+        }
+
+        public Integer getAwayScore() {
+            return awayScore;
+        }
+
+        public Integer getHomeScore() {
+            return homeScore;
+        }
     }
 
     public static class TeamData {
@@ -68,6 +84,10 @@ public class UFA2025 implements League {
             wins = 0;
             losses = 0;
             goalDifference = 0;
+        }
+
+        public String getShortName() {
+            return shortName;
         }
 
         public String getFullName() {
@@ -154,6 +174,10 @@ public class UFA2025 implements League {
     @Override
     public List<String> getMatchDays() {
         return matchDays.stream().map(UFAMatchDay::getName).collect(Collectors.toList());
+    }
+
+    public List<UFAGameData> getGames(int matchDay) {
+        return matchDays.get(matchDay).games;
     }
 
     @Override

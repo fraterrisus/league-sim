@@ -25,7 +25,6 @@ public class RootWindow {
     private RootWindow() {
         vbox = new VBox();
         vbox.setFillWidth(true);
-        vbox.setPrefWidth(600.0);
 
         menuBar = MenuBar.getInstance();
         noLeaguePane = NoLeaguePane.getInstance();

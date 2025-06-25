@@ -10,4 +10,5 @@ public interface League {
     int getLatestCompleteMatchDay();
     List<String> getMatchDays();
     Map<Division, List<UFA2025.TeamData>> getDivisionTables(int index);
+    List<UFA2025.UFAGameData> getGames(int matchDay);
 }

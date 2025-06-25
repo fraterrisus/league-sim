@@ -64,11 +64,13 @@ public class LeagueController {
     public void openStandings() {
         final StandingsPane standingsPane = app.root.standingsPane;
         final int latestCompleteMatchDay = league.getLatestCompleteMatchDay();
-        standingsPane.buildPanels(league.getDivisionTables(latestCompleteMatchDay));
+        standingsPane.buildDivisionPanels(league.getDivisionTables(latestCompleteMatchDay));
         standingsPane.setMatchDays(league.getMatchDays(), latestCompleteMatchDay);
+        standingsPane.setGamesList(league.getGames(latestCompleteMatchDay));
         standingsPane.setMatchDayCallback(ev -> {
             final int matchDayIndex = standingsPane.getSelectedMatchDay();
-            standingsPane.buildPanels(league.getDivisionTables(matchDayIndex));
+            standingsPane.buildDivisionPanels(league.getDivisionTables(matchDayIndex));
+            standingsPane.setGamesList(league.getGames(matchDayIndex));
         });
 
         app.root.activate(RootWindow.OpenWindow.STANDINGS);
