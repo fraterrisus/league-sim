@@ -1,5 +1,7 @@
 package com.hitchhikerprod.league;
 
+import com.hitchhikerprod.league.beans.Division;
+import com.hitchhikerprod.league.definitions.UFA2025;
 import com.hitchhikerprod.league.tasks.ReadLeagueFile;
 import com.hitchhikerprod.league.ui.RootWindow;
 import com.hitchhikerprod.league.ui.StandingsPane;
@@ -9,6 +11,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 
 import java.io.File;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 public class LeagueController {
@@ -64,13 +68,22 @@ public class LeagueController {
     public void openStandings() {
         final StandingsPane standingsPane = app.root.standingsPane;
         final int latestCompleteMatchDay = league.getLatestCompleteMatchDay();
-        standingsPane.buildDivisionPanels(league.getDivisionTables(latestCompleteMatchDay));
+        final Map<Division, List<UFA2025.TeamData>> divisionTables = league.getDivisionTables(latestCompleteMatchDay);
+
+        standingsPane.setDivisions(divisionTables);
+        standingsPane.setStandings(divisionTables);
         standingsPane.setMatchDays(league.getMatchDays(), latestCompleteMatchDay);
         standingsPane.setGamesList(league.getGames(latestCompleteMatchDay));
+
         standingsPane.setMatchDayCallback(ev -> {
             final int matchDayIndex = standingsPane.getSelectedMatchDay();
-            standingsPane.buildDivisionPanels(league.getDivisionTables(matchDayIndex));
+            standingsPane.setStandings(league.getDivisionTables(matchDayIndex));
             standingsPane.setGamesList(league.getGames(matchDayIndex));
+        });
+
+        standingsPane.setRegenerateTablesCallback(ev -> {
+            final int matchDayIndex = standingsPane.getSelectedMatchDay();
+            standingsPane.setStandings(league.getDivisionTables(matchDayIndex));
         });
 
         app.root.activate(RootWindow.OpenWindow.STANDINGS);

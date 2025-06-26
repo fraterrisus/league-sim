@@ -6,6 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 public class RootWindow {
     public static final RootWindow INSTANCE = new RootWindow();
@@ -32,6 +33,10 @@ public class RootWindow {
         vbox.getChildren().addAll(menuBar.asNode(), noLeaguePane.asNode());
 
         openWindow = OpenWindow.NO_LEAGUE;
+    }
+
+    public void setStage(Stage stage) {
+        standingsPane.setStage(stage);
     }
 
     public void setController(LeagueController controller) {

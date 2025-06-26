@@ -43,13 +43,13 @@ public class MenuBar {
         final MenuItem newMI = new MenuItem("New");
 
         final MenuItem openMI = new MenuItem("Open");
-        openMI.setAccelerator(new KeyCharacterCombination("o", KeyCombination.CONTROL_DOWN));
+        openMI.setAccelerator(new KeyCharacterCombination("O", KeyCombination.CONTROL_DOWN));
         items.put("file.open", openMI);
 
         final SeparatorMenuItem sepMI = new SeparatorMenuItem();
 
         final MenuItem quitMI = new MenuItem("Quit");
-        quitMI.setAccelerator(new KeyCharacterCombination("q", KeyCombination.CONTROL_DOWN));
+        quitMI.setAccelerator(new KeyCharacterCombination("Q", KeyCombination.CONTROL_DOWN));
         items.put("file.quit", quitMI);
 
         fileM.getItems().addAll(newMI, openMI, sepMI, quitMI);

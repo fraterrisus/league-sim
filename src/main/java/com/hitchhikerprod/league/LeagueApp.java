@@ -29,6 +29,7 @@ public class LeagueApp extends Application {
         this.controller.setApplication(this);
 
         root = RootWindow.getInstance();
+        root.setStage(this.stage);
         root.setController(this.controller);
         root.asParent().getStylesheets().add(cssUrl.toExternalForm());
         final Scene scene = new Scene(root.asParent());
