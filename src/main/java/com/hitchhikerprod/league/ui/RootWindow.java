@@ -1,12 +1,11 @@
 package com.hitchhikerprod.league.ui;
 
-import com.hitchhikerprod.league.LeagueController;
+import com.hitchhikerprod.league.LeagueApp;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 public class RootWindow {
     public static final RootWindow INSTANCE = new RootWindow();
@@ -35,12 +34,9 @@ public class RootWindow {
         openWindow = OpenWindow.NO_LEAGUE;
     }
 
-    public void setStage(Stage stage) {
-        standingsPane.setStage(stage);
-    }
-
-    public void setController(LeagueController controller) {
-        menuBar.setController(controller);
+    public void setApplication(LeagueApp app) {
+        menuBar.setApplication(app);
+        standingsPane.setApplication(app);
     }
 
     public Parent asParent() {

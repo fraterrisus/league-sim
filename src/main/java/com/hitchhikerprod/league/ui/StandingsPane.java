@@ -1,5 +1,6 @@
 package com.hitchhikerprod.league.ui;
 
+import com.hitchhikerprod.league.LeagueApp;
 import com.hitchhikerprod.league.beans.Division;
 import com.hitchhikerprod.league.definitions.UFA2025;
 import javafx.beans.binding.Bindings;
@@ -16,7 +17,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.converter.IntegerStringConverter;
 
@@ -31,7 +31,7 @@ public class StandingsPane implements Activatable {
         return INSTANCE;
     }
 
-    private Stage stage;
+    private LeagueApp app;
     public final HBox root;
     private final VBox leftVbox;
     private final VBox rightVbox;
@@ -82,14 +82,14 @@ public class StandingsPane implements Activatable {
     }
 
     private void exitTextBoxHandler(ObservableValue<? extends Boolean> value, Boolean oldValue, Boolean newValue) {
-        final Node currentFocus = stage.getScene().getFocusOwner();
+        final Node currentFocus = app.getStage().getScene().getFocusOwner();
         if (oldValue == true && newValue == false && scoreTextFields.contains(currentFocus)) {
             rebuildStandingsHandler.handle(null);
         }
     }
 
-    public void setStage(Stage stage) {
-        this.stage = stage;
+    public void setApplication(LeagueApp app) {
+        this.app = app;
     }
 
     public void setMatchDays(List<String> strings, int index) {

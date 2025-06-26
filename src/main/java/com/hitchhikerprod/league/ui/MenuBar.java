@@ -1,6 +1,6 @@
 package com.hitchhikerprod.league.ui;
 
-import com.hitchhikerprod.league.LeagueController;
+import com.hitchhikerprod.league.LeagueApp;
 import javafx.scene.Node;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
@@ -30,12 +30,11 @@ public class MenuBar {
         final Menu fileM = makeFileMenu();
 
         menuBar = new javafx.scene.control.MenuBar(fileM);
-        // Why does the MenuBar expand when the label shrinks from two lines to one?
         VBox.setVgrow(menuBar, Priority.NEVER);
     }
 
-    public void setController(LeagueController controller) {
-        activateFileMenu(controller);
+    public void setApplication(LeagueApp app) {
+        activateFileMenu(app);
     }
 
     private Menu makeFileMenu() {
@@ -56,9 +55,9 @@ public class MenuBar {
         return fileM;
     }
 
-    private void activateFileMenu(LeagueController controller) {
-        items.get("file.open").setOnAction(ev -> controller.menuOpen());
-        items.get("file.quit").setOnAction(ev -> controller.menuQuit());
+    private void activateFileMenu(LeagueApp app) {
+        items.get("file.open").setOnAction(ev -> app.menuOpen());
+        items.get("file.quit").setOnAction(ev -> app.menuQuit());
     }
 
     public Node asNode() {
