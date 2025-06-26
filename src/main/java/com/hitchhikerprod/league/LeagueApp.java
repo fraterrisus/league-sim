@@ -3,21 +3,25 @@ package com.hitchhikerprod.league;
 import com.hitchhikerprod.league.beans.Division;
 import com.hitchhikerprod.league.definitions.UFA2025;
 import com.hitchhikerprod.league.tasks.ReadLeagueFile;
+import com.hitchhikerprod.league.tasks.SaveLeagueFile;
 import com.hitchhikerprod.league.ui.RootWindow;
 import com.hitchhikerprod.league.ui.StandingsPane;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
 public class LeagueApp extends Application {
@@ -25,6 +29,11 @@ public class LeagueApp extends Application {
     private RootWindow root;
 
     private League league;
+    private String leagueFileName;
+
+    public static void main(String[] args) {
+        launch(args);
+    }
 
     @Override
     public void start(Stage stage) {
@@ -50,6 +59,44 @@ public class LeagueApp extends Application {
         return stage;
     }
 
+    public void menuOpen() {
+        if (league != null) {
+            final Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
+                    "Do you want to close the existing league and open a new one?");
+            final Optional<ButtonType> response = alert.showAndWait();
+            if (response.isEmpty() || response.get() != ButtonType.OK) return;
+        }
+
+        final File selectedFile = runOpenFileDialog();
+        if (selectedFile == null) return;
+
+        if (!updateFileName(selectedFile)) return;
+
+        runOpenTask(selectedFile);
+    }
+
+    public void menuSaveAs() {
+        if (league == null) return;
+
+        final File outputFile = runSaveFileDialog();
+        if (outputFile == null) return;
+        if (!updateFileName(outputFile)) return;
+
+        runSaveTask(outputFile);
+    }
+
+    public void menuSave() {
+        if (league == null || leagueFileName == null) return;
+
+        final File outputFile = new File(leagueFileName);
+
+        runSaveTask(outputFile);
+    }
+
+    public void menuQuit() {
+        Platform.exit();
+    }
+
     private File runOpenFileDialog() {
         final FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open League File");
@@ -59,26 +106,40 @@ public class LeagueApp extends Application {
         return fileChooser.showOpenDialog(this.stage);
     }
 
-    public void menuOpen() {
-        final File selectedFile = runOpenFileDialog();
-        if (selectedFile == null) return;
+    private File runSaveFileDialog() {
+        final FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save League File");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("YAML Files", "*.yml", "*.yaml"),
+                new FileChooser.ExtensionFilter("All Files", "*.*"));
+        return fileChooser.showSaveDialog(this.stage);
+    }
 
-        if (league != null) {
-            // pop an alert asking for confirmation
-            return;
+    private boolean updateFileName(File file) {
+        try {
+            leagueFileName = file.getCanonicalPath();
+        } catch (IOException e) {
+            final Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
+            alert.showAndWait();
+            leagueFileName = null;
+            return false;
         }
+        return true;
+    }
+
+    private void runOpenTask(File inputFile) {
         // app.root.activate(NO_LEAGUE);
         final Label progressLabel = root.noLeaguePane.label;
         final ProgressBar progressBar = root.noLeaguePane.progressBar;
         progressBar.setVisible(true);
 
-        final ReadLeagueFile reader = new ReadLeagueFile(selectedFile);
+        final ReadLeagueFile reader = new ReadLeagueFile(inputFile);
         progressLabel.textProperty().bind(reader.titleProperty());
         progressBar.progressProperty().bind(reader.progressProperty());
         reader.setOnFailed(event -> {
             progressBar.setVisible(false);
             progressLabel.textProperty().unbind();
-            final Alert alert = new Alert(Alert.AlertType.ERROR, reader.getException().getMessage() );
+            final Alert alert = new Alert(Alert.AlertType.ERROR, reader.getException().getMessage());
             alert.showAndWait();
         });
         reader.setOnSucceeded(event -> {
@@ -92,16 +153,22 @@ public class LeagueApp extends Application {
                 alert.showAndWait();
                 return;
             }
+            root.menuBar.allowSave();
             openStandings();
         });
         new Thread(reader).start();
     }
 
-    public void menuQuit() {
-        Platform.exit();
+    private void runSaveTask(File outputFile) {
+        final SaveLeagueFile writer = new SaveLeagueFile(league, outputFile);
+        writer.setOnFailed(event -> {
+            final Alert alert = new Alert(Alert.AlertType.ERROR, writer.getException().getMessage() );
+            alert.showAndWait();
+        });
+        new Thread(writer).start();
     }
 
-    public void openStandings() {
+    private void openStandings() {
         final StandingsPane standingsPane = root.standingsPane;
         final int latestCompleteMatchDay = league.getLatestCompleteMatchDay();
         final Map<Division, List<UFA2025.TeamData>> divisionTables = league.getDivisionTables(latestCompleteMatchDay);
@@ -124,9 +191,5 @@ public class LeagueApp extends Application {
 
         root.activate(RootWindow.OpenWindow.STANDINGS);
         stage.sizeToScene();
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
 }

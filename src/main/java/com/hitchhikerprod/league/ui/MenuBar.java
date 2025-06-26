@@ -42,9 +42,19 @@ public class MenuBar {
         final MenuItem newMI = new MenuItem("New");
         newMI.setDisable(true);
 
-        final MenuItem openMI = new MenuItem("Open");
+        final MenuItem openMI = new MenuItem("Open...");
         openMI.setAccelerator(new KeyCharacterCombination("O", KeyCombination.CONTROL_DOWN));
         items.put("file.open", openMI);
+
+        final MenuItem saveMI = new MenuItem("Save");
+        saveMI.setAccelerator(new KeyCharacterCombination("S", KeyCombination.CONTROL_DOWN));
+        items.put("file.save", saveMI);
+        saveMI.setDisable(true);
+
+        final MenuItem saveAsMI = new MenuItem("Save As...");
+        saveAsMI.setAccelerator(new KeyCharacterCombination("S", KeyCombination.CONTROL_DOWN, KeyCombination.SHIFT_DOWN));
+        items.put("file.saveAs", saveAsMI);
+        saveAsMI.setDisable(true);
 
         final SeparatorMenuItem sepMI = new SeparatorMenuItem();
 
@@ -52,13 +62,20 @@ public class MenuBar {
         quitMI.setAccelerator(new KeyCharacterCombination("Q", KeyCombination.CONTROL_DOWN));
         items.put("file.quit", quitMI);
 
-        fileM.getItems().addAll(newMI, openMI, sepMI, quitMI);
+        fileM.getItems().addAll(newMI, openMI, saveMI, saveAsMI, sepMI, quitMI);
         return fileM;
+    }
+
+    public void allowSave() {
+        items.get("file.save").setDisable(false);
+        items.get("file.saveAs").setDisable(false);
     }
 
     private void activateFileMenu(LeagueApp app) {
         items.get("file.open").setOnAction(ev -> app.menuOpen());
         items.get("file.quit").setOnAction(ev -> app.menuQuit());
+        items.get("file.save").setOnAction(ev -> app.menuSave());
+        items.get("file.saveAs").setOnAction(ev -> app.menuSaveAs());
     }
 
     public Node asNode() {

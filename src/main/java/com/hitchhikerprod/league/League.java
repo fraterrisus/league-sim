@@ -1,6 +1,7 @@
 package com.hitchhikerprod.league;
 
 import com.hitchhikerprod.league.beans.Division;
+import com.hitchhikerprod.league.beans.LeagueData;
 import com.hitchhikerprod.league.definitions.UFA2025;
 
 import java.util.List;
@@ -11,4 +12,5 @@ public interface League {
     List<String> getMatchDays();
     Map<Division, List<UFA2025.TeamData>> getDivisionTables(int index);
     List<UFA2025.UFAGameData> getGames(int matchDay);
+    LeagueData export();
 }

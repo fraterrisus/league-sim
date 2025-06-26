@@ -47,7 +47,7 @@ public final class ReadLeagueFile extends Task<League> {
             }
             updateProgress(fileSize, fileSize);
         } catch (IOException e) {
-            System.err.println(e);
+            setException(e);
             return null;
         }
 

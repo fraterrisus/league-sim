@@ -1,10 +1,18 @@
 package com.hitchhikerprod.league.definitions;
 
 import com.hitchhikerprod.league.League;
-import com.hitchhikerprod.league.beans.*;
+import com.hitchhikerprod.league.beans.Division;
+import com.hitchhikerprod.league.beans.Game;
+import com.hitchhikerprod.league.beans.LeagueData;
+import com.hitchhikerprod.league.beans.MatchDay;
+import com.hitchhikerprod.league.beans.Team;
 import javafx.beans.property.SimpleObjectProperty;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -180,6 +188,28 @@ public class UFA2025 implements League {
                 gameData.setHomeScore(homeValue.intValue());
             }
         }
+    }
+
+    @Override
+    public LeagueData export() {
+        final LeagueData doc = new LeagueData();
+        doc.league = this.leagueData.league;
+        doc.teams = this.leagueData.teams;
+        doc.divisions = this.leagueData.divisions;
+        doc.matchdays = this.matchDays.stream().map(md -> {
+            final MatchDay matchDay = new MatchDay();
+            matchDay.name = md.name;
+            matchDay.games = md.games.stream().map(g -> {
+                final Game game = new Game();
+                game.awayTeam = g.getAwayTeam().getShortName();
+                game.awayScore = g.getAwayScore();
+                game.homeTeam = g.getHomeTeam().getShortName();
+                game.homeScore = g.getHomeScore();
+                return game;
+            }).collect(Collectors.toList());
+            return matchDay;
+        }).collect(Collectors.toList());
+        return doc;
     }
 
     @Override
