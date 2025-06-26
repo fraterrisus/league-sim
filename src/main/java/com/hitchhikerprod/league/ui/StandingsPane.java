@@ -43,7 +43,6 @@ public class StandingsPane implements Activatable {
     private LeagueApp app;
     public final HBox root;
     private final VBox leftVbox;
-    private final VBox rightVbox;
     private final GridPane gamesGrid;
 
     private final ChoiceBox<String> matchDaySelector;
@@ -68,8 +67,8 @@ public class StandingsPane implements Activatable {
         gamesGrid.setHgap(10);
         gamesGrid.setVgap(5);
         setGridConstraints();
-        
-        rightVbox = new VBox(matchDayHbox, gamesGrid);
+
+        final VBox rightVbox = new VBox(matchDayHbox, gamesGrid);
         rightVbox.setFillWidth(true);
         rightVbox.setAlignment(Pos.TOP_CENTER);
         rightVbox.setSpacing(10);
@@ -85,57 +84,51 @@ public class StandingsPane implements Activatable {
         root.setFillHeight(true);
     }
 
-    private Callback<TableColumn<UFA2025.TeamData, Double>, TableCell<UFA2025.TeamData, Double>>
-    formattingDoubleCellFactory(final String format) {
-        return col -> new TableCell<>() {
-            @Override
-            public void updateItem(Double item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(empty ? null : String.format(format, item));
-            }
-        };
-    }
-
-    private void exitTextBoxHandler(ObservableValue<? extends Boolean> value, Boolean oldValue, Boolean newValue) {
-        final Node currentFocus = app.getStage().getScene().getFocusOwner();
-        if (oldValue == true && newValue == false && scoreTextFields.contains(currentFocus)) {
-            rebuildStandingsHandler.handle(null);
-        }
-    }
-
+    /** Post-construction setter to make sure we have a handle to the Application object. */
     public void setApplication(LeagueApp app) {
         this.app = app;
     }
 
-    public void setMatchDays(List<String> strings, int index) {
-        setMatchDays(strings);
-        setSelectedMatchDay(index);
+    /** Returns the top-level Node so it can be managed by the parent classes. */
+    @Override
+    public Node asNode() {
+        return root;
     }
 
+    /** Resets the values in the Match Day dropdown. */
     public void setMatchDays(List<String> strings) {
         matchDaySelector.getItems().clear();
         matchDaySelector.getItems().addAll(strings);
     }
 
+    /** Returns the current value of the Match Day dropdown. */
     public int getSelectedMatchDay() {
         return matchDaySelector.getSelectionModel().getSelectedIndex();
     }
 
+    /** Changes the selector on the Match Day dropdown. */
     public void setSelectedMatchDay(int index) {
         matchDaySelector.getSelectionModel().select(index);
     }
 
+    /** Sets the event handler called when the Match Day dropdown changes. This handler should rebuild both the
+     * Divisions pane and the Games list. */
     public void setMatchDayCallback(EventHandler<ActionEvent> handler) {
         matchDaySelector.setOnAction(handler);
     }
 
+    /** Sets the event handler called when the user tabs out of a game score text field. This handler should *only*
+     * rebuild the Divisions pane. */
     public void setRegenerateTablesCallback(EventHandler<ActionEvent> handler) {
         rebuildStandingsHandler = handler;
     }
 
-    public void setDivisions(Map<Division, List<UFA2025.TeamData>> divisions) {
+    /** Rebuilds the TableViews inside the Divisions pane. Should only be called when a new League is loaded
+     * (or if we eventually add "create" functionality). */
+    public void buildDivisionsPane(Map<Division, List<UFA2025.TeamData>> divisions) {
         final ObservableList<Node> children = leftVbox.getChildren();
         children.clear();
+
         for (Division div : divisions.keySet()) {
             final Label divName = new Label(div.name);
             divName.getStyleClass().add("division-header");
@@ -173,6 +166,7 @@ public class StandingsPane implements Activatable {
         }
     }
 
+    /** Rebuilds the *contents* of the Divisions tables. */
     public void setStandings(Map<Division, List<UFA2025.TeamData>> divisions) {
         final ObservableList<Node> children = leftVbox.getChildren();
         int i = 0;
@@ -194,6 +188,7 @@ public class StandingsPane implements Activatable {
         }
     }
 
+    /** Rebuilds the Grid full of games for this MatchDay. */
     public void setGamesList(List<UFA2025.UFAGameData> games) {
         gamesGrid.getChildren().clear();
         scoreTextFields.clear();
@@ -227,6 +222,7 @@ public class StandingsPane implements Activatable {
         }
     }
 
+    /** Helper method to encapsulate setting the layout constraints on the Games grid. */
     private void setGridConstraints() {
         final ObservableList<ColumnConstraints> columnConstraints = gamesGrid.getColumnConstraints();
 
@@ -253,8 +249,35 @@ public class StandingsPane implements Activatable {
         columnConstraints.addAll(column0, column1, column2, column3);
     }
     
-    @Override
-    public Node asNode() {
-        return root;
+    /**
+     * Returns a CellFactory implementation (for passing into #SetCellFactory) that formats the Double value according
+     * to the format argument. */
+    private Callback<TableColumn<UFA2025.TeamData, Double>, TableCell<UFA2025.TeamData, Double>>
+    formattingDoubleCellFactory(final String format) {
+        return col -> new TableCell<>() {
+            @Override
+            public void updateItem(Double item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty ? null : String.format(format, item));
+            }
+        };
+    }
+
+    /**
+     * This handler is only called when the focus exits one of the text boxes in the Games pane, so we should always
+     * rebuild the standings. However the result of getFocusOwner() is the *new* focus target; if that's another text
+     * field, we don't need to do anything, but if it *isn't*, then we probably tabbed off the end of the pane and we'd
+     * like to move the focus back to the first text field. (Unfortunately, we can't tell the difference between Tab
+     * and Shift-Tab from here, so winding backwards to the last text field doesn't work.)
+     */
+    private void exitTextBoxHandler(ObservableValue<? extends Boolean> value, Boolean oldValue, Boolean newValue) {
+        if (oldValue == true && newValue == false) {
+            rebuildStandingsHandler.handle(null);
+
+            final Node currentFocus = app.getStage().getScene().getFocusOwner();
+            if (!scoreTextFields.contains(currentFocus)) {
+                scoreTextFields.getFirst().requestFocus();
+            }
+        }
     }
 }

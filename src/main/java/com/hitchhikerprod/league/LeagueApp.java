@@ -173,9 +173,10 @@ public class LeagueApp extends Application {
         final int latestCompleteMatchDay = league.getLatestCompleteMatchDay();
         final Map<Division, List<UFA2025.TeamData>> divisionTables = league.getDivisionTables(latestCompleteMatchDay);
 
-        standingsPane.setDivisions(divisionTables);
+        standingsPane.buildDivisionsPane(divisionTables);
         standingsPane.setStandings(divisionTables);
-        standingsPane.setMatchDays(league.getMatchDays(), latestCompleteMatchDay);
+        standingsPane.setMatchDays(league.getMatchDays());
+        standingsPane.setSelectedMatchDay(latestCompleteMatchDay);
         standingsPane.setGamesList(league.getGames(latestCompleteMatchDay));
 
         standingsPane.setMatchDayCallback(ev -> {
