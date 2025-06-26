@@ -2,6 +2,7 @@ package com.hitchhikerprod.league.definitions;
 
 import com.hitchhikerprod.league.League;
 import com.hitchhikerprod.league.beans.*;
+import javafx.beans.property.SimpleObjectProperty;
 
 import java.util.*;
 import java.util.function.Function;
@@ -21,12 +22,6 @@ public class UFA2025 implements League {
             this.complete = false;
         }
 
-        public UFAMatchDay(String name, List<UFAGameData> games) {
-            this.name = name;
-            this.games = new ArrayList<>(games);
-            this.complete = false;
-        }
-
         public String getName() {
             return name;
         }
@@ -39,17 +34,27 @@ public class UFA2025 implements League {
             games.add(game);
         }
 
-        public void setGames(List<UFAGameData> games) {
-            this.games.clear();
-            this.games.addAll(games);
+        public boolean isComplete() {
+            return complete;
+        }
+
+        public void setComplete(boolean complete) {
+            this.complete = complete;
         }
     }
 
     public static class UFAGameData {
-        TeamData awayTeam;
-        TeamData homeTeam;
-        Integer awayScore;
-        Integer homeScore;
+        private final TeamData awayTeam;
+        private final TeamData homeTeam;
+        private final SimpleObjectProperty<Integer> awayScore;
+        private final SimpleObjectProperty<Integer> homeScore;
+
+        public UFAGameData(TeamData awayTeam, TeamData homeTeam) {
+            this.awayTeam = awayTeam;
+            this.homeTeam = homeTeam;
+            this.awayScore = new SimpleObjectProperty<>(null);
+            this.homeScore = new SimpleObjectProperty<>(null);
+        }
 
         public TeamData getAwayTeam() {
             return awayTeam;
@@ -60,10 +65,26 @@ public class UFA2025 implements League {
         }
 
         public Integer getAwayScore() {
+            return awayScore.getValue();
+        }
+
+        public SimpleObjectProperty<Integer> getAwayScoreProperty() {
             return awayScore;
         }
 
+        public void setAwayScore(Integer newScore) {
+            awayScore.set(newScore);
+        }
+        
         public Integer getHomeScore() {
+            return homeScore.getValue();
+        }
+
+        public void setHomeScore(Integer newScore) {
+            homeScore.set(newScore);
+        }
+
+        public SimpleObjectProperty<Integer> getHomeScoreProperty() {
             return homeScore;
         }
     }
@@ -129,35 +150,34 @@ public class UFA2025 implements League {
         for (MatchDay md : leagueData.matchdays) {
             final UFAMatchDay matchDay = new UFAMatchDay(md.name);
             matchDays.add(matchDay);
-            matchDay.complete = true;
+            matchDay.setComplete(true);
 
             for (Game g : md.games) {
-                final UFAGameData gameData = new UFAGameData();
-
-                gameData.awayTeam = teams.get(g.awayTeam);
-                if (gameData.awayTeam == null) {
+                final TeamData awayTeam = teams.get(g.awayTeam);
+                if (awayTeam == null) {
                     System.err.println("Unrecognized team ID " + g.awayTeam);
                     continue;
                 }
 
-                gameData.homeTeam = teams.get(g.homeTeam);
-                if (gameData.homeTeam == null) {
+                final TeamData homeTeam = teams.get(g.homeTeam);
+                if (homeTeam == null) {
                     System.err.println("Unrecognized team ID " + g.homeTeam);
                     continue;
                 }
 
+                final UFAGameData gameData = new UFAGameData(awayTeam, homeTeam);
                 matchDay.addGame(gameData);
 
                 final Double awayValue = g.getAwayValue(SCORE_MAP);
                 final Double homeValue = g.getHomeValue(SCORE_MAP);
 
                 if (awayValue == null || homeValue == null) {
-                    matchDay.complete = false;
+                    matchDay.setComplete(false);
                     continue;
                 }
 
-                gameData.awayScore = awayValue.intValue();
-                gameData.homeScore = homeValue.intValue();
+                gameData.setAwayScore(awayValue.intValue());
+                gameData.setHomeScore(homeValue.intValue());
             }
         }
     }
@@ -166,7 +186,7 @@ public class UFA2025 implements League {
     public int getLatestCompleteMatchDay() {
         for (int idx = 0; idx < matchDays.size(); idx++) {
             UFAMatchDay matchDay = matchDays.get(idx);
-            if (!matchDay.complete) return idx - 1;
+            if (!matchDay.isComplete()) return idx - 1;
         }
         return matchDays.size() - 1;
     }
@@ -187,16 +207,16 @@ public class UFA2025 implements League {
         for (int idx = 0; idx <= matchDayIndex; idx++) {
             final UFAMatchDay matchDay = matchDays.get(idx);
             for (UFAGameData game : matchDay.getGames()) {
-                if (game.awayScore == null || game.homeScore == null) continue;
-                if (game.awayScore > game.homeScore) {
-                    game.awayTeam.wins++;
-                    game.homeTeam.losses++;
+                if (game.getAwayScore() == null || game.getHomeScore() == null) continue;
+                if (game.getAwayScore() > game.getHomeScore()) {
+                    game.getAwayTeam().wins++;
+                    game.getHomeTeam().losses++;
                 } else {
-                    game.awayTeam.losses++;
-                    game.homeTeam.wins++;
+                    game.getAwayTeam().losses++;
+                    game.getHomeTeam().wins++;
                 }
-                game.awayTeam.goalDifference += game.awayScore - game.homeScore;
-                game.homeTeam.goalDifference += game.homeScore - game.awayScore;
+                game.getAwayTeam().goalDifference += game.getAwayScore() - game.getHomeScore();
+                game.getHomeTeam().goalDifference += game.getHomeScore() - game.getAwayScore();
             }
         }
 
@@ -221,28 +241,20 @@ public class UFA2025 implements League {
         @Override
         public int compare(TeamData t1, TeamData t2) {
             // #1: overall win percentage
-            final int t1Played = t1.wins + t1.losses;
-            final double t1Percent = (t1Played == 0) ? 0d : (double)t1.wins / (double)t1Played;
-            final int t2Played = t2.wins + t2.losses;
-            final double t2Percent = (t2Played == 0) ? 0d : (double)t2.wins / (double)t2Played;
-            final int c = Double.compare(t1Percent, t2Percent);
+            final int c = Double.compare(t1.getWinPercentage(), t2.getWinPercentage());
             if (c != 0) return c;
 
             // #2: head-to-head wins
             int t1HeadWins = 0;
             int t2HeadWins = 0;
-            for (MatchDay md : leagueData.matchdays) {
-                for (Game g : md.games) {
-                    if (g.awayTeam == null) continue;
-                    if (g.homeTeam == null) continue;
-                    if (g.getAwayValue(SCORE_MAP) == null) continue;
-                    if (g.getHomeValue(SCORE_MAP) == null) continue;
-
-                    if (t1.shortName.compareTo(g.awayTeam) == 0 && t2.shortName.compareTo(g.homeTeam) == 0) {
-                        if (g.getAwayValue(SCORE_MAP) > g.getHomeValue(SCORE_MAP)) t1HeadWins++;
+            for (UFAMatchDay md : matchDays) {
+                for (UFAGameData g : md.games) {
+                    if (g.getAwayScore() == null || g.getHomeScore() == null) continue;
+                    if (t1 == g.getAwayTeam() && t2 == g.getHomeTeam()) {
+                        if (g.getAwayScore() > g.getHomeScore()) t1HeadWins++;
                         else t2HeadWins++;
-                    } else if (t1.shortName.compareTo(g.homeTeam) == 0 && t2.shortName.compareTo(g.awayTeam) == 0) {
-                        if (g.getHomeValue(SCORE_MAP) > g.getAwayValue(SCORE_MAP)) t1HeadWins++;
+                    } else if (t1 == g.getHomeTeam() && t2 == g.getAwayTeam()) {
+                        if (g.getHomeScore() > g.getAwayScore()) t1HeadWins++;
                         else t2HeadWins++;
                     }
                 }

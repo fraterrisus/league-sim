@@ -1,5 +1,9 @@
+.debug {
+    -fx-border-width: 1px;
+    -fx-border-color: red;
+}
+
 .label {
-    -fx-text-fill: blue;
     -fx-font-size: 18;
 }
 
@@ -11,10 +15,6 @@
     -fx-font-size: 16;
 }
 
-.division-header {
-    -fx-font-weight: bold;
-    -fx-alignment: center;
-}
 .cell-align-left {
     -fx-alignment: "center-left";
 }
@@ -23,4 +23,14 @@
 }
 .cell-align-right {
     -fx-alignment: "center-right";
+}
+.division-header {
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+}
+.font-small {
+    -fx-font-size: 16;
+}
+.text-blue {
+    -fx-text-fill: blue;
 }

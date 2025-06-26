@@ -2,6 +2,7 @@ package com.hitchhikerprod.league.ui;
 
 import com.hitchhikerprod.league.beans.Division;
 import com.hitchhikerprod.league.definitions.UFA2025;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.ObservableList;
@@ -12,13 +13,14 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
+import javafx.util.converter.IntegerStringConverter;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public class StandingsPane implements Activatable {
     private static final StandingsPane INSTANCE = new StandingsPane();
@@ -27,13 +29,13 @@ public class StandingsPane implements Activatable {
         return INSTANCE;
     }
 
-    private final HBox root;
-    //private final VBox gamesVbox;
-    private final TableView<UFA2025.UFAGameData> gamesTable;
-    private final VBox divisionsVbox;
+    public final HBox root;
+    private final VBox leftVbox;
+    private final VBox rightVbox;
     private final List<TableView> teamTables;
 
     private final ChoiceBox<String> matchDaySelector;
+    private final Button recalcButton;
 
     private StandingsPane() {
         teamTables = new ArrayList<>();
@@ -50,35 +52,30 @@ public class StandingsPane implements Activatable {
         matchDayHbox.setAlignment(Pos.CENTER);
         matchDayHbox.setSpacing(10);
 
-        gamesTable = buildGamePanel();
+        recalcButton = new Button("Regenerate");
+        recalcButton.setAlignment(Pos.CENTER);
 
-        final VBox gamesVbox = new VBox(matchDayHbox, gamesTable);
-        gamesVbox.setFillWidth(true);
-        divisionsVbox = new VBox();
-        divisionsVbox.setFillWidth(true);
+        rightVbox = new VBox(matchDayHbox, recalcButton);
+        rightVbox.setFillWidth(true);
+        rightVbox.setSpacing(10);
 
-        root = new HBox(divisionsVbox, gamesVbox);
+        leftVbox = new VBox();
+        leftVbox.setFillWidth(true);
+        leftVbox.setSpacing(10);
+
+        root = new HBox(leftVbox, rightVbox);
+        HBox.setHgrow(leftVbox, Priority.NEVER);
+        HBox.setHgrow(rightVbox, Priority.ALWAYS);
         root.setFillHeight(true);
     }
 
-    private <T> Callback<TableColumn<T, Double>, TableCell<T, Double>>
-    formattingDoubleCellFactory(Class<T> returnType, final String format) {
+    private Callback<TableColumn<UFA2025.TeamData, Double>, TableCell<UFA2025.TeamData, Double>>
+    formattingDoubleCellFactory(final String format) {
         return col -> new TableCell<>() {
             @Override
             public void updateItem(Double item, boolean empty) {
                 super.updateItem(item, empty);
                 setText(empty ? null : String.format(format, item));
-            }
-        };
-    }
-
-    private <T> Callback<TableColumn<T, Integer>, TableCell<T, Integer>>
-    formattingNullableIntegerCellFactory(Class<T> returnType) {
-        return col -> new TableCell<>() {
-            @Override
-            public void updateItem(Integer item, boolean empty) {
-                super.updateItem(item, empty);
-                setText((empty || Objects.isNull(item)) ? null : item.toString());
             }
         };
     }
@@ -103,10 +100,11 @@ public class StandingsPane implements Activatable {
 
     public void setMatchDayCallback(EventHandler<ActionEvent> handler) {
         matchDaySelector.setOnAction(handler);
+        recalcButton.setOnAction(handler);
     }
 
     public void buildDivisionPanels(Map<Division, List<UFA2025.TeamData>> divisions) {
-        final ObservableList<Node> children = divisionsVbox.getChildren();
+        final ObservableList<Node> children = leftVbox.getChildren();
         children.clear();
         teamTables.clear();
         for (Division div : divisions.keySet()) {
@@ -131,7 +129,7 @@ public class StandingsPane implements Activatable {
             TableColumn<UFA2025.TeamData, Double> colPct = new TableColumn<>("Pct.");
             colPct.getStyleClass().add("cell-align-right");
             colPct.setCellValueFactory(features -> new ReadOnlyObjectWrapper<>(features.getValue().getWinPercentage()));
-            colPct.setCellFactory(formattingDoubleCellFactory(UFA2025.TeamData.class, "%5.3f"));
+            colPct.setCellFactory(formattingDoubleCellFactory("%5.3f"));
 
             TableColumn<UFA2025.TeamData, Integer> colPlusMinus = new TableColumn<>("+/-");
             colPlusMinus.getStyleClass().add("cell-align-right");
@@ -151,45 +149,42 @@ public class StandingsPane implements Activatable {
         }
     }
 
-    public TableView<UFA2025.UFAGameData> buildGamePanel() {
-        final TableView<UFA2025.UFAGameData> gamesTable = new TableView<>();
-        gamesTable.setEditable(true);
+    public void buildGamesPanel(List<UFA2025.UFAGameData> games) {
+        final ObservableList<Node> children = rightVbox.getChildren();
+        // Leave the matchday selector Hbox (first) and the Recalculate button (last)
+        children.remove(1, children.size() - 1);
 
-        TableColumn<UFA2025.UFAGameData, String> colAway = new TableColumn<>("Away");
+        for (UFA2025.UFAGameData game : games) {
+            final Label awayTeam = new Label(game.getAwayTeam().getShortName());
+            awayTeam.setAlignment(Pos.CENTER);
+            awayTeam.getStyleClass().addAll("cell-align-center", "font-small");
 
-        TableColumn<UFA2025.UFAGameData, String> colAwayTeam = new TableColumn<>("id");
-        colAwayTeam.getStyleClass().addAll("cell-align-center", "game-data-cell");
-        colAwayTeam.setCellValueFactory(features ->
-                new ReadOnlyStringWrapper(features.getValue().getAwayTeam().getShortName()));
+            final Label homeTeam = new Label(game.getHomeTeam().getShortName());
+            homeTeam.setAlignment(Pos.CENTER);
+            homeTeam.getStyleClass().addAll("cell-align-center", "font-small");
 
-        TableColumn<UFA2025.UFAGameData, Integer> colAwayScore = new TableColumn<>("G");
-        colAwayScore.setCellFactory(formattingNullableIntegerCellFactory(UFA2025.UFAGameData.class));
-        colAwayScore.getStyleClass().addAll("cell-align-center", "game-data-cell");
-        colAwayScore.setCellValueFactory(features -> new ReadOnlyObjectWrapper<>(features.getValue().getAwayScore()));
+            final TextField awayScore = new TextField();
+            awayScore.setPrefColumnCount(3);
+            awayScore.setAlignment(Pos.CENTER);
+            awayScore.setEditable(true);
+            Bindings.bindBidirectional(awayScore.textProperty(), game.getAwayScoreProperty(), new IntegerStringConverter());
 
-        TableColumn<UFA2025.UFAGameData, String> colHome = new TableColumn<>("Home");
+            final TextField homeScore = new TextField();
+            homeScore.setPrefColumnCount(3);
+            homeScore.setAlignment(Pos.CENTER);
+            homeScore.setEditable(true);
+            Bindings.bindBidirectional(homeScore.textProperty(), game.getHomeScoreProperty(), new IntegerStringConverter());
 
-        TableColumn<UFA2025.UFAGameData, Integer> colHomeScore = new TableColumn<>("G");
-        colHomeScore.setCellFactory(formattingNullableIntegerCellFactory(UFA2025.UFAGameData.class));
-        colHomeScore.getStyleClass().addAll("cell-align-center", "game-data-cell");
-        colHomeScore.setCellValueFactory(features -> new ReadOnlyObjectWrapper<>(features.getValue().getHomeScore()));
-
-        TableColumn<UFA2025.UFAGameData, String> colHomeTeam = new TableColumn<>("id");
-        colHomeTeam.getStyleClass().addAll("cell-align-center", "game-data-cell");
-        colHomeTeam.setCellValueFactory(features ->
-                new ReadOnlyStringWrapper(features.getValue().getHomeTeam().getShortName()));
-
-        colAway.getColumns().addAll(List.of(colAwayTeam, colAwayScore));
-        colHome.getColumns().addAll(List.of(colHomeScore, colHomeTeam));
-        gamesTable.getColumns().addAll(List.of(colAway, colHome));
-        gamesTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
-        return gamesTable;
+            final HBox gameRow = new HBox(awayTeam, awayScore, homeScore, homeTeam);
+            //gameRow.getStyleClass().add("debug");
+            gameRow.setSpacing(5);
+            gameRow.setAlignment(Pos.CENTER);
+            children.add(children.size() - 1, gameRow);
+        }
     }
 
     public void setGamesList(List<UFA2025.UFAGameData> games) {
-        gamesTable.getItems().clear();
-        gamesTable.getItems().addAll(games);
-        gamesTable.getSortOrder().clear();
+        buildGamesPanel(games);
     }
 
     @Override

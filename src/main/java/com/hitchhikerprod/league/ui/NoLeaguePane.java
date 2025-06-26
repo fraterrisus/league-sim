@@ -19,6 +19,7 @@ public class NoLeaguePane implements Activatable {
 
     private NoLeaguePane() {
         label = new Label("Starting up.\nPlease wait...");
+        label.getStyleClass().add("text-blue");
 
         progressBar = new ProgressBar(0.0);
         progressBar.setPrefWidth(400.0);
