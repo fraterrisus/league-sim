@@ -40,6 +40,7 @@ public class MenuBar {
     private Menu makeFileMenu() {
         final Menu fileM = new Menu("File");
         final MenuItem newMI = new MenuItem("New");
+        newMI.setDisable(true);
 
         final MenuItem openMI = new MenuItem("Open");
         openMI.setAccelerator(new KeyCharacterCombination("O", KeyCombination.CONTROL_DOWN));

@@ -10,10 +10,19 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -35,6 +44,7 @@ public class StandingsPane implements Activatable {
     public final HBox root;
     private final VBox leftVbox;
     private final VBox rightVbox;
+    private final GridPane gamesGrid;
 
     private final ChoiceBox<String> matchDaySelector;
 
@@ -54,7 +64,12 @@ public class StandingsPane implements Activatable {
         matchDayHbox.setAlignment(Pos.CENTER);
         matchDayHbox.setSpacing(10);
 
-        rightVbox = new VBox(matchDayHbox);
+        gamesGrid = new GridPane();
+        gamesGrid.setHgap(10);
+        gamesGrid.setVgap(5);
+        setGridConstraints();
+        
+        rightVbox = new VBox(matchDayHbox, gamesGrid);
         rightVbox.setFillWidth(true);
         rightVbox.setAlignment(Pos.TOP_CENTER);
         rightVbox.setSpacing(10);
@@ -180,11 +195,10 @@ public class StandingsPane implements Activatable {
     }
 
     public void setGamesList(List<UFA2025.UFAGameData> games) {
-        final ObservableList<Node> children = rightVbox.getChildren();
-        // Leave the matchday selector Hbox (first)
-        children.remove(1, children.size());
+        gamesGrid.getChildren().clear();
         scoreTextFields.clear();
 
+        int gameIndex = 0;
         for (UFA2025.UFAGameData game : games) {
             final Label awayTeam = new Label(game.getAwayTeam().getShortName());
             awayTeam.getStyleClass().addAll("cell-align-center", "font-small");
@@ -208,13 +222,37 @@ public class StandingsPane implements Activatable {
             Bindings.bindBidirectional(homeScore.textProperty(), game.getHomeScoreProperty(), new IntegerStringConverter());
             scoreTextFields.add(homeScore);
 
-            final HBox gameRow = new HBox(awayTeam, awayScore, homeScore, homeTeam);
-            gameRow.setSpacing(5);
-            gameRow.setAlignment(Pos.CENTER);
-            children.add(gameRow);
+            gamesGrid.addRow(gameIndex, awayTeam, awayScore, homeScore, homeTeam);
+            gameIndex++;
         }
     }
 
+    private void setGridConstraints() {
+        final ObservableList<ColumnConstraints> columnConstraints = gamesGrid.getColumnConstraints();
+
+        final ColumnConstraints column0 = new ColumnConstraints();
+        column0.setFillWidth(true);
+        column0.setHgrow(Priority.ALWAYS);
+        column0.setHalignment(HPos.RIGHT);
+
+        final ColumnConstraints column1 = new ColumnConstraints();
+        column1.setFillWidth(false);
+        column1.setHgrow(Priority.NEVER);
+        column1.setHalignment(HPos.CENTER);
+
+        final ColumnConstraints column2 = new ColumnConstraints();
+        column2.setFillWidth(false);
+        column2.setHgrow(Priority.NEVER);
+        column2.setHalignment(HPos.CENTER);
+
+        final ColumnConstraints column3 = new ColumnConstraints();
+        column3.setFillWidth(true);
+        column3.setHgrow(Priority.ALWAYS);
+        column3.setHalignment(HPos.LEFT);
+
+        columnConstraints.addAll(column0, column1, column2, column3);
+    }
+    
     @Override
     public Node asNode() {
         return root;
