@@ -66,7 +66,7 @@ public class StandingsPane {
             divTable.setEditable(false);
 
             final TableColumn<UFA2025.TeamData, String> colTeam = new TableColumn<>("Team");
-            colTeam.setCellValueFactory(features -> new ReadOnlyStringWrapper(features.getValue().getFullName()));
+            colTeam.setCellValueFactory(features -> new ReadOnlyStringWrapper(features.getValue().getName()));
 
             final TableColumn<UFA2025.TeamData, Integer> colWins = new TableColumn<>("W");
             colWins.getStyleClass().add("cell-align-center");

@@ -1,11 +1,13 @@
 package com.hitchhikerprod.league.definitions;
 
 import com.hitchhikerprod.league.League;
+import com.hitchhikerprod.league.beans.LeagueGameData;
+import com.hitchhikerprod.league.beans.LeagueTeamData;
 import com.hitchhikerprod.league.beans.RawDivision;
 import com.hitchhikerprod.league.beans.RawGame;
 import com.hitchhikerprod.league.beans.RawLeagueData;
 import com.hitchhikerprod.league.beans.RawMatchDay;
-import com.hitchhikerprod.league.beans.RawTeam;
+import com.hitchhikerprod.league.beans.RawTeamData;
 import javafx.beans.property.SimpleObjectProperty;
 
 import java.util.ArrayList;
@@ -19,12 +21,12 @@ import java.util.stream.Collectors;
 public class UFA2025 implements League {
     private static final Map<String, Double> SCORE_MAP = null;
 
-    public static class UFAMatchDay {
-        final String name;
-        final List<UFAGameData> games;
-        boolean complete;
+    public static class MatchDay {
+        private final String name;
+        private final List<UFAGameData> games;
+        private boolean complete;
 
-        public UFAMatchDay(String name) {
+        public MatchDay(String name) {
             this.name = name;
             this.games = new ArrayList<>();
             this.complete = false;
@@ -51,7 +53,7 @@ public class UFA2025 implements League {
         }
     }
 
-    public static class UFAGameData {
+    public static class UFAGameData implements LeagueGameData {
         private final TeamData awayTeam;
         private final TeamData homeTeam;
         private final SimpleObjectProperty<Integer> awayScore;
@@ -76,8 +78,8 @@ public class UFA2025 implements League {
             return awayScore.getValue();
         }
 
-        public SimpleObjectProperty<Integer> getAwayScoreProperty() {
-            return awayScore;
+        public List<SimpleObjectProperty<Integer>> getAwayScoreProperties() {
+            return List.of(awayScore);
         }
 
         public void setAwayScore(Integer newScore) {
@@ -92,12 +94,12 @@ public class UFA2025 implements League {
             homeScore.set(newScore);
         }
 
-        public SimpleObjectProperty<Integer> getHomeScoreProperty() {
-            return homeScore;
+        public List<SimpleObjectProperty<Integer>> getHomeScoreProperties() {
+            return List.of(homeScore);
         }
     }
 
-    public static class TeamData {
+    public static class TeamData implements LeagueTeamData {
         final String shortName;
         final String fullName;
         int wins = 0;
@@ -115,11 +117,11 @@ public class UFA2025 implements League {
             goalDifference = 0;
         }
 
-        public String getShortName() {
+        public String getId() {
             return shortName;
         }
 
-        public String getFullName() {
+        public String getName() {
             return fullName;
         }
 
@@ -143,24 +145,24 @@ public class UFA2025 implements League {
 
     private final Map<String, TeamData> teams;
     private final RawLeagueData leagueData;
-    private final List<UFAMatchDay> matchDays;
+    private final List<MatchDay> matchDays;
 
     public UFA2025(RawLeagueData leagueData) {
         this.leagueData = leagueData;
         this.teams = new HashMap<>();
         this.matchDays = new ArrayList<>();
 
-        for (RawTeam team : leagueData.teams) {
-            TeamData teamData = new TeamData(team.name, team.id);
-            teams.put(team.id, teamData);
+        for (RawTeamData team : leagueData.teams) {
+            TeamData teamData = new TeamData(team.getName(), team.getId());
+            teams.put(team.getId(), teamData);
         }
 
         for (RawMatchDay md : leagueData.matchdays) {
-            final UFAMatchDay matchDay = new UFAMatchDay(md.name);
+            final MatchDay matchDay = new MatchDay(md.getName());
             matchDays.add(matchDay);
             matchDay.setComplete(true);
 
-            for (RawGame g : md.games) {
+            for (RawGame g : md.getGames()) {
                 final TeamData awayTeam = teams.get(g.awayTeam);
                 if (awayTeam == null) {
                     System.err.println("Unrecognized team ID " + g.awayTeam);
@@ -198,15 +200,15 @@ public class UFA2025 implements League {
         doc.divisions = this.leagueData.divisions;
         doc.matchdays = this.matchDays.stream().map(md -> {
             final RawMatchDay matchDay = new RawMatchDay();
-            matchDay.name = md.name;
-            matchDay.games = md.games.stream().map(g -> {
+            matchDay.setName(md.name);
+            matchDay.setGames(md.getGames().stream().map(g -> {
                 final RawGame rawGame = new RawGame();
-                rawGame.awayTeam = g.getAwayTeam().getShortName();
+                rawGame.awayTeam = g.getAwayTeam().getId();
                 rawGame.awayScore = g.getAwayScore();
-                rawGame.homeTeam = g.getHomeTeam().getShortName();
+                rawGame.homeTeam = g.getHomeTeam().getId();
                 rawGame.homeScore = g.getHomeScore();
                 return rawGame;
-            }).collect(Collectors.toList());
+            }).collect(Collectors.toList()));
             return matchDay;
         }).collect(Collectors.toList());
         return doc;
@@ -215,7 +217,7 @@ public class UFA2025 implements League {
     @Override
     public int getLatestCompleteMatchDay() {
         for (int idx = 0; idx < matchDays.size(); idx++) {
-            UFAMatchDay matchDay = matchDays.get(idx);
+            MatchDay matchDay = matchDays.get(idx);
             if (!matchDay.isComplete()) return idx - 1;
         }
         return matchDays.size() - 1;
@@ -223,11 +225,12 @@ public class UFA2025 implements League {
 
     @Override
     public List<String> getMatchDays() {
-        return matchDays.stream().map(UFAMatchDay::getName).collect(Collectors.toList());
+        return matchDays.stream().map(MatchDay::getName).collect(Collectors.toList());
     }
 
-    public List<UFAGameData> getGames(int matchDay) {
-        return matchDays.get(matchDay).games;
+    @Override
+    public List<? extends LeagueGameData> getGames(int matchDay) {
+        return matchDays.get(matchDay).getGames();
     }
 
     @Override
@@ -235,7 +238,7 @@ public class UFA2025 implements League {
         teams.values().forEach(TeamData::reset);
 
         for (int idx = 0; idx <= matchDayIndex; idx++) {
-            final UFAMatchDay matchDay = matchDays.get(idx);
+            final MatchDay matchDay = matchDays.get(idx);
             for (UFAGameData game : matchDay.getGames()) {
                 if (game.getAwayScore() == null || game.getHomeScore() == null) continue;
                 if (game.getAwayScore() > game.getHomeScore()) {
@@ -277,8 +280,8 @@ public class UFA2025 implements League {
             // #2: head-to-head wins
             int t1HeadWins = 0;
             int t2HeadWins = 0;
-            for (UFAMatchDay md : matchDays) {
-                for (UFAGameData g : md.games) {
+            for (MatchDay md : matchDays) {
+                for (UFAGameData g : md.getGames()) {
                     if (g.getAwayScore() == null || g.getHomeScore() == null) continue;
                     if (t1 == g.getAwayTeam() && t2 == g.getHomeTeam()) {
                         if (g.getAwayScore() > g.getHomeScore()) t1HeadWins++;

@@ -1,8 +1,10 @@
 package com.hitchhikerprod.league.ui;
 
+import com.hitchhikerprod.league.League;
 import com.hitchhikerprod.league.LeagueApp;
-import com.hitchhikerprod.league.definitions.UFA2025;
+import com.hitchhikerprod.league.beans.LeagueGameData;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -102,35 +104,36 @@ public class MatchDayPane {
     }
 
     /** Rebuilds the Grid full of games for this MatchDay. */
-    public void setGamesList(List<UFA2025.UFAGameData> games) {
+    public void setGamesList(League league, int matchDayIndex) {
         gamesGrid.getChildren().clear();
         scoreTextFields.clear();
 
         int gameIndex = 0;
-        for (UFA2025.UFAGameData game : games) {
-            final Label awayTeam = new Label(game.getAwayTeam().getShortName());
+        for (LeagueGameData game : league.getGames(matchDayIndex)) {
+            int colIndex = 0;
+
+            final Label awayTeam = new Label(game.getAwayTeam().getId());
             awayTeam.getStyleClass().addAll("cell-align-center", "font-small");
+            gamesGrid.add(awayTeam, colIndex++, gameIndex);
 
-            final Label homeTeam = new Label(game.getHomeTeam().getShortName());
+            final List<SimpleObjectProperty<Integer>> scoreProps = new ArrayList<>();
+            scoreProps.addAll(game.getAwayScoreProperties());
+            scoreProps.addAll(game.getHomeScoreProperties());
+            for (SimpleObjectProperty<Integer> scoreProp : scoreProps) {
+                final TextField scoreField = new TextField();
+                scoreField.setPrefColumnCount(3);
+                scoreField.setAlignment(Pos.CENTER);
+                scoreField.setEditable(true);
+                scoreField.focusedProperty().addListener(this::exitTextBoxHandler);
+                Bindings.bindBidirectional(scoreField.textProperty(), scoreProp, new IntegerStringConverter());
+                scoreTextFields.add(scoreField);
+                gamesGrid.add(scoreField, colIndex++, gameIndex);
+            }
+
+            final Label homeTeam = new Label(game.getHomeTeam().getId());
             homeTeam.getStyleClass().addAll("cell-align-center", "font-small");
+            gamesGrid.add(homeTeam, colIndex, gameIndex);
 
-            final TextField awayScore = new TextField();
-            awayScore.setPrefColumnCount(3);
-            awayScore.setAlignment(Pos.CENTER);
-            awayScore.setEditable(true);
-            awayScore.focusedProperty().addListener(this::exitTextBoxHandler);
-            Bindings.bindBidirectional(awayScore.textProperty(), game.getAwayScoreProperty(), new IntegerStringConverter());
-            scoreTextFields.add(awayScore);
-
-            final TextField homeScore = new TextField();
-            homeScore.setPrefColumnCount(3);
-            homeScore.setAlignment(Pos.CENTER);
-            homeScore.setEditable(true);
-            homeScore.focusedProperty().addListener(this::exitTextBoxHandler);
-            Bindings.bindBidirectional(homeScore.textProperty(), game.getHomeScoreProperty(), new IntegerStringConverter());
-            scoreTextFields.add(homeScore);
-
-            gamesGrid.addRow(gameIndex, awayTeam, awayScore, homeScore, homeTeam);
             gameIndex++;
         }
     }

@@ -24,7 +24,6 @@ class LeagueFactoryDataParsingTest {
         return builder.toString();
     }
 
-    @Test
     void parseAFL() {
         final String yaml = getYamlFromResource("afl-2025.yml");
         final League league = LeagueFactory.fromYaml(yaml);

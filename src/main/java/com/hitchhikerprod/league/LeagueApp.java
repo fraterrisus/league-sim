@@ -183,12 +183,12 @@ public class LeagueApp extends Application {
         standingsPane.setStandings(divisionTables);
         matchDayPane.setMatchDays(league.getMatchDays());
         matchDayPane.setSelectedMatchDay(latestCompleteMatchDay);
-        matchDayPane.setGamesList(league.getGames(latestCompleteMatchDay));
+        matchDayPane.setGamesList(league, latestCompleteMatchDay);
 
         matchDayPane.setMatchDayCallback(ev -> {
             final int matchDayIndex = matchDayPane.getSelectedMatchDay();
             standingsPane.setStandings(league.getDivisionTables(matchDayIndex));
-            matchDayPane.setGamesList(league.getGames(matchDayIndex));
+            matchDayPane.setGamesList(league, matchDayIndex);
         });
 
         matchDayPane.setRegenerateTablesCallback(ev -> {
