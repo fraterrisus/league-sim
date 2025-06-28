@@ -4,15 +4,16 @@ import com.hitchhikerprod.league.beans.Division;
 import com.hitchhikerprod.league.definitions.UFA2025;
 import com.hitchhikerprod.league.tasks.ReadLeagueFile;
 import com.hitchhikerprod.league.tasks.SaveLeagueFile;
+import com.hitchhikerprod.league.ui.MatchDayPane;
 import com.hitchhikerprod.league.ui.RootWindow;
 import com.hitchhikerprod.league.ui.StandingsPane;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.StringProperty;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -52,7 +53,7 @@ public class LeagueApp extends Application {
         this.stage.setScene(scene);
         this.stage.show();
 
-        root.noLeaguePane.label.setText("No League file loaded.\nUse File>Open to read a League file.");
+        root.setStatusMessage("No League file loaded. Use File>Open to read a League file.");
     }
 
     public Stage getStage() {
@@ -128,32 +129,33 @@ public class LeagueApp extends Application {
     }
 
     private void runOpenTask(File inputFile) {
-        // app.root.activate(NO_LEAGUE);
-        final Label progressLabel = root.noLeaguePane.label;
-        final ProgressBar progressBar = root.noLeaguePane.progressBar;
-        progressBar.setVisible(true);
+        root.setStatusMessage("Loading League file...", true);
+        final DoubleProperty progressProperty = root.getProgressProperty();
+        final StringProperty statusProperty = root.getStatusProperty();
 
         final ReadLeagueFile reader = new ReadLeagueFile(inputFile);
-        progressLabel.textProperty().bind(reader.titleProperty());
-        progressBar.progressProperty().bind(reader.progressProperty());
+        statusProperty.bind(reader.titleProperty());
+        progressProperty.bind(reader.progressProperty());
         reader.setOnFailed(event -> {
-            progressBar.setVisible(false);
-            progressLabel.textProperty().unbind();
+            root.setStatusMessage("Error.", false);
+            statusProperty.unbind();
+            progressProperty.unbind();
             final Alert alert = new Alert(Alert.AlertType.ERROR, reader.getException().getMessage());
             alert.showAndWait();
         });
         reader.setOnSucceeded(event -> {
-            progressBar.setVisible(false);
-            progressLabel.textProperty().unbind();
+            statusProperty.unbind();
+            progressProperty.unbind();
             try {
                 league = reader.get();
-                progressLabel.setText("Done.");
+                root.setStatusMessage("Loaded " + inputFile.getName(), false);
             } catch (InterruptedException | ExecutionException e) {
+                root.setStatusMessage("Error.", false);
                 final Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
                 alert.showAndWait();
                 return;
             }
-            root.menuBar.allowSave();
+            root.allowSave();
             openStandings();
         });
         new Thread(reader).start();
@@ -161,6 +163,9 @@ public class LeagueApp extends Application {
 
     private void runSaveTask(File outputFile) {
         final SaveLeagueFile writer = new SaveLeagueFile(league, outputFile);
+        writer.setOnSucceeded(event -> {
+            root.setStatusMessage("Saved " + outputFile.getName(), false);
+        });
         writer.setOnFailed(event -> {
             final Alert alert = new Alert(Alert.AlertType.ERROR, writer.getException().getMessage() );
             alert.showAndWait();
@@ -169,28 +174,28 @@ public class LeagueApp extends Application {
     }
 
     private void openStandings() {
-        final StandingsPane standingsPane = root.standingsPane;
+        final StandingsPane standingsPane = StandingsPane.getInstance();
+        final MatchDayPane matchDayPane = MatchDayPane.getInstance();
         final int latestCompleteMatchDay = league.getLatestCompleteMatchDay();
         final Map<Division, List<UFA2025.TeamData>> divisionTables = league.getDivisionTables(latestCompleteMatchDay);
 
         standingsPane.buildDivisionsPane(divisionTables);
         standingsPane.setStandings(divisionTables);
-        standingsPane.setMatchDays(league.getMatchDays());
-        standingsPane.setSelectedMatchDay(latestCompleteMatchDay);
-        standingsPane.setGamesList(league.getGames(latestCompleteMatchDay));
+        matchDayPane.setMatchDays(league.getMatchDays());
+        matchDayPane.setSelectedMatchDay(latestCompleteMatchDay);
+        matchDayPane.setGamesList(league.getGames(latestCompleteMatchDay));
 
-        standingsPane.setMatchDayCallback(ev -> {
-            final int matchDayIndex = standingsPane.getSelectedMatchDay();
+        matchDayPane.setMatchDayCallback(ev -> {
+            final int matchDayIndex = matchDayPane.getSelectedMatchDay();
             standingsPane.setStandings(league.getDivisionTables(matchDayIndex));
-            standingsPane.setGamesList(league.getGames(matchDayIndex));
+            matchDayPane.setGamesList(league.getGames(matchDayIndex));
         });
 
-        standingsPane.setRegenerateTablesCallback(ev -> {
-            final int matchDayIndex = standingsPane.getSelectedMatchDay();
+        matchDayPane.setRegenerateTablesCallback(ev -> {
+            final int matchDayIndex = matchDayPane.getSelectedMatchDay();
             standingsPane.setStandings(league.getDivisionTables(matchDayIndex));
         });
 
-        root.activate(RootWindow.OpenWindow.STANDINGS);
         stage.sizeToScene();
     }
 }

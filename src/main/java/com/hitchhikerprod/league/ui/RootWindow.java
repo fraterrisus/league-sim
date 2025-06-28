@@ -1,11 +1,10 @@
 package com.hitchhikerprod.league.ui;
 
 import com.hitchhikerprod.league.LeagueApp;
-import javafx.collections.ObservableList;
-import javafx.scene.Node;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.StringProperty;
 import javafx.scene.Parent;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.BorderPane;
 
 public class RootWindow {
     public static final RootWindow INSTANCE = new RootWindow();
@@ -14,62 +13,44 @@ public class RootWindow {
         return INSTANCE;
     }
 
-    public final VBox vbox;
-    public final MenuBar menuBar;
-
-    public final NoLeaguePane noLeaguePane;
-    public final StandingsPane standingsPane;
-
-    private OpenWindow openWindow;
+    private final BorderPane pane;
 
     private RootWindow() {
-        vbox = new VBox();
-        vbox.setFillWidth(true);
-
-        menuBar = MenuBar.getInstance();
-        noLeaguePane = NoLeaguePane.getInstance();
-        standingsPane = StandingsPane.getInstance();
-        vbox.getChildren().addAll(menuBar.asNode(), noLeaguePane.asNode());
-
-        openWindow = OpenWindow.NO_LEAGUE;
+        pane = new BorderPane();
+        pane.setTop(MenuBar.getInstance().asNode());
+        pane.setLeft(StandingsPane.getInstance().asNode());
+        pane.setCenter(MatchDayPane.getInstance().asNode());
+        pane.setBottom(StatusBar.getInstance().asNode());
     }
 
     public void setApplication(LeagueApp app) {
-        menuBar.setApplication(app);
-        standingsPane.setApplication(app);
+        MenuBar.getInstance().setApplication(app);
+        StandingsPane.getInstance().setApplication(app);
+        MatchDayPane.getInstance().setApplication(app);
     }
 
     public Parent asParent() {
-        return vbox;
+        return pane;
     }
 
-    public OpenWindow getOpenWindow() {
-        return openWindow;
+    public void setStatusMessage(String message) {
+        StatusBar.getInstance().label.setText(message);
     }
 
-    public void checkOpenWindow(OpenWindow desired) {
-        if (openWindow != desired) {
-            throw new RuntimeException("Unexpected open window " + openWindow + ", expected " + desired);
-        }
+    public void setStatusMessage(String message, boolean showProgressBar) {
+        setStatusMessage(message);
+        StatusBar.getInstance().progressBarVisible(showProgressBar);
     }
 
-    public void activate(OpenWindow desired) {
-        if (desired == openWindow) return;
-
-        ObservableList<Node> visiblePanes = vbox.getChildren();
-        visiblePanes.removeAll(
-                noLeaguePane.asNode(),
-                standingsPane.asNode()
-        );
-        Node desiredPane = switch (desired) {
-            case NO_LEAGUE -> noLeaguePane.asNode();
-            case STANDINGS -> standingsPane.asNode();
-        };
-        visiblePanes.add(desiredPane);
-        VBox.setVgrow(desiredPane, Priority.ALWAYS);
+    public DoubleProperty getProgressProperty() {
+        return StatusBar.getInstance().getProgressBar().progressProperty();
     }
 
-    public enum OpenWindow {
-        NO_LEAGUE, STANDINGS;
+    public StringProperty getStatusProperty() {
+        return StatusBar.getInstance().label.textProperty();
+    }
+
+    public void allowSave() {
+        MenuBar.getInstance().allowSave();
     }
 }
