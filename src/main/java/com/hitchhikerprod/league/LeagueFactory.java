@@ -1,6 +1,6 @@
 package com.hitchhikerprod.league;
 
-import com.hitchhikerprod.league.beans.LeagueData;
+import com.hitchhikerprod.league.beans.RawLeagueData;
 import com.hitchhikerprod.league.definitions.UFA2025;
 import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
@@ -9,10 +9,10 @@ import org.yaml.snakeyaml.constructor.Constructor;
 public class LeagueFactory {
     public static League fromYaml(String rawLeagueData) {
         final LoaderOptions loaderOptions = new LoaderOptions();
-        final Constructor constructor = new Constructor(LeagueData.class, loaderOptions);
+        final Constructor constructor = new Constructor(RawLeagueData.class, loaderOptions);
 
         final Yaml parser = new Yaml(constructor);
-        final LeagueData leagueData = parser.load(rawLeagueData);
+        final RawLeagueData leagueData = parser.load(rawLeagueData);
 
         return switch (leagueData.league.type) {
             //case "afl" -> new AFL(leagueData);

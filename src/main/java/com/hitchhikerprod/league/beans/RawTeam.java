@@ -1,6 +1,6 @@
 package com.hitchhikerprod.league.beans;
 
-public class LeagueDef {
+public class RawTeam {
     public String name;
-    public String type;
+    public String id;
 }

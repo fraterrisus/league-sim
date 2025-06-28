@@ -1,11 +1,11 @@
 package com.hitchhikerprod.league.definitions;
 
 import com.hitchhikerprod.league.League;
-import com.hitchhikerprod.league.beans.Division;
-import com.hitchhikerprod.league.beans.Game;
-import com.hitchhikerprod.league.beans.LeagueData;
-import com.hitchhikerprod.league.beans.MatchDay;
-import com.hitchhikerprod.league.beans.Team;
+import com.hitchhikerprod.league.beans.RawDivision;
+import com.hitchhikerprod.league.beans.RawGame;
+import com.hitchhikerprod.league.beans.RawLeagueData;
+import com.hitchhikerprod.league.beans.RawMatchDay;
+import com.hitchhikerprod.league.beans.RawTeam;
 import javafx.beans.property.SimpleObjectProperty;
 
 import java.util.ArrayList;
@@ -142,25 +142,25 @@ public class UFA2025 implements League {
     }
 
     private final Map<String, TeamData> teams;
-    private final LeagueData leagueData;
+    private final RawLeagueData leagueData;
     private final List<UFAMatchDay> matchDays;
 
-    public UFA2025(LeagueData leagueData) {
+    public UFA2025(RawLeagueData leagueData) {
         this.leagueData = leagueData;
         this.teams = new HashMap<>();
         this.matchDays = new ArrayList<>();
 
-        for (Team team : leagueData.teams) {
+        for (RawTeam team : leagueData.teams) {
             TeamData teamData = new TeamData(team.name, team.id);
             teams.put(team.id, teamData);
         }
 
-        for (MatchDay md : leagueData.matchdays) {
+        for (RawMatchDay md : leagueData.matchdays) {
             final UFAMatchDay matchDay = new UFAMatchDay(md.name);
             matchDays.add(matchDay);
             matchDay.setComplete(true);
 
-            for (Game g : md.games) {
+            for (RawGame g : md.games) {
                 final TeamData awayTeam = teams.get(g.awayTeam);
                 if (awayTeam == null) {
                     System.err.println("Unrecognized team ID " + g.awayTeam);
@@ -191,21 +191,21 @@ public class UFA2025 implements League {
     }
 
     @Override
-    public LeagueData export() {
-        final LeagueData doc = new LeagueData();
+    public RawLeagueData export() {
+        final RawLeagueData doc = new RawLeagueData();
         doc.league = this.leagueData.league;
         doc.teams = this.leagueData.teams;
         doc.divisions = this.leagueData.divisions;
         doc.matchdays = this.matchDays.stream().map(md -> {
-            final MatchDay matchDay = new MatchDay();
+            final RawMatchDay matchDay = new RawMatchDay();
             matchDay.name = md.name;
             matchDay.games = md.games.stream().map(g -> {
-                final Game game = new Game();
-                game.awayTeam = g.getAwayTeam().getShortName();
-                game.awayScore = g.getAwayScore();
-                game.homeTeam = g.getHomeTeam().getShortName();
-                game.homeScore = g.getHomeScore();
-                return game;
+                final RawGame rawGame = new RawGame();
+                rawGame.awayTeam = g.getAwayTeam().getShortName();
+                rawGame.awayScore = g.getAwayScore();
+                rawGame.homeTeam = g.getHomeTeam().getShortName();
+                rawGame.homeScore = g.getHomeScore();
+                return rawGame;
             }).collect(Collectors.toList());
             return matchDay;
         }).collect(Collectors.toList());
@@ -231,7 +231,7 @@ public class UFA2025 implements League {
     }
 
     @Override
-    public Map<Division, List<TeamData>> getDivisionTables(int matchDayIndex) {
+    public Map<RawDivision, List<TeamData>> getDivisionTables(int matchDayIndex) {
         teams.values().forEach(TeamData::reset);
 
         for (int idx = 0; idx <= matchDayIndex; idx++) {

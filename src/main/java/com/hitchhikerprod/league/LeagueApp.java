@@ -1,6 +1,6 @@
 package com.hitchhikerprod.league;
 
-import com.hitchhikerprod.league.beans.Division;
+import com.hitchhikerprod.league.beans.RawDivision;
 import com.hitchhikerprod.league.definitions.UFA2025;
 import com.hitchhikerprod.league.tasks.ReadLeagueFile;
 import com.hitchhikerprod.league.tasks.SaveLeagueFile;
@@ -177,7 +177,7 @@ public class LeagueApp extends Application {
         final StandingsPane standingsPane = StandingsPane.getInstance();
         final MatchDayPane matchDayPane = MatchDayPane.getInstance();
         final int latestCompleteMatchDay = league.getLatestCompleteMatchDay();
-        final Map<Division, List<UFA2025.TeamData>> divisionTables = league.getDivisionTables(latestCompleteMatchDay);
+        final Map<RawDivision, List<UFA2025.TeamData>> divisionTables = league.getDivisionTables(latestCompleteMatchDay);
 
         standingsPane.buildDivisionsPane(divisionTables);
         standingsPane.setStandings(divisionTables);

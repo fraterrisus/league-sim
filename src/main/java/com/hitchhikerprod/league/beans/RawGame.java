@@ -2,7 +2,7 @@ package com.hitchhikerprod.league.beans;
 
 import java.util.Map;
 
-public class Game {
+public class RawGame {
     public String homeTeam;
     public Object homeScore;
     public String awayTeam;

@@ -1,7 +1,7 @@
 package com.hitchhikerprod.league.ui;
 
 import com.hitchhikerprod.league.LeagueApp;
-import com.hitchhikerprod.league.beans.Division;
+import com.hitchhikerprod.league.beans.RawDivision;
 import com.hitchhikerprod.league.definitions.UFA2025;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -53,11 +53,11 @@ public class StandingsPane {
 
     /** Rebuilds the TableViews inside the Divisions pane. Should only be called when a new League is loaded
      * (or if we eventually add "create" functionality). */
-    public void buildDivisionsPane(Map<Division, List<UFA2025.TeamData>> divisions) {
+    public void buildDivisionsPane(Map<RawDivision, List<UFA2025.TeamData>> divisions) {
         final ObservableList<Node> children = root.getChildren();
         children.clear();
 
-        for (Division div : divisions.keySet()) {
+        for (RawDivision div : divisions.keySet()) {
             final Label divName = new Label(div.name);
             divName.getStyleClass().add("division-header");
             children.add(divName);
@@ -95,7 +95,7 @@ public class StandingsPane {
     }
 
     /** Rebuilds the *contents* of the Divisions tables. */
-    public void setStandings(Map<Division, List<UFA2025.TeamData>> divisions) {
+    public void setStandings(Map<RawDivision, List<UFA2025.TeamData>> divisions) {
         final ObservableList<Node> children = root.getChildren();
         int i = 0;
         while (i < children.size()) {

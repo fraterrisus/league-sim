@@ -1,7 +1,7 @@
 package com.hitchhikerprod.league.tasks;
 
 import com.hitchhikerprod.league.League;
-import com.hitchhikerprod.league.beans.LeagueData;
+import com.hitchhikerprod.league.beans.RawLeagueData;
 import javafx.concurrent.Task;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
@@ -24,7 +24,7 @@ public final class SaveLeagueFile extends Task<Void> {
     @Override
     public Void call() {
         try (final BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile))) {
-            final LeagueData leagueData = league.export();
+            final RawLeagueData leagueData = league.export();
             final DumperOptions options = new DumperOptions();
             final Yaml emitter = new Yaml(options);
             writer.write(emitter.dumpAs(leagueData, Tag.MAP, DumperOptions.FlowStyle.BLOCK));
