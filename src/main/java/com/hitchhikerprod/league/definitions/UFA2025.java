@@ -1,14 +1,16 @@
 package com.hitchhikerprod.league.definitions;
 
 import com.hitchhikerprod.league.League;
+import com.hitchhikerprod.league.beans.LeagueColumn;
+import com.hitchhikerprod.league.beans.LeagueDivision;
 import com.hitchhikerprod.league.beans.LeagueGameData;
 import com.hitchhikerprod.league.beans.LeagueTeamData;
-import com.hitchhikerprod.league.beans.RawDivision;
 import com.hitchhikerprod.league.beans.RawGame;
 import com.hitchhikerprod.league.beans.RawLeagueData;
 import com.hitchhikerprod.league.beans.RawMatchDay;
 import com.hitchhikerprod.league.beans.RawTeamData;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.geometry.Pos;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -54,23 +56,23 @@ public class UFA2025 implements League {
     }
 
     public static class UFAGameData implements LeagueGameData {
-        private final TeamData awayTeam;
-        private final TeamData homeTeam;
+        private final UFATeamData awayTeam;
+        private final UFATeamData homeTeam;
         private final SimpleObjectProperty<Integer> awayScore;
         private final SimpleObjectProperty<Integer> homeScore;
 
-        public UFAGameData(TeamData awayTeam, TeamData homeTeam) {
+        public UFAGameData(UFATeamData awayTeam, UFATeamData homeTeam) {
             this.awayTeam = awayTeam;
             this.homeTeam = homeTeam;
             this.awayScore = new SimpleObjectProperty<>(null);
             this.homeScore = new SimpleObjectProperty<>(null);
         }
 
-        public TeamData getAwayTeam() {
+        public UFATeamData getAwayTeam() {
             return awayTeam;
         }
 
-        public TeamData getHomeTeam() {
+        public UFATeamData getHomeTeam() {
             return homeTeam;
         }
 
@@ -85,7 +87,7 @@ public class UFA2025 implements League {
         public void setAwayScore(Integer newScore) {
             awayScore.set(newScore);
         }
-        
+
         public Integer getHomeScore() {
             return homeScore.getValue();
         }
@@ -99,14 +101,14 @@ public class UFA2025 implements League {
         }
     }
 
-    public static class TeamData implements LeagueTeamData {
+    public static class UFATeamData implements LeagueTeamData {
         final String shortName;
         final String fullName;
         int wins = 0;
         int losses = 0;
         int goalDifference = 0;
 
-        public TeamData(String fullName, String shortName) {
+        public UFATeamData(String fullName, String shortName) {
             this.fullName = fullName;
             this.shortName = shortName;
         }
@@ -141,9 +143,23 @@ public class UFA2025 implements League {
         public Integer getGoalDifference() {
             return goalDifference;
         }
+
+        public <T> T getData(Class<T> klass, int index) {
+            try {
+                return klass.cast(switch(index) {
+                    case 0 -> getWins();
+                    case 1 -> getLosses();
+                    case 2 -> getWinPercentage();
+                    case 3 -> getGoalDifference();
+                    default -> throw new ArrayIndexOutOfBoundsException();
+                });
+            } catch (ClassCastException e) {
+                return null;
+            }
+        }
     }
 
-    private final Map<String, TeamData> teams;
+    private final Map<String, UFATeamData> teams;
     private final RawLeagueData leagueData;
     private final List<MatchDay> matchDays;
 
@@ -153,7 +169,7 @@ public class UFA2025 implements League {
         this.matchDays = new ArrayList<>();
 
         for (RawTeamData team : leagueData.teams) {
-            TeamData teamData = new TeamData(team.getName(), team.getId());
+            UFATeamData teamData = new UFATeamData(team.getName(), team.getId());
             teams.put(team.getId(), teamData);
         }
 
@@ -163,13 +179,13 @@ public class UFA2025 implements League {
             matchDay.setComplete(true);
 
             for (RawGame g : md.getGames()) {
-                final TeamData awayTeam = teams.get(g.awayTeam);
+                final UFATeamData awayTeam = teams.get(g.awayTeam);
                 if (awayTeam == null) {
                     System.err.println("Unrecognized team ID " + g.awayTeam);
                     continue;
                 }
 
-                final TeamData homeTeam = teams.get(g.homeTeam);
+                final UFATeamData homeTeam = teams.get(g.homeTeam);
                 if (homeTeam == null) {
                     System.err.println("Unrecognized team ID " + g.homeTeam);
                     continue;
@@ -234,8 +250,18 @@ public class UFA2025 implements League {
     }
 
     @Override
-    public Map<RawDivision, List<TeamData>> getDivisionTables(int matchDayIndex) {
-        teams.values().forEach(TeamData::reset);
+    public List<LeagueColumn<?>> getDivisionColumns() {
+        return List.of(
+                new LeagueColumn<>(0, Integer.class, "W", Pos.CENTER),
+                new LeagueColumn<>(1, Integer.class, "L", Pos.CENTER),
+                new LeagueColumn<>(2, Double.class, "Pct", Pos.CENTER_RIGHT, "%5.3f"),
+                new LeagueColumn<>(3, Integer.class, "+/-", Pos.CENTER_RIGHT)
+        );
+    }
+
+    @Override
+    public Map<? extends LeagueDivision, List<? extends LeagueTeamData>> getDivisionTables(int matchDayIndex) {
+        teams.values().forEach(UFATeamData::reset);
 
         for (int idx = 0; idx <= matchDayIndex; idx++) {
             final MatchDay matchDay = matchDays.get(idx);
@@ -256,11 +282,11 @@ public class UFA2025 implements League {
         return leagueData.divisions.stream()
                 .collect(Collectors.toMap(
                         Function.identity(),
-                        div -> rankTeams(div.teams)
+                        div -> rankTeams(div.getTeams())
                 ));
     }
 
-    private List<TeamData> rankTeams(List<String> teamsIn) {
+    private List<UFATeamData> rankTeams(List<String> teamsIn) {
         final TeamComparator tc = new TeamComparator();
 
         return teamsIn.stream()
@@ -270,9 +296,9 @@ public class UFA2025 implements League {
                 .reversed();
     }
 
-    private class TeamComparator implements Comparator<TeamData> {
+    private class TeamComparator implements Comparator<UFATeamData> {
         @Override
-        public int compare(TeamData t1, TeamData t2) {
+        public int compare(UFATeamData t1, UFATeamData t2) {
             // #1: overall win percentage
             final int c = Double.compare(t1.getWinPercentage(), t2.getWinPercentage());
             if (c != 0) return c;
@@ -294,6 +320,5 @@ public class UFA2025 implements League {
             }
             return Integer.compare(t1HeadWins, t2HeadWins);
         }
-
     }
 }

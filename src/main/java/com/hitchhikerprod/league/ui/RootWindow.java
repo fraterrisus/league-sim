@@ -25,7 +25,6 @@ public class RootWindow {
 
     public void setApplication(LeagueApp app) {
         MenuBar.getInstance().setApplication(app);
-        StandingsPane.getInstance().setApplication(app);
         MatchDayPane.getInstance().setApplication(app);
     }
 

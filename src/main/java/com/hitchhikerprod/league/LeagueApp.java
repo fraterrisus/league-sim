@@ -1,7 +1,5 @@
 package com.hitchhikerprod.league;
 
-import com.hitchhikerprod.league.beans.RawDivision;
-import com.hitchhikerprod.league.definitions.UFA2025;
 import com.hitchhikerprod.league.tasks.ReadLeagueFile;
 import com.hitchhikerprod.league.tasks.SaveLeagueFile;
 import com.hitchhikerprod.league.ui.MatchDayPane;
@@ -20,8 +18,6 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
@@ -177,23 +173,22 @@ public class LeagueApp extends Application {
         final StandingsPane standingsPane = StandingsPane.getInstance();
         final MatchDayPane matchDayPane = MatchDayPane.getInstance();
         final int latestCompleteMatchDay = league.getLatestCompleteMatchDay();
-        final Map<RawDivision, List<UFA2025.TeamData>> divisionTables = league.getDivisionTables(latestCompleteMatchDay);
 
-        standingsPane.buildDivisionsPane(divisionTables);
-        standingsPane.setStandings(divisionTables);
+        standingsPane.buildDivisionsPane(league, latestCompleteMatchDay);
+        standingsPane.setStandings(league, latestCompleteMatchDay);
         matchDayPane.setMatchDays(league.getMatchDays());
         matchDayPane.setSelectedMatchDay(latestCompleteMatchDay);
         matchDayPane.setGamesList(league, latestCompleteMatchDay);
 
         matchDayPane.setMatchDayCallback(ev -> {
             final int matchDayIndex = matchDayPane.getSelectedMatchDay();
-            standingsPane.setStandings(league.getDivisionTables(matchDayIndex));
+            standingsPane.setStandings(league, matchDayIndex);
             matchDayPane.setGamesList(league, matchDayIndex);
         });
 
         matchDayPane.setRegenerateTablesCallback(ev -> {
             final int matchDayIndex = matchDayPane.getSelectedMatchDay();
-            standingsPane.setStandings(league.getDivisionTables(matchDayIndex));
+            standingsPane.setStandings(league, matchDayIndex);
         });
 
         stage.sizeToScene();

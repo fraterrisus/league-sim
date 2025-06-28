@@ -67,10 +67,12 @@ public class MatchDayPane {
         root.setSpacing(10);
     }
 
+    /** Post-construction setter to make sure we have a handle to the Application object. */
     public void setApplication(LeagueApp app) {
         this.app = app;
     }
 
+    /** Returns the top-level Node so it can be managed by the parent classes. */
     public Node asNode() {
         return root;
     }

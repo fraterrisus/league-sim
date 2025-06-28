@@ -1,6 +1,6 @@
 package com.hitchhikerprod.league.beans;
 
-public class RawTeamData implements LeagueTeamData{
+public class RawTeamData implements LeagueTeamData {
     private String name;
     private String id;
 
@@ -18,5 +18,10 @@ public class RawTeamData implements LeagueTeamData{
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    @Override
+    public <T> T getData(Class<T> klass, int index) {
+        return null;
     }
 }
