@@ -27,16 +27,13 @@ public class StatusBar {
         HBox.setHgrow(label, Priority.ALWAYS);
         label.getStyleClass().add("text-blue");
         label.setTextOverrun(OverrunStyle.CLIP);
-        label.getStyleClass().add("debug");
 
         progressBar = new ProgressBar(0.0);
         progressBar.setPrefWidth(200.0);
         HBox.setHgrow(progressBar, Priority.NEVER);
-        progressBar.getStyleClass().add("debug");
 
         hBox = new HBox(label);
         hBox.setAlignment(Pos.CENTER_LEFT);
-        //hBox.setPrefWidth(600);
     }
 
     public Node asNode() {

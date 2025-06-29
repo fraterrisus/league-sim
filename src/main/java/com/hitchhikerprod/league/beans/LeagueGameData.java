@@ -9,4 +9,8 @@ public interface LeagueGameData {
     LeagueTeamData getHomeTeam();
     List<SimpleObjectProperty<Integer>> getAwayScoreProperties();
     List<SimpleObjectProperty<Integer>> getHomeScoreProperties();
+
+    default boolean hasTeam(LeagueTeamData team) {
+        return (getAwayTeam() == team || getHomeTeam() == team);
+    }
 }

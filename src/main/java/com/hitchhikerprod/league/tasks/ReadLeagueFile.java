@@ -39,7 +39,7 @@ public final class ReadLeagueFile extends Task<League> {
         try (final BufferedReader reader = Files.newBufferedReader(Paths.get(inputFile.getPath()), StandardCharsets.UTF_8)) {
             String line;
             while ((line = reader.readLine()) != null) {
-                sleepHelper(1);
+                //sleepHelper(1);
                 if (isCancelled()) return null;
                 document.add(line);
                 progress += line.length() + 1;

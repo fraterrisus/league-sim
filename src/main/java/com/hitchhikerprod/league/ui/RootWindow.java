@@ -3,6 +3,8 @@ package com.hitchhikerprod.league.ui;
 import com.hitchhikerprod.league.LeagueApp;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.StringProperty;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Parent;
 import javafx.scene.layout.BorderPane;
 
@@ -26,6 +28,7 @@ public class RootWindow {
     public void setApplication(LeagueApp app) {
         MenuBar.getInstance().setApplication(app);
         MatchDayPane.getInstance().setApplication(app);
+        StandingsPane.getInstance().setApplication(app);
     }
 
     public Parent asParent() {
@@ -39,6 +42,11 @@ public class RootWindow {
     public void setStatusMessage(String message, boolean showProgressBar) {
         setStatusMessage(message);
         StatusBar.getInstance().progressBarVisible(showProgressBar);
+    }
+
+    public void setRegenerateTablesCallback(EventHandler<ActionEvent> handler) {
+        MatchDayPane.getInstance().setRegenerateTablesCallback(handler);
+        TeamGamesWindow.getInstance().setRegenerateTablesCallback(handler);
     }
 
     public DoubleProperty getProgressProperty() {

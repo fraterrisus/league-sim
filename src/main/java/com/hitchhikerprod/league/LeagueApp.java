@@ -1,10 +1,12 @@
 package com.hitchhikerprod.league;
 
+import com.hitchhikerprod.league.beans.LeagueTeamData;
 import com.hitchhikerprod.league.tasks.ReadLeagueFile;
 import com.hitchhikerprod.league.tasks.SaveLeagueFile;
 import com.hitchhikerprod.league.ui.MatchDayPane;
 import com.hitchhikerprod.league.ui.RootWindow;
 import com.hitchhikerprod.league.ui.StandingsPane;
+import com.hitchhikerprod.league.ui.TeamGamesWindow;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
@@ -12,6 +14,7 @@ import javafx.beans.property.StringProperty;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.TableView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -43,17 +46,16 @@ public class LeagueApp extends Application {
 
         root = RootWindow.getInstance();
         root.setApplication(this);
+
         root.asParent().getStylesheets().add(cssUrl.toExternalForm());
+        TeamGamesWindow.getInstance().setStylesheets(cssUrl.toExternalForm());
+
         final Scene scene = new Scene(root.asParent());
         this.stage.setTitle("LeagueSim");
         this.stage.setScene(scene);
         this.stage.show();
 
         root.setStatusMessage("No League file loaded. Use File>Open to read a League file.");
-    }
-
-    public Stage getStage() {
-        return stage;
     }
 
     public void menuOpen() {
@@ -92,6 +94,13 @@ public class LeagueApp extends Application {
 
     public void menuQuit() {
         Platform.exit();
+    }
+
+    public void contextMenuShowGames(TableView<LeagueTeamData> parent) {
+        final LeagueTeamData target = parent.getFocusModel().getFocusedItem();
+        final TeamGamesWindow gamesWindow = TeamGamesWindow.getInstance();
+        gamesWindow.setGames(league, target);
+        gamesWindow.show();
     }
 
     private File runOpenFileDialog() {
@@ -170,6 +179,7 @@ public class LeagueApp extends Application {
     }
 
     private void openStandings() {
+        final RootWindow mainWindow = RootWindow.getInstance();
         final StandingsPane standingsPane = StandingsPane.getInstance();
         final MatchDayPane matchDayPane = MatchDayPane.getInstance();
         final int latestCompleteMatchDay = league.getLatestCompleteMatchDay();
@@ -186,7 +196,7 @@ public class LeagueApp extends Application {
             matchDayPane.setGamesList(league, matchDayIndex);
         });
 
-        matchDayPane.setRegenerateTablesCallback(ev -> {
+        mainWindow.setRegenerateTablesCallback(ev -> {
             final int matchDayIndex = matchDayPane.getSelectedMatchDay();
             standingsPane.setStandings(league, matchDayIndex);
         });

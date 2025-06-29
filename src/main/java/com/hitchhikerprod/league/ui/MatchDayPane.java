@@ -10,6 +10,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -41,8 +42,6 @@ public class MatchDayPane {
 
     private EventHandler<ActionEvent> rebuildStandingsHandler;
 
-    private final List<Node> scoreTextFields = new ArrayList<>();
-
     private MatchDayPane() {
         matchDaySelector = new ChoiceBox<>();
         matchDaySelector.setPrefWidth(200);
@@ -65,6 +64,7 @@ public class MatchDayPane {
         root.setFillWidth(true);
         root.setAlignment(Pos.TOP_CENTER);
         root.setSpacing(10);
+        root.setPadding(new Insets(10, 10, 10, 10));
     }
 
     /** Post-construction setter to make sure we have a handle to the Application object. */
@@ -101,14 +101,13 @@ public class MatchDayPane {
 
     /** Sets the event handler called when the user tabs out of a game score text field. This handler should *only*
      * rebuild the Divisions pane. */
-    public void setRegenerateTablesCallback(EventHandler<ActionEvent> handler) {
+    void setRegenerateTablesCallback(EventHandler<ActionEvent> handler) {
         rebuildStandingsHandler = handler;
     }
 
     /** Rebuilds the Grid full of games for this MatchDay. */
     public void setGamesList(League league, int matchDayIndex) {
         gamesGrid.getChildren().clear();
-        scoreTextFields.clear();
 
         int gameIndex = 0;
         for (LeagueGameData game : league.getGames(matchDayIndex)) {
@@ -128,7 +127,6 @@ public class MatchDayPane {
                 scoreField.setEditable(true);
                 scoreField.focusedProperty().addListener(this::exitTextBoxHandler);
                 Bindings.bindBidirectional(scoreField.textProperty(), scoreProp, new IntegerStringConverter());
-                scoreTextFields.add(scoreField);
                 gamesGrid.add(scoreField, colIndex++, gameIndex);
             }
 
@@ -150,11 +148,10 @@ public class MatchDayPane {
     private void exitTextBoxHandler(ObservableValue<? extends Boolean> value, Boolean oldValue, Boolean newValue) {
         if (oldValue == true && newValue == false) {
             rebuildStandingsHandler.handle(null);
-
-            final Node currentFocus = app.getStage().getScene().getFocusOwner();
-            if (!scoreTextFields.contains(currentFocus)) {
-                scoreTextFields.getFirst().requestFocus();
-            }
+//            final Node currentFocus = app.getStage().getScene().getFocusOwner();
+//            if (!scoreTextFields.contains(currentFocus)) {
+//                scoreTextFields.getFirst().requestFocus();
+//            }
         }
     }
 

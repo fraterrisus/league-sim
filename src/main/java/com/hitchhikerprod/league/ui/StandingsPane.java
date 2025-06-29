@@ -1,6 +1,7 @@
 package com.hitchhikerprod.league.ui;
 
 import com.hitchhikerprod.league.League;
+import com.hitchhikerprod.league.LeagueApp;
 import com.hitchhikerprod.league.beans.LeagueColumn;
 import com.hitchhikerprod.league.beans.LeagueDivision;
 import com.hitchhikerprod.league.beans.LeagueTeamData;
@@ -24,6 +25,7 @@ public class StandingsPane {
         return INSTANCE;
     }
 
+    private LeagueApp app;
     private final VBox root;
 
     private StandingsPane() {
@@ -34,6 +36,11 @@ public class StandingsPane {
         root.setFillWidth(true);
         root.setAlignment(Pos.CENTER);
         root.setSpacing(10);
+    }
+
+    /** Post-construction setter to make sure we have a handle to the Application object. */
+    public void setApplication(LeagueApp app) {
+        this.app = app;
     }
 
     /** Returns the top-level Node so it can be managed by the parent classes. */
@@ -56,6 +63,7 @@ public class StandingsPane {
             divTable.setEditable(false);
             divTable.setMinWidth(400);
             divTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
+            divTable.setContextMenu(new TeamContextMenu(app, divTable).asContextMenu());
             VBox.setVgrow(divTable, Priority.ALWAYS);
 
             final ObservableList<TableColumn<LeagueTeamData, ?>> columns = divTable.getColumns();

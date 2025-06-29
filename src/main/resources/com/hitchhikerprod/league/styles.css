@@ -31,6 +31,12 @@
 .font-small {
     -fx-font-size: 16;
 }
+.font-medium {
+    -fx-font-size: 18;
+}
+.font-large {
+    -fx-font-size: 20;
+}
 .text-blue {
     -fx-text-fill: blue;
 }
