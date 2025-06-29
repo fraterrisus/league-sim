@@ -108,6 +108,7 @@ public class UFA2025 implements League {
 
     @Override
     public List<? extends LeagueGameData> getGames(int matchDayIndex) {
+        if (matchDayIndex < 0) { return List.of(); }
         return matchDays.get(matchDayIndex).getGames();
     }
 
