@@ -40,11 +40,12 @@ public class UFA2025 implements League {
             matchDay.setComplete(true);
 
             for (Object game : md.getGames()) {
-                final UFAGameData gameData;
-                if (game instanceof String) gameData = new GameStringConverter(teams).convert((String)game);
-                else if (game instanceof Map) gameData = new GameMapConverter(teams).convert((Map)game);
-                else if (game instanceof RawGame) gameData = new GameRawConverter(teams).convert((RawGame)game);
-                else throw new RuntimeException("Can't parse game of unknown type");
+                final UFAGameData gameData = switch (game) {
+                    case String s -> new GameStringConverter(teams).convert(s);
+                    case Map map -> new GameMapConverter(teams).convert(map);
+                    case RawGame rawGame -> new GameRawConverter(teams).convert(rawGame);
+                    case null, default -> throw new RuntimeException("Can't parse game of unknown type");
+                };
 
                 matchDay.addGame(gameData);
                 if (Objects.isNull(gameData.getAwayScore())) matchDay.setComplete(false);

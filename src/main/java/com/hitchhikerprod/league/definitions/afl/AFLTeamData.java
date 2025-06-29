@@ -65,6 +65,7 @@ public class AFLTeamData implements LeagueTeamData {
     }
 
     public Double getPercentage() {
+        if (pointsAgainst == 0) return 0.0;
         return 100.0 * (double) pointsFor / (double) pointsAgainst;
     }
 

@@ -11,6 +11,7 @@ import com.hitchhikerprod.league.beans.RawLeagueData;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -30,49 +31,18 @@ public class AFL2025 implements League {
                 .map(t -> new AFLTeamData(t.getId(), t.getName()))
                 .collect(Collectors.toMap(AFLTeamData::getId, t -> t));
 
-        final List<AFLMatchDay> matchDays = new ArrayList<>();
-/*        for (RawMatchDay md : leagueData.matchdays) {
+        final List<AFLMatchDay> matchDays = leagueData.matchdays.stream().map(md -> {
             final AFLMatchDay matchDay = new AFLMatchDay(md.getName());
-            matchDays.add(matchDay);
-            matchDay.setComplete(true);
-
-            for (Object rawGame : md.getGames()) {
-                final AFLTeamData awayTeam = teams.get(g.awayTeam);
-                if (awayTeam == null) {
-                    System.err.println("Unrecognized team ID " + g.awayTeam);
-                    continue;
-                }
-
-                final AFLTeamData homeTeam = teams.get(g.homeTeam);
-                if (homeTeam == null) {
-                    System.err.println("Unrecognized team ID " + g.homeTeam);
-                    continue;
-                }
-
-                final AFLGameData gameData = new AFLGameData(awayTeam, homeTeam);
-                matchDay.addGame(gameData);
-
-                if (!(g.awayScore instanceof Map) || !(g.homeScore instanceof Map)) {
-                    throw new ClassCastException();
-                }
-                final Map<String,Integer> awayScoreMap = (Map<String,Integer>) g.awayScore;
-                final Integer awayGoals = awayScoreMap.get("goals");
-                final Integer awayBehinds = awayScoreMap.get("behinds");
-                final Map<String,Integer> homeScoreMap = (Map<String,Integer>) g.homeScore;
-                final Integer homeGoals = homeScoreMap.get("goals");
-                final Integer homeBehinds = homeScoreMap.get("behinds");
-
-                if (Objects.isNull(awayGoals) || Objects.isNull(awayBehinds) || Objects.isNull(homeGoals) || Objects.isNull(homeBehinds)) {
-                    matchDay.setComplete(false);
-                    continue;
-                }
-
-                gameData.awayGoals.setValue(awayGoals);
-                gameData.awayBehinds.setValue(awayBehinds);
-                gameData.homeGoals.setValue(homeGoals);
-                gameData.homeBehinds.setValue(homeBehinds);
-            }
-        }*/
+            final GameRawConverter rawConverter = new GameRawConverter(teams);
+            final List<AFLGameData> gameData = md.getGames().stream().map(rawConverter::convert).toList();
+            matchDay.setGames(gameData);
+            matchDay.setComplete(gameData.stream().noneMatch(game ->
+                    Objects.isNull(game.awayBehinds) ||
+                    Objects.isNull(game.awayGoals) ||
+                    Objects.isNull(game.homeBehinds) ||
+                    Objects.isNull(game.homeGoals)));
+            return matchDay;
+        }).toList();
 
         return new AFL2025(teams, leagueData, matchDays);
     }
@@ -114,6 +84,7 @@ public class AFL2025 implements League {
 
     @Override
     public List<? extends LeagueGameData> getGames(int matchDayIndex) {
+        if (matchDayIndex < 0) { return List.of(); }
         return matchDays.get(matchDayIndex).getGames();
     }
 

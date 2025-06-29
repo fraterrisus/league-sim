@@ -8,10 +8,10 @@ import java.util.List;
 public class AFLGameData implements LeagueGameData {
     private final AFLTeamData awayTeam;
     private final AFLTeamData homeTeam;
-    private final SimpleObjectProperty<Integer> awayGoals;
-    private final SimpleObjectProperty<Integer> awayBehinds;
-    private final SimpleObjectProperty<Integer> homeGoals;
-    private final SimpleObjectProperty<Integer> homeBehinds;
+    final SimpleObjectProperty<Integer> awayGoals;
+    final SimpleObjectProperty<Integer> awayBehinds;
+    final SimpleObjectProperty<Integer> homeGoals;
+    final SimpleObjectProperty<Integer> homeBehinds;
 
     public AFLGameData(AFLTeamData awayTeam, AFLTeamData homeTeam) {
         this.awayTeam = awayTeam;
