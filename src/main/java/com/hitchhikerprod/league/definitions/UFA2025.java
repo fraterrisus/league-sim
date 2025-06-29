@@ -23,147 +23,6 @@ import java.util.stream.Collectors;
 public class UFA2025 implements League {
     private static final Map<String, Double> SCORE_MAP = null;
 
-    public static class UFAMatchDay implements LeagueMatchDay {
-        private final String name;
-        private final List<UFAGameData> games;
-        private boolean complete;
-
-        public UFAMatchDay(String name) {
-            this.name = name;
-            this.games = new ArrayList<>();
-            this.complete = false;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public List<? extends LeagueGameData> getGames() {
-            return games;
-        }
-
-        public void setGames(List<UFAGameData> games) {
-            this.games.clear();
-            this.games.addAll(games);
-        }
-
-        public void addGame(UFAGameData game) {
-            games.add(game);
-        }
-
-        public boolean isComplete() {
-            return complete;
-        }
-
-        public void setComplete(boolean complete) {
-            this.complete = complete;
-        }
-    }
-
-    public static class UFAGameData implements LeagueGameData {
-        private final UFATeamData awayTeam;
-        private final UFATeamData homeTeam;
-        private final SimpleObjectProperty<Integer> awayScore;
-        private final SimpleObjectProperty<Integer> homeScore;
-
-        public UFAGameData(UFATeamData awayTeam, UFATeamData homeTeam) {
-            this.awayTeam = awayTeam;
-            this.homeTeam = homeTeam;
-            this.awayScore = new SimpleObjectProperty<>(null);
-            this.homeScore = new SimpleObjectProperty<>(null);
-        }
-
-        public UFATeamData getAwayTeam() {
-            return awayTeam;
-        }
-
-        public UFATeamData getHomeTeam() {
-            return homeTeam;
-        }
-
-        public Integer getAwayScore() {
-            return awayScore.getValue();
-        }
-
-        public List<SimpleObjectProperty<Integer>> getAwayScoreProperties() {
-            return List.of(awayScore);
-        }
-
-        public void setAwayScore(Integer newScore) {
-            awayScore.set(newScore);
-        }
-
-        public Integer getHomeScore() {
-            return homeScore.getValue();
-        }
-
-        public void setHomeScore(Integer newScore) {
-            homeScore.set(newScore);
-        }
-
-        public List<SimpleObjectProperty<Integer>> getHomeScoreProperties() {
-            return List.of(homeScore);
-        }
-    }
-
-    public static class UFATeamData implements LeagueTeamData {
-        final String shortName;
-        final String fullName;
-        int wins = 0;
-        int losses = 0;
-        int goalDifference = 0;
-
-        public UFATeamData(String fullName, String shortName) {
-            this.fullName = fullName;
-            this.shortName = shortName;
-        }
-
-        public void reset() {
-            wins = 0;
-            losses = 0;
-            goalDifference = 0;
-        }
-
-        public String getId() {
-            return shortName;
-        }
-
-        public String getName() {
-            return fullName;
-        }
-
-        public Integer getWins() {
-            return wins;
-        }
-
-        public Integer getLosses() {
-            return losses;
-        }
-
-        public Double getWinPercentage() {
-            if (wins + losses == 0) return 0.0;
-            return (double)wins / (double)(wins + losses);
-        }
-
-        public Integer getGoalDifference() {
-            return goalDifference;
-        }
-
-        public <T> T getData(Class<T> klass, int index) {
-            try {
-                return klass.cast(switch(index) {
-                    case 0 -> getWins();
-                    case 1 -> getLosses();
-                    case 2 -> getWinPercentage();
-                    case 3 -> getGoalDifference();
-                    default -> throw new ArrayIndexOutOfBoundsException();
-                });
-            } catch (ClassCastException e) {
-                return null;
-            }
-        }
-    }
-
     private final Map<String, UFATeamData> teams;
     private final RawLeagueData leagueData;
     private final List<UFAMatchDay> matchDays;
@@ -340,6 +199,147 @@ public class UFA2025 implements League {
                 }
             }
             return Integer.compare(t1HeadWins, t2HeadWins);
+        }
+    }
+
+    public static class UFAMatchDay implements LeagueMatchDay {
+        private final String name;
+        private final List<UFAGameData> games;
+        private boolean complete;
+
+        public UFAMatchDay(String name) {
+            this.name = name;
+            this.games = new ArrayList<>();
+            this.complete = false;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public List<? extends LeagueGameData> getGames() {
+            return games;
+        }
+
+        public void setGames(List<UFAGameData> games) {
+            this.games.clear();
+            this.games.addAll(games);
+        }
+
+        public void addGame(UFAGameData game) {
+            games.add(game);
+        }
+
+        public boolean isComplete() {
+            return complete;
+        }
+
+        public void setComplete(boolean complete) {
+            this.complete = complete;
+        }
+    }
+
+    public static class UFAGameData implements LeagueGameData {
+        private final UFATeamData awayTeam;
+        private final UFATeamData homeTeam;
+        private final SimpleObjectProperty<Integer> awayScore;
+        private final SimpleObjectProperty<Integer> homeScore;
+
+        public UFAGameData(UFATeamData awayTeam, UFATeamData homeTeam) {
+            this.awayTeam = awayTeam;
+            this.homeTeam = homeTeam;
+            this.awayScore = new SimpleObjectProperty<>(null);
+            this.homeScore = new SimpleObjectProperty<>(null);
+        }
+
+        public UFATeamData getAwayTeam() {
+            return awayTeam;
+        }
+
+        public UFATeamData getHomeTeam() {
+            return homeTeam;
+        }
+
+        public Integer getAwayScore() {
+            return awayScore.getValue();
+        }
+
+        public List<SimpleObjectProperty<Integer>> getAwayScoreProperties() {
+            return List.of(awayScore);
+        }
+
+        public void setAwayScore(Integer newScore) {
+            awayScore.set(newScore);
+        }
+
+        public Integer getHomeScore() {
+            return homeScore.getValue();
+        }
+
+        public void setHomeScore(Integer newScore) {
+            homeScore.set(newScore);
+        }
+
+        public List<SimpleObjectProperty<Integer>> getHomeScoreProperties() {
+            return List.of(homeScore);
+        }
+    }
+
+    public static class UFATeamData implements LeagueTeamData {
+        final String shortName;
+        final String fullName;
+        int wins = 0;
+        int losses = 0;
+        int goalDifference = 0;
+
+        public UFATeamData(String fullName, String shortName) {
+            this.fullName = fullName;
+            this.shortName = shortName;
+        }
+
+        public void reset() {
+            wins = 0;
+            losses = 0;
+            goalDifference = 0;
+        }
+
+        public String getId() {
+            return shortName;
+        }
+
+        public String getName() {
+            return fullName;
+        }
+
+        public Integer getWins() {
+            return wins;
+        }
+
+        public Integer getLosses() {
+            return losses;
+        }
+
+        public Double getWinPercentage() {
+            if (wins + losses == 0) return 0.0;
+            return (double)wins / (double)(wins + losses);
+        }
+
+        public Integer getGoalDifference() {
+            return goalDifference;
+        }
+
+        public <T> T getData(Class<T> klass, int index) {
+            try {
+                return klass.cast(switch(index) {
+                    case 0 -> getWins();
+                    case 1 -> getLosses();
+                    case 2 -> getWinPercentage();
+                    case 3 -> getGoalDifference();
+                    default -> throw new ArrayIndexOutOfBoundsException();
+                });
+            } catch (ClassCastException e) {
+                return null;
+            }
         }
     }
 }
