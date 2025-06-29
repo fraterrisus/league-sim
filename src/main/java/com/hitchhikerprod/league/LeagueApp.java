@@ -142,9 +142,9 @@ public class LeagueApp extends Application {
         statusProperty.bind(reader.titleProperty());
         progressProperty.bind(reader.progressProperty());
         reader.setOnFailed(event -> {
-            root.setStatusMessage("Error.", false);
             statusProperty.unbind();
             progressProperty.unbind();
+            root.setStatusMessage("Error.", false);
             final Alert alert = new Alert(Alert.AlertType.ERROR, reader.getException().getMessage());
             alert.showAndWait();
         });
@@ -192,12 +192,14 @@ public class LeagueApp extends Application {
 
         matchDayPane.setMatchDayCallback(ev -> {
             final int matchDayIndex = matchDayPane.getSelectedMatchDay();
+            if (matchDayIndex == -1) return;
             standingsPane.setStandings(league, matchDayIndex);
             matchDayPane.setGamesList(league, matchDayIndex);
         });
 
         mainWindow.setRegenerateTablesCallback(ev -> {
             final int matchDayIndex = matchDayPane.getSelectedMatchDay();
+            if (matchDayIndex == -1) return;
             standingsPane.setStandings(league, matchDayIndex);
         });
 

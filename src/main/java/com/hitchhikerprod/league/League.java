@@ -14,7 +14,7 @@ public interface League {
     int getLatestCompleteMatchDay();
     List<String> getMatchDays();
     Map<? extends LeagueDivision, List<? extends LeagueTeamData>> getDivisionTables(int index);
-    List<? extends LeagueGameData> getGames(int matchDay);
+    List<? extends LeagueGameData> getGames(int matchDayIndex);
     List<LeagueMatchDay> getGames(LeagueTeamData teamData);
     RawLeagueData export();
     List<LeagueColumn<?>> getDivisionColumns();

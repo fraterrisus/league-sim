@@ -99,7 +99,7 @@ public class StandingsPane {
                         items.clear();
                         items.addAll(teams);
                         final int desiredRows = Math.min(8, teams.size());
-                        divTable.setPrefHeight(36 * desiredRows);
+                        divTable.setPrefHeight(32 * (desiredRows + 1));
                         divTable.getSortOrder().clear();
                     });
         }
