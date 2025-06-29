@@ -3,6 +3,7 @@ package com.hitchhikerprod.league.definitions.afl;
 import com.hitchhikerprod.league.beans.RawGame;
 import com.hitchhikerprod.league.util.Converter;
 
+import java.util.HashMap;
 import java.util.Map;
 
 class GameToRawConverter implements Converter<AFLGameData, RawGame> {
@@ -10,9 +11,19 @@ class GameToRawConverter implements Converter<AFLGameData, RawGame> {
     public RawGame convert(AFLGameData that) {
         final RawGame game = new RawGame();
         game.awayTeam = that.getAwayTeam().getId();
-        game.awayScore = Map.of("goals", that.getAwayGoals(), "behinds", that.getAwayBehinds());
+
+        final Map<String, Integer> awayScore = new HashMap<>();
+        awayScore.put("goals", that.getAwayGoals());
+        awayScore.put("behinds", that.getAwayBehinds());
+        game.awayScore = awayScore;
+
         game.homeTeam = that.getHomeTeam().getId();
-        game.homeScore = Map.of("goals", that.getHomeGoals(), "behinds", that.getHomeBehinds());
+
+        final Map<String, Integer> homeScore = new HashMap<>();
+        homeScore.put("goals", that.getHomeGoals());
+        homeScore.put("behinds", that.getHomeBehinds());
+        game.homeScore = homeScore;
+
         return game;
     }
 }

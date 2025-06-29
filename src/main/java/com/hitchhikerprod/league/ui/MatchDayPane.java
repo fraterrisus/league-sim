@@ -1,8 +1,8 @@
 package com.hitchhikerprod.league.ui;
 
-import com.hitchhikerprod.league.League;
 import com.hitchhikerprod.league.LeagueApp;
 import com.hitchhikerprod.league.beans.LeagueGameData;
+import com.hitchhikerprod.league.definitions.League;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;

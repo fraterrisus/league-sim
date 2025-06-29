@@ -1,7 +1,7 @@
 package com.hitchhikerprod.league.tasks;
 
-import com.hitchhikerprod.league.League;
 import com.hitchhikerprod.league.LeagueFactory;
+import com.hitchhikerprod.league.definitions.League;
 import javafx.concurrent.Task;
 
 import java.io.BufferedReader;

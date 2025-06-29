@@ -34,10 +34,10 @@ public class GameRawConverter implements Converter<RawGame, AFLGameData> {
         final Map<String,Integer> awayScoreMap = (Map<String,Integer>) that.awayScore;
         final Map<String,Integer> homeScoreMap = (Map<String,Integer>) that.homeScore;
 
-        gameData.awayGoals.setValue(awayScoreMap.get("goals"));
-        gameData.awayBehinds.setValue(awayScoreMap.get("behinds"));
-        gameData.homeGoals.setValue(homeScoreMap.get("goals"));
-        gameData.homeBehinds.setValue(homeScoreMap.get("behinds"));
+        gameData.setAwayGoals(awayScoreMap.get("goals"));
+        gameData.setAwayBehinds(awayScoreMap.get("behinds"));
+        gameData.setHomeGoals(homeScoreMap.get("goals"));
+        gameData.setHomeBehinds(homeScoreMap.get("behinds"));
         return gameData;
     }
 }

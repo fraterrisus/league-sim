@@ -28,13 +28,29 @@ public class MenuBar {
         items = new HashMap<>();
 
         final Menu fileM = makeFileMenu();
+        final Menu gameM = makeGamesMenu();
 
-        menuBar = new javafx.scene.control.MenuBar(fileM);
+        menuBar = new javafx.scene.control.MenuBar(fileM, gameM);
         VBox.setVgrow(menuBar, Priority.NEVER);
     }
 
     public void setApplication(LeagueApp app) {
         activateFileMenu(app);
+    }
+
+    private Menu makeGamesMenu() {
+        final Menu gameM = new Menu("Games");
+
+        final MenuItem newGameMI = new MenuItem("Add Game...");
+        newGameMI.setDisable(true);
+        items.put("game.newGame", newGameMI);
+
+        final MenuItem newMatchDayMI = new MenuItem("Add Match Day...");
+        newMatchDayMI.setDisable(true);
+        items.put("game.newMatchDay", newMatchDayMI);
+
+        gameM.getItems().addAll(newMatchDayMI, newGameMI);
+        return gameM;
     }
 
     private Menu makeFileMenu() {
@@ -69,6 +85,8 @@ public class MenuBar {
     public void allowSave() {
         items.get("file.save").setDisable(false);
         items.get("file.saveAs").setDisable(false);
+        items.get("game.newGame").setDisable(false);
+        items.get("game.newMatchDay").setDisable(false);
     }
 
     private void activateFileMenu(LeagueApp app) {
@@ -76,6 +94,8 @@ public class MenuBar {
         items.get("file.quit").setOnAction(ev -> app.menuQuit());
         items.get("file.save").setOnAction(ev -> app.menuSave());
         items.get("file.saveAs").setOnAction(ev -> app.menuSaveAs());
+        items.get("game.newGame").setOnAction(ev -> app.menuNewGame());
+        items.get("game.newMatchDay").setOnAction(ev -> app.menuNewMatchDay());
     }
 
     public Node asNode() {

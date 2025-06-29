@@ -1,12 +1,13 @@
 package com.hitchhikerprod.league.definitions.afl;
 
-import com.hitchhikerprod.league.League;
 import com.hitchhikerprod.league.beans.LeagueColumn;
 import com.hitchhikerprod.league.beans.LeagueDivision;
 import com.hitchhikerprod.league.beans.LeagueGameData;
 import com.hitchhikerprod.league.beans.LeagueMatchDay;
 import com.hitchhikerprod.league.beans.LeagueTeamData;
 import com.hitchhikerprod.league.beans.RawLeagueData;
+import com.hitchhikerprod.league.definitions.League;
+import com.hitchhikerprod.league.definitions.LeagueUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,11 +58,7 @@ public class AFL2025 implements League {
 
     @Override
     public int getLatestCompleteMatchDay() {
-        for (int idx = 0; idx < matchDays.size(); idx++) {
-            AFLMatchDay matchDay = matchDays.get(idx);
-            if (!matchDay.isComplete()) return idx - 1;
-        }
-        return matchDays.size() - 1;
+        return LeagueUtils.getLatestCompleteMatchDay(matchDays);
     }
 
     @Override
@@ -89,6 +86,21 @@ public class AFL2025 implements League {
     public List<? extends LeagueGameData> getGames(int matchDayIndex) {
         if (matchDayIndex < 0) { return List.of(); }
         return matchDays.get(matchDayIndex).getGames();
+    }
+
+    @Override
+    public void createGame(int matchDayIndex, String awayTeamId, String homeTeamId) {
+        if (matchDayIndex < 0) return;
+        final AFLMatchDay matchDay = matchDays.get(matchDayIndex);
+        final AFLTeamData awayTeam = teams.get(awayTeamId);
+        final AFLTeamData homeTeam = teams.get(homeTeamId);
+        final AFLGameData game = new AFLGameData(awayTeam, homeTeam);
+        matchDay.addGame(game);
+    }
+
+    @Override
+    public List<? extends LeagueTeamData> getTeams() {
+        return leagueData.teams;
     }
 
     @Override // boilerplate, but references package-private variable COLUMNS

@@ -1,6 +1,5 @@
 package com.hitchhikerprod.league.definitions.ufa;
 
-import com.hitchhikerprod.league.League;
 import com.hitchhikerprod.league.beans.LeagueColumn;
 import com.hitchhikerprod.league.beans.LeagueDivision;
 import com.hitchhikerprod.league.beans.LeagueGameData;
@@ -9,6 +8,8 @@ import com.hitchhikerprod.league.beans.LeagueTeamData;
 import com.hitchhikerprod.league.beans.RawGame;
 import com.hitchhikerprod.league.beans.RawLeagueData;
 import com.hitchhikerprod.league.beans.RawMatchDay;
+import com.hitchhikerprod.league.definitions.League;
+import com.hitchhikerprod.league.definitions.LeagueUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,16 +79,12 @@ public class UFA2025 implements League {
 
     @Override
     public int getLatestCompleteMatchDay() {
-        for (int idx = 0; idx < matchDays.size(); idx++) {
-            UFAMatchDay matchDay = matchDays.get(idx);
-            if (!matchDay.isComplete()) return idx - 1;
-        }
-        return matchDays.size() - 1;
+        return LeagueUtils.getLatestCompleteMatchDay(matchDays);
     }
 
     @Override
     public List<String> getMatchDays() {
-        return matchDays.stream().map(UFAMatchDay::getName).toList();
+        return matchDays.stream().map(LeagueMatchDay::getName).toList();
     }
 
     @Override
@@ -110,6 +107,21 @@ public class UFA2025 implements League {
     public List<? extends LeagueGameData> getGames(int matchDayIndex) {
         if (matchDayIndex < 0) { return List.of(); }
         return matchDays.get(matchDayIndex).getGames();
+    }
+
+    @Override
+    public void createGame(int matchDayIndex, String awayTeamId, String homeTeamId) {
+        if (matchDayIndex < 0) return;
+        final UFAMatchDay matchDay = matchDays.get(matchDayIndex);
+        final UFATeamData awayTeam = teams.get(awayTeamId);
+        final UFATeamData homeTeam = teams.get(homeTeamId);
+        final UFAGameData game = new UFAGameData(awayTeam, homeTeam);
+        matchDay.addGame(game);
+    }
+
+    @Override
+    public List<? extends LeagueTeamData> getTeams() {
+        return leagueData.teams;
     }
 
     @Override // boilerplate, but references package-private variable COLUMNS

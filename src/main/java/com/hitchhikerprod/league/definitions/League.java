@@ -1,4 +1,4 @@
-package com.hitchhikerprod.league;
+package com.hitchhikerprod.league.definitions;
 
 import com.hitchhikerprod.league.beans.LeagueColumn;
 import com.hitchhikerprod.league.beans.LeagueDivision;
@@ -12,10 +12,12 @@ import java.util.Map;
 
 public interface League {
     int getLatestCompleteMatchDay();
+    RawLeagueData export();
     List<String> getMatchDays();
     Map<? extends LeagueDivision, List<? extends LeagueTeamData>> getDivisionTables(int index);
+    List<LeagueColumn<?>> getDivisionColumns();
     List<? extends LeagueGameData> getGames(int matchDayIndex);
     List<LeagueMatchDay> getGames(LeagueTeamData teamData);
-    RawLeagueData export();
-    List<LeagueColumn<?>> getDivisionColumns();
+    void createGame(int matchDayIndex, String awayTeamId, String homeTeamId);
+    List<? extends LeagueTeamData> getTeams();
 }

@@ -5,4 +5,5 @@ import java.util.List;
 public interface LeagueMatchDay {
     String getName();
     List<? extends LeagueGameData> getGames();
+    boolean isComplete();
 }

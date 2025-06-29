@@ -41,7 +41,10 @@ public class AFLGameData implements LeagueGameData {
     }
 
     public Integer getAwayScore() {
-        return (6 * awayGoals.getValue()) + awayBehinds.getValue();
+        final Integer goals = awayGoals.getValue();
+        final Integer behinds = awayBehinds.getValue();
+        if (Objects.isNull(goals) || Objects.isNull(behinds)) return null;
+        return (6 * goals) + behinds;
     }
     
     public Integer getAwayGoals() {
@@ -52,13 +55,24 @@ public class AFLGameData implements LeagueGameData {
         return awayBehinds.getValue();
     }
 
+    public void setAwayGoals(Integer goals) {
+        awayGoals.set(goals);
+    }
+
+    public void setAwayBehinds(Integer behinds) {
+        awayBehinds.set(behinds);
+    }
+
     @Override
     public List<SimpleObjectProperty<Integer>> getAwayScoreProperties() {
         return List.of(awayGoals, awayBehinds);
     }
 
     public Integer getHomeScore() {
-        return (6 * homeGoals.getValue()) + homeBehinds.getValue();
+        final Integer goals = homeGoals.getValue();
+        final Integer behinds = homeBehinds.getValue();
+        if (Objects.isNull(goals) || Objects.isNull(behinds)) return null;
+        return (6 * goals) + behinds;
     }
 
     public Integer getHomeGoals() {
@@ -67,6 +81,14 @@ public class AFLGameData implements LeagueGameData {
 
     public Integer getHomeBehinds() {
         return homeBehinds.getValue();
+    }
+
+    public void setHomeGoals(Integer goals) {
+        homeGoals.set(goals);
+    }
+
+    public void setHomeBehinds(Integer behinds) {
+        homeBehinds.set(behinds);
     }
 
     @Override

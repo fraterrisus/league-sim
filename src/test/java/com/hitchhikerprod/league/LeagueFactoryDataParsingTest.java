@@ -1,5 +1,6 @@
 package com.hitchhikerprod.league;
 
+import com.hitchhikerprod.league.definitions.League;
 import org.junit.jupiter.api.Test;
 
 import java.io.BufferedReader;

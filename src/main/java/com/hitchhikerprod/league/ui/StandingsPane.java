@@ -1,10 +1,10 @@
 package com.hitchhikerprod.league.ui;
 
-import com.hitchhikerprod.league.League;
 import com.hitchhikerprod.league.LeagueApp;
 import com.hitchhikerprod.league.beans.LeagueColumn;
 import com.hitchhikerprod.league.beans.LeagueDivision;
 import com.hitchhikerprod.league.beans.LeagueTeamData;
+import com.hitchhikerprod.league.definitions.League;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;

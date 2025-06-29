@@ -1,7 +1,7 @@
 package com.hitchhikerprod.league.tasks;
 
-import com.hitchhikerprod.league.League;
 import com.hitchhikerprod.league.beans.RawLeagueData;
+import com.hitchhikerprod.league.definitions.League;
 import javafx.concurrent.Task;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
@@ -10,7 +10,6 @@ import org.yaml.snakeyaml.nodes.Tag;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 
 public final class SaveLeagueFile extends Task<Void> {
     final League league;
@@ -28,8 +27,9 @@ public final class SaveLeagueFile extends Task<Void> {
             final DumperOptions options = new DumperOptions();
             final Yaml emitter = new Yaml(options);
             writer.write(emitter.dumpAs(leagueData, Tag.MAP, DumperOptions.FlowStyle.BLOCK));
-        } catch (IOException e) {
+        } catch (Exception e) {
             setException(e);
+            throw new RuntimeException(e);
         }
         return null;
     }
