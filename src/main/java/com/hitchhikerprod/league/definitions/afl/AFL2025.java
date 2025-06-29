@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class AFL2025 implements League {
     private final Map<String, AFLTeamData> teams;
@@ -63,7 +62,7 @@ public class AFL2025 implements League {
 
     @Override
     public List<String> getMatchDays() {
-        return matchDays.stream().map(AFLMatchDay::getName).toList();
+        return LeagueUtils.getMatchDays(matchDays);
     }
 
     @Override
@@ -84,8 +83,7 @@ public class AFL2025 implements League {
 
     @Override
     public List<? extends LeagueGameData> getGames(int matchDayIndex) {
-        if (matchDayIndex < 0) { return List.of(); }
-        return matchDays.get(matchDayIndex).getGames();
+        return LeagueUtils.getGames(matchDayIndex, matchDays);
     }
 
     @Override
@@ -105,9 +103,7 @@ public class AFL2025 implements League {
 
     @Override // boilerplate, but references package-private variable COLUMNS
     public List<LeagueColumn<?>> getDivisionColumns() {
-        return IntStream.range(0, AFLTeamData.COLUMNS.size())
-                .mapToObj(idx -> AFLTeamData.COLUMNS.get(idx).toColumn(idx))
-                .collect(Collectors.toUnmodifiableList());
+        return LeagueUtils.getDivisionColumns(AFLTeamData.COLUMNS);
     }
 
     @Override
