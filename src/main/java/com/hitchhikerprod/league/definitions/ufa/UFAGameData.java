@@ -4,6 +4,7 @@ import com.hitchhikerprod.league.beans.LeagueGameData;
 import javafx.beans.property.SimpleObjectProperty;
 
 import java.util.List;
+import java.util.Objects;
 
 public class UFAGameData implements LeagueGameData {
     private final UFATeamData awayTeam;
@@ -16,6 +17,10 @@ public class UFAGameData implements LeagueGameData {
         this.homeTeam = homeTeam;
         this.awayScore = new SimpleObjectProperty<>(null);
         this.homeScore = new SimpleObjectProperty<>(null);
+    }
+
+    public boolean isComplete() {
+        return (Objects.nonNull(awayScore.getValue()) && Objects.nonNull(homeScore.getValue()));
     }
 
     @Override

@@ -13,7 +13,6 @@ import com.hitchhikerprod.league.beans.RawMatchDay;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -48,8 +47,7 @@ public class UFA2025 implements League {
                 };
 
                 matchDay.addGame(gameData);
-                if (Objects.isNull(gameData.getAwayScore())) matchDay.setComplete(false);
-                if (Objects.isNull(gameData.getHomeScore())) matchDay.setComplete(false);
+                if (!gameData.isComplete()) matchDay.setComplete(false);
             }
         }
 
