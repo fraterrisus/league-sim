@@ -6,7 +6,9 @@ import com.hitchhikerprod.league.beans.LeagueDivision;
 import com.hitchhikerprod.league.beans.LeagueGameData;
 import com.hitchhikerprod.league.beans.LeagueMatchDay;
 import com.hitchhikerprod.league.beans.LeagueTeamData;
+import com.hitchhikerprod.league.beans.RawGame;
 import com.hitchhikerprod.league.beans.RawLeagueData;
+import com.hitchhikerprod.league.beans.RawMatchDay;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +51,24 @@ public class AFL2025 implements League {
 
     @Override
     public RawLeagueData export() {
-        return null;
+        final RawLeagueData doc = new RawLeagueData();
+        doc.league = this.leagueData.league;
+        doc.teams = this.leagueData.teams;
+        doc.divisions = this.leagueData.divisions;
+        doc.matchdays = this.matchDays.stream().map(md -> {
+            final RawMatchDay matchDay = new RawMatchDay();
+            matchDay.setName(md.getName());
+            matchDay.setGames(md.games.stream().map(g -> {
+                final RawGame game = new RawGame();
+                game.awayTeam = g.getAwayTeam().getId();
+                game.awayScore = Map.of("goals", g.awayGoals.getValue(), "behinds", g.awayBehinds.getValue());
+                game.homeTeam = g.getHomeTeam().getId();
+                game.homeScore = Map.of("goals", g.homeGoals.getValue(), "behinds", g.homeBehinds.getValue());
+                return game;
+            }).collect(Collectors.toList()));
+            return matchDay;
+        }).toList();
+        return doc;
     }
 
     @Override
