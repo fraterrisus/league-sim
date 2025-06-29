@@ -1,4 +1,4 @@
-package com.hitchhikerprod.league.definitions;
+package com.hitchhikerprod.league.definitions.afl;
 
 import com.hitchhikerprod.league.League;
 import com.hitchhikerprod.league.beans.LeagueColumn;
@@ -6,22 +6,15 @@ import com.hitchhikerprod.league.beans.LeagueDivision;
 import com.hitchhikerprod.league.beans.LeagueGameData;
 import com.hitchhikerprod.league.beans.LeagueMatchDay;
 import com.hitchhikerprod.league.beans.LeagueTeamData;
-import com.hitchhikerprod.league.beans.RawGame;
 import com.hitchhikerprod.league.beans.RawLeagueData;
-import com.hitchhikerprod.league.beans.RawMatchDay;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.geometry.Pos;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class AFL2025 implements League {
-    private static final Map<String, Double> SCORE_MAP = Map.of("goals", 6.0, "behinds", 1.0);
-
     private final Map<String, AFLTeamData> teams;
     private final RawLeagueData leagueData;
     private final List<AFLMatchDay> matchDays;
@@ -38,12 +31,12 @@ public class AFL2025 implements League {
                 .collect(Collectors.toMap(AFLTeamData::getId, t -> t));
 
         final List<AFLMatchDay> matchDays = new ArrayList<>();
-        for (RawMatchDay md : leagueData.matchdays) {
+/*        for (RawMatchDay md : leagueData.matchdays) {
             final AFLMatchDay matchDay = new AFLMatchDay(md.getName());
             matchDays.add(matchDay);
             matchDay.setComplete(true);
 
-            for (RawGame g : md.getGames()) {
+            for (Object rawGame : md.getGames()) {
                 final AFLTeamData awayTeam = teams.get(g.awayTeam);
                 if (awayTeam == null) {
                     System.err.println("Unrecognized team ID " + g.awayTeam);
@@ -79,7 +72,7 @@ public class AFL2025 implements League {
                 gameData.homeGoals.setValue(homeGoals);
                 gameData.homeBehinds.setValue(homeBehinds);
             }
-        }
+        }*/
 
         return new AFL2025(teams, leagueData, matchDays);
     }
@@ -124,17 +117,11 @@ public class AFL2025 implements League {
         return matchDays.get(matchDayIndex).getGames();
     }
 
-    @Override
+    @Override // boilerplate, but references package-private variable COLUMNS
     public List<LeagueColumn<?>> getDivisionColumns() {
-        return List.of(
-                new LeagueColumn<>(0, Integer.class, "Pts", Pos.CENTER),
-                new LeagueColumn<>(1, Double.class, "%", Pos.CENTER_RIGHT, "%5.1f"),
-                new LeagueColumn<>(2, Integer.class, "W", Pos.CENTER),
-                new LeagueColumn<>(3, Integer.class, "L", Pos.CENTER),
-                new LeagueColumn<>(4, Integer.class, "D", Pos.CENTER),
-                new LeagueColumn<>(5, Integer.class, "PF", Pos.CENTER),
-                new LeagueColumn<>(6, Integer.class, "PA", Pos.CENTER)
-        );
+        return IntStream.range(0, AFLTeamData.COLUMNS.size())
+                .mapToObj(idx -> AFLTeamData.COLUMNS.get(idx).toColumn(idx))
+                .collect(Collectors.toUnmodifiableList());
     }
 
     @Override
@@ -177,180 +164,5 @@ public class AFL2025 implements League {
                 .sorted(tc)
                 .toList()
                 .reversed();
-    }
-
-    private static class TeamComparator implements Comparator<AFLTeamData> {
-        @Override
-        public int compare(AFLTeamData o1, AFLTeamData o2) {
-            final int c = Integer.compare(o1.getPoints(), o2.getPoints());
-            if (c != 0) return c;
-
-            return Double.compare(o1.getPercentage(), o2.getPercentage());
-        }
-    }
-
-    public static class AFLMatchDay implements LeagueMatchDay {
-        private final String name;
-        private final List<AFLGameData> games;
-        private boolean complete;
-
-        public AFLMatchDay(String name) {
-            this.name = name;
-            this.games = new ArrayList<>();
-            this.complete = false;
-        }
-
-        @Override
-        public String getName() {
-            return name;
-        }
-
-        @Override
-        public List<? extends LeagueGameData> getGames() {
-            return games;
-        }
-
-        public void setGames(List<AFLGameData> games) {
-            this.games.clear();
-            this.games.addAll(games);
-        }
-
-        public void addGame(AFLGameData game) {
-            games.add(game);
-        }
-
-        public boolean isComplete() {
-            return complete;
-        }
-
-        public void setComplete(boolean complete) {
-            this.complete = complete;
-        }
-    }
-
-    public static class AFLGameData implements LeagueGameData {
-        private final AFLTeamData awayTeam;
-        private final AFLTeamData homeTeam;
-        private final SimpleObjectProperty<Integer> awayGoals;
-        private final SimpleObjectProperty<Integer> awayBehinds;
-        private final SimpleObjectProperty<Integer> homeGoals;
-        private final SimpleObjectProperty<Integer> homeBehinds;
-
-        public AFLGameData(AFLTeamData awayTeam, AFLTeamData homeTeam) {
-            this.awayTeam = awayTeam;
-            this.homeTeam = homeTeam;
-            this.awayGoals = new SimpleObjectProperty<>(null);
-            this.awayBehinds = new SimpleObjectProperty<>(null);
-            this.homeGoals = new SimpleObjectProperty<>(null);
-            this.homeBehinds = new SimpleObjectProperty<>(null);
-        }
-
-        @Override
-        public AFLTeamData getAwayTeam() {
-            return awayTeam;
-        }
-
-        @Override
-        public AFLTeamData getHomeTeam() {
-            return homeTeam;
-        }
-
-        public Integer getAwayScore() {
-            return (6 * awayGoals.getValue()) + awayBehinds.getValue();
-        }
-
-        @Override
-        public List<SimpleObjectProperty<Integer>> getAwayScoreProperties() {
-            return List.of(awayGoals, awayBehinds);
-        }
-
-        public Integer getHomeScore() {
-            return (6 * homeGoals.getValue()) + homeBehinds.getValue();
-        }
-
-        @Override
-        public List<SimpleObjectProperty<Integer>> getHomeScoreProperties() {
-            return List.of(homeGoals, homeBehinds);
-        }
-    }
-
-    public static class AFLTeamData implements LeagueTeamData {
-        private final String id;
-        private final String name;
-
-        int wins;
-        int draws;
-        int losses;
-        int pointsFor;
-        int pointsAgainst;
-
-        public AFLTeamData(String id, String name) {
-            this.id = id;
-            this.name = name;
-        }
-
-        private void reset() {
-            wins = 0;
-            draws = 0;
-            losses = 0;
-            pointsFor = 0;
-            pointsAgainst = 0;
-        }
-
-        @Override
-        public String getName() {
-            return this.name;
-        }
-
-        @Override
-        public String getId() {
-            return this.id;
-        }
-
-        public int getWins() {
-            return wins;
-        }
-
-        public int getDraws() {
-            return draws;
-        }
-
-        public int getLosses() {
-            return losses;
-        }
-
-        public int getPointsFor() {
-            return pointsFor;
-        }
-
-        public int getPointsAgainst() {
-            return pointsAgainst;
-        }
-
-        public Integer getPoints() {
-            return (4 * this.wins) + (2 * this.draws);
-        }
-
-        public Double getPercentage() {
-            return 100.0 * (double)pointsFor / (double)pointsAgainst;
-        }
-
-        @Override
-        public <T> T getData(Class<T> klass, int index) {
-            try {
-                return klass.cast(switch(index) {
-                    case 0 -> getPoints();
-                    case 1 -> getPercentage();
-                    case 2 -> getWins();
-                    case 3 -> getLosses();
-                    case 4 -> getDraws();
-                    case 5 -> getPointsFor();
-                    case 6 -> getPointsAgainst();
-                    default -> throw new ArrayIndexOutOfBoundsException();
-                });
-            } catch (ClassCastException e) {
-                return null;
-            }
-        }
     }
 }

@@ -1,8 +1,8 @@
 package com.hitchhikerprod.league;
 
 import com.hitchhikerprod.league.beans.RawLeagueData;
-import com.hitchhikerprod.league.definitions.AFL2025;
-import com.hitchhikerprod.league.definitions.UFA2025;
+import com.hitchhikerprod.league.definitions.afl.AFL2025;
+import com.hitchhikerprod.league.definitions.ufa.UFA2025;
 import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;

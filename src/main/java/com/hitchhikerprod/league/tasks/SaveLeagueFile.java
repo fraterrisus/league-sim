@@ -30,6 +30,7 @@ public final class SaveLeagueFile extends Task<Void> {
             writer.write(emitter.dumpAs(leagueData, Tag.MAP, DumperOptions.FlowStyle.BLOCK));
         } catch (IOException e) {
             setException(e);
+            System.err.println(e.getMessage());
         }
         return null;
     }

@@ -7,6 +7,8 @@ import java.util.List;
 public interface LeagueGameData {
     LeagueTeamData getAwayTeam();
     LeagueTeamData getHomeTeam();
+    Integer getAwayScore();
+    Integer getHomeScore();
     List<SimpleObjectProperty<Integer>> getAwayScoreProperties();
     List<SimpleObjectProperty<Integer>> getHomeScoreProperties();
 
