@@ -7,14 +7,14 @@ import javafx.geometry.Pos;
 import java.util.List;
 import java.util.Optional;
 
-public class UFATeamData implements LeagueTeamData {
+public class TeamData implements LeagueTeamData {
     final String shortName;
     final String fullName;
     int wins = 0;
     int losses = 0;
     int goalDifference = 0;
 
-    public UFATeamData(String fullName, String shortName) {
+    public TeamData(String fullName, String shortName) {
         this.fullName = fullName;
         this.shortName = shortName;
     }
@@ -58,10 +58,10 @@ public class UFATeamData implements LeagueTeamData {
         }
     }
 
-    static final List<ColumnDef<UFATeamData,?>> COLUMNS = List.of(
-            new ColumnDef<>(Integer.class, "W", Pos.CENTER, Optional.empty(), UFATeamData::getWins),
-            new ColumnDef<>(Integer.class, "L", Pos.CENTER, Optional.empty(), UFATeamData::getLosses),
-            new ColumnDef<>(Double.class, "Pct", Pos.CENTER_RIGHT, Optional.of("%5.3f"), UFATeamData::getWinPercentage),
-            new ColumnDef<>(Integer.class, "+/-", Pos.CENTER_RIGHT, Optional.empty(), UFATeamData::getGoalDifference)
+    static final List<ColumnDef<TeamData,?>> COLUMNS = List.of(
+            new ColumnDef<>(Integer.class, "W", Pos.CENTER, Optional.empty(), TeamData::getWins),
+            new ColumnDef<>(Integer.class, "L", Pos.CENTER, Optional.empty(), TeamData::getLosses),
+            new ColumnDef<>(Double.class, "Pct", Pos.CENTER_RIGHT, Optional.of("%5.3f"), TeamData::getWinPercentage),
+            new ColumnDef<>(Integer.class, "+/-", Pos.CENTER_RIGHT, Optional.empty(), TeamData::getGoalDifference)
     );
 }

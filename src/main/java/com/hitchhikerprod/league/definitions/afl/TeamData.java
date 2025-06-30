@@ -7,7 +7,7 @@ import javafx.geometry.Pos;
 import java.util.List;
 import java.util.Optional;
 
-public class AFLTeamData implements LeagueTeamData {
+public class TeamData implements LeagueTeamData {
     private final String id;
     private final String name;
 
@@ -17,7 +17,7 @@ public class AFLTeamData implements LeagueTeamData {
     int pointsFor;
     int pointsAgainst;
 
-    public AFLTeamData(String id, String name) {
+    public TeamData(String id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -78,13 +78,13 @@ public class AFLTeamData implements LeagueTeamData {
         }
     }
 
-    static final List<ColumnDef<AFLTeamData, ?>> COLUMNS = List.of(
-            new ColumnDef<>(Integer.class, "Pts", Pos.CENTER, Optional.empty(), AFLTeamData::getPoints),
-            new ColumnDef<>(Double.class, "%", Pos.CENTER_RIGHT, Optional.of("%5.1f"), AFLTeamData::getPercentage),
-            new ColumnDef<>(Integer.class, "W", Pos.CENTER, Optional.empty(), AFLTeamData::getWins),
-            new ColumnDef<>(Integer.class, "L", Pos.CENTER, Optional.empty(), AFLTeamData::getLosses),
-            new ColumnDef<>(Integer.class, "D", Pos.CENTER, Optional.empty(), AFLTeamData::getDraws),
-            new ColumnDef<>(Integer.class, "PF", Pos.CENTER, Optional.empty(), AFLTeamData::getPointsFor),
-            new ColumnDef<>(Integer.class, "PA", Pos.CENTER, Optional.empty(), AFLTeamData::getPointsAgainst)
+    static final List<ColumnDef<TeamData, ?>> COLUMNS = List.of(
+            new ColumnDef<>(Integer.class, "Pts", Pos.CENTER, Optional.empty(), TeamData::getPoints),
+            new ColumnDef<>(Double.class, "%", Pos.CENTER_RIGHT, Optional.of("%5.1f"), TeamData::getPercentage),
+            new ColumnDef<>(Integer.class, "W", Pos.CENTER, Optional.empty(), TeamData::getWins),
+            new ColumnDef<>(Integer.class, "L", Pos.CENTER, Optional.empty(), TeamData::getLosses),
+            new ColumnDef<>(Integer.class, "D", Pos.CENTER, Optional.empty(), TeamData::getDraws),
+            new ColumnDef<>(Integer.class, "PF", Pos.CENTER, Optional.empty(), TeamData::getPointsFor),
+            new ColumnDef<>(Integer.class, "PA", Pos.CENTER, Optional.empty(), TeamData::getPointsAgainst)
     );
 }

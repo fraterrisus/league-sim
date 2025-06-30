@@ -17,29 +17,29 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class UFA2025 implements League {
-    private final Map<String, UFATeamData> teams;
+    private final Map<String, TeamData> teams;
     private final RawLeagueData leagueData;
-    private final List<UFAMatchDay> matchDays;
+    private final List<MatchDay> matchDays;
 
-    private UFA2025(Map<String, UFATeamData> teams, RawLeagueData leagueData, List<UFAMatchDay> matchDays) {
+    private UFA2025(Map<String, TeamData> teams, RawLeagueData leagueData, List<MatchDay> matchDays) {
         this.teams = teams;
         this.leagueData = leagueData;
         this.matchDays = matchDays;
     }
 
     public static UFA2025 from(RawLeagueData leagueData) {
-        final Map<String, UFATeamData> teams = leagueData.teams.stream()
-                .map(t -> new UFATeamData(t.getName(), t.getId()))
-                .collect(Collectors.toMap(UFATeamData::getId, t -> t));
+        final Map<String, TeamData> teams = leagueData.teams.stream()
+                .map(t -> new TeamData(t.getName(), t.getId()))
+                .collect(Collectors.toMap(TeamData::getId, t -> t));
 
-        final List<UFAMatchDay> matchDays = new ArrayList<>();
+        final List<MatchDay> matchDays = new ArrayList<>();
         for (RawMatchDay md : leagueData.matchdays) {
-            final UFAMatchDay matchDay = new UFAMatchDay(md.getName());
+            final MatchDay matchDay = new MatchDay(md.getName());
             matchDays.add(matchDay);
             matchDay.setComplete(true);
 
             for (Object game : md.getGames()) {
-                final UFAGameData gameData = switch (game) {
+                final GameData gameData = switch (game) {
                     case String s -> new GameStringConverter(teams).convert(s);
                     case Map map -> new GameMapConverter(teams).convert(map);
                     case RawGame rawGame -> new GameRawConverter(teams).convert(rawGame);
@@ -89,12 +89,12 @@ public class UFA2025 implements League {
     @Override
     public List<LeagueMatchDay> getGames(LeagueTeamData teamData) {
         final List<LeagueMatchDay> result = new ArrayList<>();
-        for (UFAMatchDay matchDay : matchDays) {
-            final List<UFAGameData> filteredGames = matchDay.games.stream()
+        for (MatchDay matchDay : matchDays) {
+            final List<GameData> filteredGames = matchDay.games.stream()
                     .filter(g -> g.hasTeam(teamData))
                     .toList();
             if (!filteredGames.isEmpty()) {
-                final UFAMatchDay filteredMatchDay = new UFAMatchDay(matchDay.getName());
+                final MatchDay filteredMatchDay = new MatchDay(matchDay.getName());
                 filteredMatchDay.setGames(filteredGames);
                 result.add(filteredMatchDay);
             }
@@ -110,10 +110,10 @@ public class UFA2025 implements League {
     @Override
     public void createGame(int matchDayIndex, String awayTeamId, String homeTeamId) {
         if (matchDayIndex < 0) return;
-        final UFAMatchDay matchDay = matchDays.get(matchDayIndex);
-        final UFATeamData awayTeam = teams.get(awayTeamId);
-        final UFATeamData homeTeam = teams.get(homeTeamId);
-        final UFAGameData game = new UFAGameData(awayTeam, homeTeam);
+        final MatchDay matchDay = matchDays.get(matchDayIndex);
+        final TeamData awayTeam = teams.get(awayTeamId);
+        final TeamData homeTeam = teams.get(homeTeamId);
+        final GameData game = new GameData(awayTeam, homeTeam);
         matchDay.addGame(game);
     }
 
@@ -124,16 +124,16 @@ public class UFA2025 implements League {
 
     @Override
     public List<LeagueColumn<?>> getDivisionColumns() {
-        return LeagueUtils.getDivisionColumns(UFATeamData.COLUMNS);
+        return LeagueUtils.getDivisionColumns(TeamData.COLUMNS);
     }
 
     @Override
     public Map<? extends LeagueDivision, List<? extends LeagueTeamData>> getDivisionTables(int matchDayIndex) {
-        teams.values().forEach(UFATeamData::reset);
+        teams.values().forEach(TeamData::reset);
 
         for (int idx = 0; idx <= matchDayIndex; idx++) {
-            final UFAMatchDay matchDay = matchDays.get(idx);
-            for (UFAGameData game : matchDay.games) {
+            final MatchDay matchDay = matchDays.get(idx);
+            for (GameData game : matchDay.games) {
                 if (game.getAwayScore() == null || game.getHomeScore() == null) continue;
                 if (game.getAwayScore() > game.getHomeScore()) {
                     game.getAwayTeam().wins++;
@@ -154,7 +154,7 @@ public class UFA2025 implements League {
                 ));
     }
 
-    private List<UFATeamData> rankTeams(List<String> teamsIn) {
+    private List<TeamData> rankTeams(List<String> teamsIn) {
         final TeamComparator tc = new TeamComparator(this.matchDays);
         return teamsIn.stream()
                 .map(this.teams::get)

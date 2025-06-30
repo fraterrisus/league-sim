@@ -6,13 +6,13 @@ import javafx.beans.property.SimpleObjectProperty;
 import java.util.List;
 import java.util.Objects;
 
-public class UFAGameData implements LeagueGameData {
-    private final UFATeamData awayTeam;
-    private final UFATeamData homeTeam;
+public class GameData implements LeagueGameData {
+    private final TeamData awayTeam;
+    private final TeamData homeTeam;
     private final SimpleObjectProperty<Integer> awayScore;
     private final SimpleObjectProperty<Integer> homeScore;
 
-    public UFAGameData(UFATeamData awayTeam, UFATeamData homeTeam) {
+    public GameData(TeamData awayTeam, TeamData homeTeam) {
         this.awayTeam = awayTeam;
         this.homeTeam = homeTeam;
         this.awayScore = new SimpleObjectProperty<>(null);
@@ -24,12 +24,12 @@ public class UFAGameData implements LeagueGameData {
     }
 
     @Override
-    public UFATeamData getAwayTeam() {
+    public TeamData getAwayTeam() {
         return awayTeam;
     }
 
     @Override
-    public UFATeamData getHomeTeam() {
+    public TeamData getHomeTeam() {
         return homeTeam;
     }
 

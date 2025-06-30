@@ -1,4 +1,4 @@
-package com.hitchhikerprod.league.definitions.afl;
+package com.hitchhikerprod.league.definitions.ufa;
 
 import com.hitchhikerprod.league.beans.LeagueGameData;
 import com.hitchhikerprod.league.beans.LeagueMatchDay;
@@ -6,12 +6,12 @@ import com.hitchhikerprod.league.beans.LeagueMatchDay;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AFLMatchDay implements LeagueMatchDay {
+public class MatchDay implements LeagueMatchDay {
     private final String name;
-    final List<AFLGameData> games;
+    final List<GameData> games;
     private boolean complete;
 
-    public AFLMatchDay(String name) {
+    public MatchDay(String name) {
         this.name = name;
         this.games = new ArrayList<>();
         this.complete = false;
@@ -27,12 +27,12 @@ public class AFLMatchDay implements LeagueMatchDay {
         return games;
     }
 
-    public void setGames(List<AFLGameData> games) {
+    public void setGames(List<GameData> games) {
         this.games.clear();
         this.games.addAll(games);
     }
 
-    public void addGame(AFLGameData game) {
+    public void addGame(GameData game) {
         games.add(game);
     }
 

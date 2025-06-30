@@ -5,16 +5,16 @@ import com.hitchhikerprod.league.util.Converter;
 import java.util.Map;
 import java.util.Objects;
 
-public class GameMapConverter implements Converter<Map, UFAGameData> {
-    final Map<String, UFATeamData> teams;
+public class GameMapConverter implements Converter<Map, GameData> {
+    final Map<String, TeamData> teams;
 
-    public GameMapConverter(Map<String, UFATeamData> teams) {
+    public GameMapConverter(Map<String, TeamData> teams) {
         this.teams = teams;
     }
 
-    private UFATeamData parseTeamName(Object teamNameObj) throws ClassCastException {
+    private TeamData parseTeamName(Object teamNameObj) throws ClassCastException {
         final String teamName = (String)teamNameObj;
-        final UFATeamData team = teams.get(teamName);
+        final TeamData team = teams.get(teamName);
         if (Objects.isNull(team)) {
             throw new RuntimeException("Team " + teamName + " not found");
         }
@@ -35,9 +35,9 @@ public class GameMapConverter implements Converter<Map, UFAGameData> {
     }
     
     @Override
-    public UFAGameData convert(Map that) {
-        UFATeamData awayTeam = null;
-        UFATeamData homeTeam = null;
+    public GameData convert(Map that) {
+        TeamData awayTeam = null;
+        TeamData homeTeam = null;
         Integer awayScore = null;
         Integer homeScore = null;
         
@@ -59,7 +59,7 @@ public class GameMapConverter implements Converter<Map, UFAGameData> {
         if (Objects.isNull(awayTeam) && Objects.isNull(homeTeam)) {
             throw new RuntimeException("One or both teams is missing from game");
         }
-        UFAGameData game = new UFAGameData(awayTeam, homeTeam);
+        GameData game = new GameData(awayTeam, homeTeam);
         game.setAwayScore(awayScore);
         game.setHomeScore(homeScore);
         return game;

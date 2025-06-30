@@ -5,9 +5,9 @@ import com.hitchhikerprod.league.util.Converter;
 
 import java.util.stream.Collectors;
 
-class MatchDayToRawConverter implements Converter<AFLMatchDay, RawMatchDay> {
+class MatchDayToRawConverter implements Converter<MatchDay, RawMatchDay> {
     @Override
-    public RawMatchDay convert(AFLMatchDay that) {
+    public RawMatchDay convert(MatchDay that) {
         final GameToRawConverter gameConverter = new GameToRawConverter();
 
         final RawMatchDay matchDay = new RawMatchDay();

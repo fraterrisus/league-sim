@@ -6,9 +6,9 @@ import com.hitchhikerprod.league.util.Converter;
 import java.util.HashMap;
 import java.util.Map;
 
-class GameToRawConverter implements Converter<AFLGameData, RawGame> {
+class GameToRawConverter implements Converter<GameData, RawGame> {
     @Override
-    public RawGame convert(AFLGameData that) {
+    public RawGame convert(GameData that) {
         final RawGame game = new RawGame();
         game.awayTeam = that.getAwayTeam().getId();
 

@@ -6,15 +6,15 @@ import javafx.beans.property.SimpleObjectProperty;
 import java.util.List;
 import java.util.Objects;
 
-public class AFLGameData implements LeagueGameData {
-    private final AFLTeamData awayTeam;
-    private final AFLTeamData homeTeam;
+public class GameData implements LeagueGameData {
+    private final TeamData awayTeam;
+    private final TeamData homeTeam;
     private final SimpleObjectProperty<Integer> awayGoals;
     private final SimpleObjectProperty<Integer> awayBehinds;
     private final SimpleObjectProperty<Integer> homeGoals;
     private final SimpleObjectProperty<Integer> homeBehinds;
 
-    public AFLGameData(AFLTeamData awayTeam, AFLTeamData homeTeam) {
+    public GameData(TeamData awayTeam, TeamData homeTeam) {
         this.awayTeam = awayTeam;
         this.homeTeam = homeTeam;
         this.awayGoals = new SimpleObjectProperty<>(null);
@@ -24,12 +24,12 @@ public class AFLGameData implements LeagueGameData {
     }
 
     @Override
-    public AFLTeamData getAwayTeam() {
+    public TeamData getAwayTeam() {
         return awayTeam;
     }
 
     @Override
-    public AFLTeamData getHomeTeam() {
+    public TeamData getHomeTeam() {
         return homeTeam;
     }
 
