@@ -1,8 +1,4 @@
 plugins {
-    // use 'gradle shadowJar' to build "fat jar" with all deps
-    // see build/libs/league-sim-0.9-SNAPSHOT-all.jar
-    //id "java"
-    //id "com.gradleup.shadow" version "9.0.0-beta16"
     id "application"
     id "org.openjfx.javafxplugin" version "0.1.0"
     id "org.beryx.jlink" version "3.1.1"
@@ -17,7 +13,7 @@ repositories {
 
 dependencies {
     implementation "org.yaml:snakeyaml:2.4"
-    implementation 'io.github.palexdev:materialfx:11.17.0'
+    //implementation 'io.github.palexdev:materialfx:11.17.0'
 
     testImplementation platform("org.junit:junit-bom:5.10.0")
     testImplementation "org.junit.jupiter:junit-jupiter"

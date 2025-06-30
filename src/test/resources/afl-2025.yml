@@ -1,22 +1,1768 @@
-league:
-  name: 'AFL 2025'
-  type: afl
-teams:
-  - name: Geelong Cats
-    id: GEE
-  - name: Collingwood Magpies
-    id: COL
 divisions:
   - name: AFL
-    teams: [GEE, COL]
+    teams:
+      - ADE
+      - BRI
+      - CAR
+      - COL
+      - ESS
+      - FRE
+      - GCS
+      - GEL
+      - GWS
+      - HAW
+      - MEL
+      - NOR
+      - PORT
+      - RICH
+      - STK
+      - SYD
+      - WB
+      - WCE
+league:
+  name: AFL 2025
+  type: afl-2025
 matchdays:
-  - name: 'Week 1'
-    games:
-      - awayTeam: GEE
-        awayScore:
-          goals: 10
-          behinds: 5
-        homeTeam: COL
-        homeScore:
-          goals: 9
+  - games:
+      - awayScore:
           behinds: 12
+          goals: 14
+        awayTeam: HAW
+        homeScore:
+          behinds: 10
+          goals: 11
+        homeTeam: SYD
+      - awayScore:
+          behinds: 16
+          goals: 6
+        awayTeam: COL
+        homeScore:
+          behinds: 14
+          goals: 15
+        homeTeam: GWS
+    name: Opening Round
+  - games:
+      - awayScore:
+          behinds: 15
+          goals: 9
+        awayTeam: CAR
+        homeScore:
+          behinds: 4
+          goals: 13
+        homeTeam: RICH
+      - awayScore:
+          behinds: 13
+          goals: 12
+        awayTeam: ESS
+        homeScore:
+          behinds: 9
+          goals: 17
+        homeTeam: HAW
+      - awayScore:
+          behinds: 9
+          goals: 10
+        awayTeam: FRE
+        homeScore:
+          behinds: 9
+          goals: 23
+        homeTeam: GEL
+      - awayScore:
+          behinds: 14
+          goals: 12
+        awayTeam: BRI
+        homeScore:
+          behinds: 10
+          goals: 12
+        homeTeam: SYD
+      - awayScore:
+          behinds: 13
+          goals: 14
+        awayTeam: NOR
+        homeScore:
+          behinds: 11
+          goals: 17
+        homeTeam: WB
+      - awayScore:
+          behinds: 9
+          goals: 6
+        awayTeam: PORT
+        homeScore:
+          behinds: 10
+          goals: 21
+        homeTeam: COL
+      - awayScore:
+          behinds: 12
+          goals: 10
+        awayTeam: STK
+        homeScore:
+          behinds: 9
+          goals: 21
+        homeTeam: ADE
+      - awayScore:
+          behinds: 11
+          goals: 11
+        awayTeam: GWS
+        homeScore:
+          behinds: 8
+          goals: 11
+        homeTeam: MEL
+      - awayScore:
+          behinds: 16
+          goals: 20
+        awayTeam: GCS
+        homeScore:
+          behinds: 7
+          goals: 7
+        homeTeam: WCE
+    name: Round 1
+  - games:
+      - awayScore:
+          behinds: 8
+          goals: 12
+        awayTeam: HAW
+        homeScore:
+          behinds: 12
+          goals: 8
+        homeTeam: CAR
+      - awayScore:
+          behinds: 16
+          goals: 10
+        awayTeam: COL
+        homeScore:
+          behinds: 10
+          goals: 10
+        homeTeam: WB
+      - awayScore:
+          behinds: 11
+          goals: 25
+        awayTeam: ADE
+        homeScore:
+          behinds: 10
+          goals: 15
+        homeTeam: ESS
+      - awayScore:
+          behinds: 14
+          goals: 9
+        awayTeam: RICH
+        homeScore:
+          behinds: 14
+          goals: 21
+        homeTeam: PORT
+      - awayScore:
+          behinds: 13
+          goals: 13
+        awayTeam: GEL
+        homeScore:
+          behinds: 8
+          goals: 15
+        homeTeam: STK
+      - awayScore:
+          behinds: 9
+          goals: 11
+        awayTeam: WCE
+        homeScore:
+          behinds: 10
+          goals: 14
+        homeTeam: BRI
+      - awayScore:
+          behinds: 12
+          goals: 9
+        awayTeam: MEL
+        homeScore:
+          behinds: 11
+          goals: 19
+        homeTeam: NOR
+      - awayScore:
+          behinds: 14
+          goals: 9
+        awayTeam: SYD
+        homeScore:
+          behinds: 11
+          goals: 9
+        homeTeam: FRE
+    name: Round 2
+  - games:
+      - awayScore:
+          behinds: 12
+          goals: 8
+        awayTeam: PORT
+        homeScore:
+          behinds: 18
+          goals: 9
+        homeTeam: ESS
+      - awayScore:
+          behinds: 11
+          goals: 12
+        awayTeam: WB
+        homeScore:
+          behinds: 9
+          goals: 11
+        homeTeam: CAR
+      - awayScore:
+          behinds: 12
+          goals: 18
+        awayTeam: GCS
+        homeScore:
+          behinds: 14
+          goals: 8
+        homeTeam: MEL
+      - awayScore:
+          behinds: 11
+          goals: 7
+        awayTeam: RICH
+        homeScore:
+          behinds: 15
+          goals: 20
+        homeTeam: STK
+      - awayScore:
+          behinds: 10
+          goals: 9
+        awayTeam: GWS
+        homeScore:
+          behinds: 16
+          goals: 10
+        homeTeam: HAW
+      - awayScore:
+          behinds: 7
+          goals: 9
+        awayTeam: GEL
+        homeScore:
+          behinds: 10
+          goals: 10
+        homeTeam: BRI
+      - awayScore:
+          behinds: 6
+          goals: 12
+        awayTeam: NOR
+        homeScore:
+          behinds: 12
+          goals: 17
+        homeTeam: ADE
+      - awayScore:
+          behinds: 16
+          goals: 15
+        awayTeam: FRE
+        homeScore:
+          behinds: 8
+          goals: 10
+        homeTeam: WCE
+    name: Round 3
+  - games:
+      - awayScore:
+          behinds: 10
+          goals: 6
+        awayTeam: CAR
+        homeScore:
+          behinds: 15
+          goals: 8
+        homeTeam: COL
+      - awayScore:
+          behinds: 10
+          goals: 6
+        awayTeam: MEL
+        homeScore:
+          behinds: 13
+          goals: 12
+        homeTeam: GEL
+      - awayScore:
+          behinds: 6
+          goals: 14
+        awayTeam: ADE
+        homeScore:
+          behinds: 13
+          goals: 13
+        homeTeam: GCS
+      - awayScore:
+          behinds: 10
+          goals: 18
+        awayTeam: BRI
+        homeScore:
+          behinds: 12
+          goals: 13
+        homeTeam: RICH
+      - awayScore:
+          behinds: 9
+          goals: 18
+        awayTeam: SYD
+        homeScore:
+          behinds: 4
+          goals: 8
+        homeTeam: NOR
+      - awayScore:
+          behinds: 9
+          goals: 7
+        awayTeam: WCE
+        homeScore:
+          behinds: 12
+          goals: 20
+        homeTeam: GWS
+      - awayScore:
+          behinds: 11
+          goals: 13
+        awayTeam: STK
+        homeScore:
+          behinds: 12
+          goals: 10
+        homeTeam: PORT
+      - awayScore:
+          behinds: 9
+          goals: 12
+        awayTeam: WB
+        homeScore:
+          behinds: 7
+          goals: 15
+        homeTeam: FRE
+    name: Round 4
+  - games:
+      - awayScore:
+          behinds: 11
+          goals: 18
+        awayTeam: GEL
+        homeScore:
+          behinds: 10
+          goals: 15
+        homeTeam: ADE
+      - awayScore:
+          behinds: 6
+          goals: 12
+        awayTeam: SYD
+        homeScore:
+          behinds: 13
+          goals: 16
+        homeTeam: COL
+      - awayScore:
+          behinds: 15
+          goals: 21
+        awayTeam: GCS
+        homeScore:
+          behinds: 11
+          goals: 13
+        homeTeam: NOR
+      - awayScore:
+          behinds: 14
+          goals: 6
+        awayTeam: WCE
+        homeScore:
+          behinds: 19
+          goals: 17
+        homeTeam: CAR
+      - awayScore:
+          behinds: 10
+          goals: 18
+        awayTeam: BRI
+        homeScore:
+          behinds: 13
+          goals: 14
+        homeTeam: WB
+      - awayScore:
+          behinds: 6
+          goals: 15
+        awayTeam: ESS
+        homeScore:
+          behinds: 9
+          goals: 8
+        homeTeam: MEL
+      - awayScore:
+          behinds: 12
+          goals: 16
+        awayTeam: FRE
+        homeScore:
+          behinds: 5
+          goals: 7
+        homeTeam: RICH
+      - awayScore:
+          behinds: 14
+          goals: 16
+        awayTeam: GWS
+        homeScore:
+          behinds: 10
+          goals: 12
+        homeTeam: STK
+      - awayScore:
+          behinds: 7
+          goals: 14
+        awayTeam: HAW
+        homeScore:
+          behinds: 13
+          goals: 18
+        homeTeam: PORT
+    name: Round 5
+  - games:
+      - awayScore:
+          behinds: 9
+          goals: 16
+        awayTeam: COL
+        homeScore:
+          behinds: 11
+          goals: 7
+        homeTeam: BRI
+      - awayScore:
+          behinds: 9
+          goals: 24
+        awayTeam: CAR
+        homeScore:
+          behinds: 5
+          goals: 11
+        homeTeam: NOR
+      - awayScore:
+          behinds: 11
+          goals: 11
+        awayTeam: ESS
+        homeScore:
+          behinds: 9
+          goals: 11
+        homeTeam: WCE
+      - awayScore:
+          behinds: 13
+          goals: 14
+        awayTeam: FRE
+        homeScore:
+          behinds: 11
+          goals: 16
+        homeTeam: MEL
+      - awayScore:
+          behinds: 10
+          goals: 4
+        awayTeam: GWS
+        homeScore:
+          behinds: 10
+          goals: 7
+        homeTeam: ADE
+      - awayScore:
+          behinds: 15
+          goals: 9
+        awayTeam: GCS
+        homeScore:
+          behinds: 8
+          goals: 12
+        homeTeam: RICH
+      - awayScore:
+          behinds: 7
+          goals: 13
+        awayTeam: PORT
+        homeScore:
+          behinds: 17
+          goals: 10
+        homeTeam: SYD
+      - awayScore:
+          behinds: 8
+          goals: 8
+        awayTeam: STK
+        homeScore:
+          behinds: 19
+          goals: 18
+        homeTeam: WB
+      - awayScore:
+          behinds: 13
+          goals: 11
+        awayTeam: HAW
+        homeScore:
+          behinds: 14
+          goals: 12
+        homeTeam: GEL
+    name: Round 6
+  - games:
+      - awayScore:
+          behinds: 9
+          goals: 9
+        awayTeam: RICH
+        homeScore:
+          behinds: 11
+          goals: 12
+        homeTeam: MEL
+      - awayScore:
+          behinds: 6
+          goals: 10
+        awayTeam: ESS
+        homeScore:
+          behinds: 11
+          goals: 16
+        homeTeam: COL
+      - awayScore:
+          behinds: 13
+          goals: 9
+        awayTeam: ADE
+        homeScore:
+          behinds: 13
+          goals: 12
+        homeTeam: FRE
+      - awayScore:
+          behinds: 16
+          goals: 17
+        awayTeam: BRI
+        homeScore:
+          behinds: 7
+          goals: 11
+        homeTeam: STK
+      - awayScore:
+          behinds: 10
+          goals: 13
+        awayTeam: NOR
+        homeScore:
+          behinds: 13
+          goals: 14
+        homeTeam: PORT
+      - awayScore:
+          behinds: 11
+          goals: 17
+        awayTeam: WB
+        homeScore:
+          behinds: 9
+          goals: 12
+        homeTeam: GWS
+      - awayScore:
+          behinds: 7
+          goals: 12
+        awayTeam: SYD
+        homeScore:
+          behinds: 15
+          goals: 17
+        homeTeam: GCS
+      - awayScore:
+          behinds: 4
+          goals: 12
+        awayTeam: GEL
+        homeScore:
+          behinds: 10
+          goals: 14
+        homeTeam: CAR
+      - awayScore:
+          behinds: 8
+          goals: 11
+        awayTeam: WCE
+        homeScore:
+          behinds: 16
+          goals: 18
+        homeTeam: HAW
+    name: Round 7
+  - games:
+      - awayScore:
+          behinds: 8
+          goals: 9
+        awayTeam: NOR
+        homeScore:
+          behinds: 11
+          goals: 9
+        homeTeam: ESS
+      - awayScore:
+          behinds: 3
+          goals: 5
+        awayTeam: FRE
+        homeScore:
+          behinds: 10
+          goals: 14
+        homeTeam: STK
+      - awayScore:
+          behinds: 11
+          goals: 5
+        awayTeam: PORT
+        homeScore:
+          behinds: 11
+          goals: 20
+        homeTeam: WB
+      - awayScore:
+          behinds: 8
+          goals: 7
+        awayTeam: CAR
+        homeScore:
+          behinds: 14
+          goals: 16
+        homeTeam: ADE
+      - awayScore:
+          behinds: 12
+          goals: 16
+        awayTeam: MEL
+        homeScore:
+          behinds: 10
+          goals: 11
+        homeTeam: WCE
+      - awayScore:
+          behinds: 12
+          goals: 13
+        awayTeam: GEL
+        homeScore:
+          behinds: 15
+          goals: 12
+        homeTeam: COL
+      - awayScore:
+          behinds: 13
+          goals: 10
+        awayTeam: GWS
+        homeScore:
+          behinds: 15
+          goals: 12
+        homeTeam: SYD
+      - awayScore:
+          behinds: 8
+          goals: 6
+        awayTeam: RICH
+        homeScore:
+          behinds: 13
+          goals: 16
+        homeTeam: HAW
+      - awayScore:
+          behinds: 7
+          goals: 7
+        awayTeam: GCS
+        homeScore:
+          behinds: 12
+          goals: 9
+        homeTeam: BRI
+    name: Round 8
+  - games:
+      - awayScore:
+          behinds: 7
+          goals: 15
+        awayTeam: COL
+        homeScore:
+          behinds: 11
+          goals: 12
+        homeTeam: FRE
+      - awayScore:
+          behinds: 11
+          goals: 11
+        awayTeam: CAR
+        homeScore:
+          behinds: 8
+          goals: 9
+        homeTeam: STK
+      - awayScore:
+          behinds: 13
+          goals: 13
+        awayTeam: HAW
+        homeScore:
+          behinds: 14
+          goals: 7
+        homeTeam: MEL
+      - awayScore:
+          behinds: 15
+          goals: 8
+        awayTeam: SYD
+        homeScore:
+          behinds: 5
+          goals: 11
+        homeTeam: ESS
+      - awayScore:
+          behinds: 12
+          goals: 14
+        awayTeam: WB
+        homeScore:
+          behinds: 16
+          goals: 15
+        homeTeam: GCS
+      - awayScore:
+          behinds: 11
+          goals: 13
+        awayTeam: ADE
+        homeScore:
+          behinds: 12
+          goals: 12
+        homeTeam: PORT
+      - awayScore:
+          behinds: 13
+          goals: 11
+        awayTeam: WCE
+        homeScore:
+          behinds: 15
+          goals: 11
+        homeTeam: RICH
+      - awayScore:
+          behinds: 9
+          goals: 16
+        awayTeam: GWS
+        homeScore:
+          behinds: 17
+          goals: 14
+        homeTeam: GEL
+      - awayScore:
+          behinds: 11
+          goals: 10
+        awayTeam: BRI
+        homeScore:
+          behinds: 11
+          goals: 10
+        homeTeam: NOR
+    name: Round 9
+  - games:
+      - awayScore:
+          behinds: 6
+          goals: 15
+        awayTeam: HAW
+        homeScore:
+          behinds: 8
+          goals: 16
+        homeTeam: GCS
+      - awayScore:
+          behinds: 8
+          goals: 9
+        awayTeam: CAR
+        homeScore:
+          behinds: 12
+          goals: 11
+        homeTeam: SYD
+      - awayScore:
+          behinds: 8
+          goals: 10
+        awayTeam: ADE
+        homeScore:
+          behinds: 12
+          goals: 11
+        homeTeam: COL
+      - awayScore:
+          behinds: 13
+          goals: 17
+        awayTeam: GEL
+        homeScore:
+          behinds: 9
+          goals: 5
+        homeTeam: PORT
+      - awayScore:
+          behinds: 17
+          goals: 13
+        awayTeam: FRE
+        homeScore:
+          behinds: 13
+          goals: 8
+        homeTeam: GWS
+      - awayScore:
+          behinds: 6
+          goals: 5
+        awayTeam: ESS
+        homeScore:
+          behinds: 19
+          goals: 18
+        homeTeam: WB
+      - awayScore:
+          behinds: 6
+          goals: 12
+        awayTeam: NOR
+        homeScore:
+          behinds: 8
+          goals: 11
+        homeTeam: RICH
+      - awayScore:
+          behinds: 15
+          goals: 14
+        awayTeam: MEL
+        homeScore:
+          behinds: 10
+          goals: 13
+        homeTeam: BRI
+      - awayScore:
+          behinds: 8
+          goals: 12
+        awayTeam: STK
+        homeScore:
+          behinds: 12
+          goals: 16
+        homeTeam: WCE
+    name: Round 10
+  - games:
+      - awayScore:
+          behinds: 17
+          goals: 16
+        awayTeam: WB
+        homeScore:
+          behinds: 7
+          goals: 20
+        homeTeam: GEL
+      - awayScore:
+          behinds: 10
+          goals: 8
+        awayTeam: RICH
+        homeScore:
+          behinds: 15
+          goals: 11
+        homeTeam: ESS
+      - awayScore:
+          behinds: 8
+          goals: 17
+        awayTeam: GWS
+        homeScore:
+          behinds: 10
+          goals: 12
+        homeTeam: CAR
+      - awayScore:
+          behinds: 9
+          goals: 14
+        awayTeam: BRI
+        homeScore:
+          behinds: 12
+          goals: 8
+        homeTeam: HAW
+      - awayScore:
+          behinds: 18
+          goals: 15
+        awayTeam: COL
+        homeScore:
+          behinds: 9
+          goals: 9
+        homeTeam: NOR
+      - awayScore:
+          behinds: 9
+          goals: 7
+        awayTeam: PORT
+        homeScore:
+          behinds: 10
+          goals: 15
+        homeTeam: FRE
+      - awayScore:
+          behinds: 14
+          goals: 8
+        awayTeam: WCE
+        homeScore:
+          behinds: 14
+          goals: 19
+        homeTeam: ADE
+      - awayScore:
+          behinds: 6
+          goals: 12
+        awayTeam: SYD
+        homeScore:
+          behinds: 17
+          goals: 19
+        homeTeam: MEL
+      - awayScore:
+          behinds: 8
+          goals: 12
+        awayTeam: GCS
+        homeScore:
+          behinds: 13
+          goals: 8
+        homeTeam: STK
+    name: Round 11
+  - games:
+      - awayScore:
+          behinds: 6
+          goals: 11
+        awayTeam: ESS
+        homeScore:
+          behinds: 12
+          goals: 13
+        homeTeam: BRI
+      - awayScore:
+          behinds: 8
+          goals: 8
+        awayTeam: HAW
+        homeScore:
+          behinds: 11
+          goals: 16
+        homeTeam: COL
+      - awayScore:
+          behinds: 9
+          goals: 11
+        awayTeam: FRE
+        homeScore:
+          behinds: 10
+          goals: 9
+        homeTeam: GCS
+      - awayScore:
+          behinds: 17
+          goals: 10
+        awayTeam: RICH
+        homeScore:
+          behinds: 8
+          goals: 12
+        homeTeam: GWS
+      - awayScore:
+          behinds: 5
+          goals: 21
+        awayTeam: ADE
+        homeScore:
+          behinds: 11
+          goals: 5
+        homeTeam: SYD
+      - awayScore:
+          behinds: 7
+          goals: 14
+        awayTeam: STK
+        homeScore:
+          behinds: 21
+          goals: 7
+        homeTeam: MEL
+      - awayScore:
+          behinds: 14
+          goals: 17
+        awayTeam: GEL
+        homeScore:
+          behinds: 7
+          goals: 11
+        homeTeam: WCE
+    name: Round 12
+  - games:
+      - awayScore:
+          behinds: 9
+          goals: 12
+        awayTeam: HAW
+        homeScore:
+          behinds: 11
+          goals: 8
+        homeTeam: WB
+      - awayScore:
+          behinds: 15
+          goals: 8
+        awayTeam: BRI
+        homeScore:
+          behinds: 8
+          goals: 10
+        homeTeam: ADE
+      - awayScore:
+          behinds: 14
+          goals: 11
+        awayTeam: SYD
+        homeScore:
+          behinds: 12
+          goals: 4
+        homeTeam: RICH
+      - awayScore:
+          behinds: 7
+          goals: 5
+        awayTeam: GCS
+        homeScore:
+          behinds: 7
+          goals: 9
+        homeTeam: GEL
+      - awayScore:
+          behinds: 12
+          goals: 9
+        awayTeam: PORT
+        homeScore:
+          behinds: 8
+          goals: 7
+        homeTeam: GWS
+      - awayScore:
+          behinds: 16
+          goals: 6
+        awayTeam: WCE
+        homeScore:
+          behinds: 8
+          goals: 9
+        homeTeam: NOR
+      - awayScore:
+          behinds: 4
+          goals: 11
+        awayTeam: ESS
+        homeScore:
+          behinds: 12
+          goals: 11
+        homeTeam: CAR
+      - awayScore:
+          behinds: 6
+          goals: 11
+        awayTeam: COL
+        homeScore:
+          behinds: 11
+          goals: 10
+        homeTeam: MEL
+    name: Round 13
+  - games:
+      - awayScore:
+          behinds: 12
+          goals: 20
+        awayTeam: WB
+        homeScore:
+          behinds: 12
+          goals: 8
+        homeTeam: STK
+      - awayScore:
+          behinds: 14
+          goals: 5
+        awayTeam: ADE
+        homeScore:
+          behinds: 11
+          goals: 6
+        homeTeam: HAW
+      - awayScore:
+          behinds: 5
+          goals: 17
+        awayTeam: GWS
+        homeScore:
+          behinds: 18
+          goals: 13
+        homeTeam: BRI
+      - awayScore:
+          behinds: 13
+          goals: 23
+        awayTeam: GEL
+        homeScore:
+          behinds: 8
+          goals: 8
+        homeTeam: ESS
+      - awayScore:
+          behinds: 13
+          goals: 10
+        awayTeam: FRE
+        homeScore:
+          behinds: 7
+          goals: 10
+        homeTeam: NOR
+      - awayScore:
+          behinds: 14
+          goals: 9
+        awayTeam: MEL
+        homeScore:
+          behinds: 9
+          goals: 14
+        homeTeam: PORT
+      - awayScore:
+          behinds: 14
+          goals: 12
+        awayTeam: CAR
+        homeScore:
+          behinds: 10
+          goals: 7
+        homeTeam: WCE
+    name: Round 14
+  - games:
+      - awayScore:
+          behinds: 9
+          goals: 9
+        awayTeam: ESS
+        homeScore:
+          behinds: 8
+          goals: 16
+        homeTeam: FRE
+      - awayScore:
+          behinds: 8
+          goals: 14
+        awayTeam: BRI
+        homeScore:
+          behinds: 15
+          goals: 6
+        homeTeam: GEL
+      - awayScore:
+          behinds: 6
+          goals: 13
+        awayTeam: NOR
+        homeScore:
+          behinds: 13
+          goals: 10
+        homeTeam: CAR
+      - awayScore:
+          behinds: 17
+          goals: 9
+        awayTeam: SYD
+        homeScore:
+          behinds: 10
+          goals: 7
+        homeTeam: PORT
+      - awayScore:
+          behinds: 8
+          goals: 11
+        awayTeam: STK
+        homeScore:
+          behinds: 12
+          goals: 16
+        homeTeam: COL
+      - awayScore:
+          behinds: 15
+          goals: 14
+        awayTeam: GCS
+        homeScore:
+          behinds: 10
+          goals: 16
+        homeTeam: GWS
+      - awayScore:
+          behinds: 8
+          goals: 8
+        awayTeam: RICH
+        homeScore:
+          behinds: 9
+          goals: 21
+        homeTeam: WB
+    name: Round 15
+  - games:
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: CAR
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: PORT
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: WB
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: SYD
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: MEL
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: GCS
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: NOR
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: HAW
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: WCE
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: COL
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: ADE
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: RICH
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: STK
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: FRE
+    name: Round 16
+  - games:
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: WB
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: NOR
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: COL
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: CAR
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: GWS
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: WCE
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: GCS
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: ESS
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: RICH
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: GEL
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: PORT
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: BRI
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: HAW
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: STK
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: FRE
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: SYD
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: MEL
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: ADE
+    name: Round 17
+  - games:
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: BRI
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: CAR
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: COL
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: GCS
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: ADE
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: WB
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: GEL
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: GCS
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: ESS
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: RICH
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: HAW
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: FRE
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: NOR
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: MEL
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: SYD
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: STK
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: WCE
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: PORT
+    name: Round 18
+  - games:
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: GWS
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: ESS
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: WB
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: BRI
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: PORT
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: HAW
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: NOR
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: SYD
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: MEL
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: CAR
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: RICH
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: WCE
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: STK
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: GEL
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: COL
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: FRE
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: GCS
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: ADE
+    name: Round 19
+  - games:
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: CAR
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: HAW
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: WB
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: ESS
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: SYD
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: GWS
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: BRI
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: GCS
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: WCE
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: FRE
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: GEL
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: NOR
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: PORT
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: ADE
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: COL
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: RICH
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: MEL
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: STK
+    name: Round 20
+  - games:
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: GWS
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: WB
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: HAW
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: ADE
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: WCE
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: MEL
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: RICH
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: GCS
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: ESS
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: SYD
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: BRI
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: COL
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: NOR
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: STK
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: PORT
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: GEL
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: CAR
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: FRE
+    name: Round 21
+  - games:
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: COL
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: HAW
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: ESS
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: GEL
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: STK
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: RICH
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: SYD
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: BRI
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: GCS
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: CAR
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: FRE
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: PORT
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: NOR
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: GWS
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: WB
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: MEL
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: ADE
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: WCE
+    name: Round 22
+  - games:
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: STK
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: ESS
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: BRI
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: FRE
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: GWS
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: GCS
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: PORT
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: CAR
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: MEL
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: HAW
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: COL
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: ADE
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: RICH
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: NOR
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: GEL
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: SYD
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: WCE
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: WB
+    name: Round 23
+  - games:
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: STK
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: GWS
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: ADE
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: NOR
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: FRE
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: WCE
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: MEL
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: COL
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: GEL
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: RICH
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: CAR
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: ESS
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: HAW
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: BRI
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: ESS
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: GCS
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: GCS
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: PORT
+      - awayScore:
+          behinds: null
+          goals: null
+        awayTeam: SYD
+        homeScore:
+          behinds: null
+          goals: null
+        homeTeam: WCE
+    name: Round 24
+teams:
+  - id: ADE
+    name: Adelade Crows
+  - id: BRI
+    name: Brisbane Lions
+  - id: CAR
+    name: Carlton Blues
+  - id: COL
+    name: Collingwood Magpies
+  - id: ESS
+    name: Essendon Bombers
+  - id: FRE
+    name: Fremantle Dockers
+  - id: GCS
+    name: Gold Coast Suns
+  - id: GEL
+    name: Geelong Cats
+  - id: GWS
+    name: GWS Giants
+  - id: HAW
+    name: Hawthorn Hawks
+  - id: MEL
+    name: Melbourne Demons
+  - id: NOR
+    name: North Melbourne Kangaroos
+  - id: PORT
+    name: Port Adelade Power
+  - id: RICH
+    name: Richmond Tigers
+  - id: SYD
+    name: Sydney Swans
+  - id: STK
+    name: St Kilda Saints
+  - id: WB
+    name: Western Bulldogs
+  - id: WCE
+    name: West Coast Eagles
