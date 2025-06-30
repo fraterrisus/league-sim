@@ -22,10 +22,9 @@ public class LeagueUtils {
     }
 
     public static int getLatestCompleteMatchDay(List<? extends LeagueMatchDay> matchDays) {
-        if (matchDays.size() == 1) return 0;
         for (int idx = 0; idx < matchDays.size(); idx++) {
             LeagueMatchDay matchDay = matchDays.get(idx);
-            if (!matchDay.isComplete()) return idx - 1;
+            if (!matchDay.isComplete()) return Integer.max(0, idx - 1);
         }
         return matchDays.size() - 1;
     }

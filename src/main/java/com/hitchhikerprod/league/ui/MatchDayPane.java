@@ -58,7 +58,6 @@ public class MatchDayPane {
         gamesGrid = new GridPane();
         gamesGrid.setHgap(10);
         gamesGrid.setVgap(5);
-        setGridConstraints();
 
         root = new VBox(matchDayHbox, gamesGrid);
         root.setFillWidth(true);
@@ -132,10 +131,12 @@ public class MatchDayPane {
 
             final Label homeTeam = new Label(game.getHomeTeam().getId());
             homeTeam.getStyleClass().addAll("cell-align-center", "font-small");
-            gamesGrid.add(homeTeam, colIndex, gameIndex);
+            gamesGrid.add(homeTeam, colIndex++, gameIndex);
 
             gameIndex++;
         }
+
+        setGridConstraints();
     }
 
     /**
@@ -158,27 +159,27 @@ public class MatchDayPane {
     /** Helper method to encapsulate setting the layout constraints on the Games grid. */
     private void setGridConstraints() {
         final ObservableList<ColumnConstraints> columnConstraints = gamesGrid.getColumnConstraints();
+        columnConstraints.clear();
+        final int gridWidth = gamesGrid.getColumnCount();
 
-        final ColumnConstraints column0 = new ColumnConstraints();
-        column0.setFillWidth(true);
-        column0.setHgrow(Priority.ALWAYS);
-        column0.setHalignment(HPos.RIGHT);
+        final ColumnConstraints awayTeamCol = new ColumnConstraints();
+        awayTeamCol.setFillWidth(true);
+        awayTeamCol.setHgrow(Priority.ALWAYS);
+        awayTeamCol.setHalignment(HPos.RIGHT);
+        columnConstraints.add(awayTeamCol);
 
-        final ColumnConstraints column1 = new ColumnConstraints();
-        column1.setFillWidth(false);
-        column1.setHgrow(Priority.NEVER);
-        column1.setHalignment(HPos.CENTER);
+        for (int i = 1; i < gridWidth - 1; i++) {
+            final ColumnConstraints scoreCol = new ColumnConstraints();
+            scoreCol.setFillWidth(false);
+            scoreCol.setHgrow(Priority.NEVER);
+            scoreCol.setHalignment(HPos.CENTER);
+            columnConstraints.add(scoreCol);
+        }
 
-        final ColumnConstraints column2 = new ColumnConstraints();
-        column2.setFillWidth(false);
-        column2.setHgrow(Priority.NEVER);
-        column2.setHalignment(HPos.CENTER);
-
-        final ColumnConstraints column3 = new ColumnConstraints();
-        column3.setFillWidth(true);
-        column3.setHgrow(Priority.ALWAYS);
-        column3.setHalignment(HPos.LEFT);
-
-        columnConstraints.addAll(column0, column1, column2, column3);
+        final ColumnConstraints homeTeamCol = new ColumnConstraints();
+        homeTeamCol.setFillWidth(true);
+        homeTeamCol.setHgrow(Priority.ALWAYS);
+        homeTeamCol.setHalignment(HPos.LEFT);
+        columnConstraints.add(homeTeamCol);
     }
 }

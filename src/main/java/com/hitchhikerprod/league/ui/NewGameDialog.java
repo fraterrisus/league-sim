@@ -1,6 +1,7 @@
 package com.hitchhikerprod.league.ui;
 
 import com.hitchhikerprod.league.beans.LeagueTeamData;
+import javafx.event.ActionEvent;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Dialog;
@@ -15,6 +16,7 @@ import java.util.List;
 public class NewGameDialog extends Dialog<Pair<String,String>> {
     final List<? extends LeagueTeamData> teams;
 
+    final DialogPane outerPane;
     final ChoiceBox<String> awayTeam;
     final ChoiceBox<String> homeTeam;
 
@@ -33,15 +35,24 @@ public class NewGameDialog extends Dialog<Pair<String,String>> {
         innerPane.add(new Label("Home team:"), 0, 1);
         awayTeam = new ChoiceBox<>();
         awayTeam.getItems().setAll(teamNames);
+        awayTeam.setOnAction(this::enableOkButton);
         homeTeam = new ChoiceBox<>();
         homeTeam.getItems().setAll(teamNames);
+        homeTeam.setOnAction(this::enableOkButton);
         innerPane.add(awayTeam, 1, 0);
         innerPane.add(homeTeam, 1, 1);
         
-        final DialogPane outerPane = super.getDialogPane();
+        outerPane = super.getDialogPane();
         outerPane.setContent(innerPane);
         outerPane.getStylesheets().setAll(parent.getScene().getStylesheets());
         outerPane.getButtonTypes().setAll(ButtonType.OK, ButtonType.CANCEL);
+        outerPane.lookupButton(ButtonType.OK).setDisable(true);
+    }
+
+    private void enableOkButton(ActionEvent event) {
+        final boolean disable = awayTeam.getSelectionModel().getSelectedIndex() == -1 ||
+                homeTeam.getSelectionModel().getSelectedIndex() == -1;
+        outerPane.lookupButton(ButtonType.OK).setDisable(disable);
     }
 
     public Pair<String,String> getSelectedItems(ButtonType button) {

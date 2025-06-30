@@ -35,7 +35,7 @@ public class UFAMatchDay implements LeagueMatchDay {
     }
 
     public boolean isComplete() {
-        return complete;
+        return complete && !games.isEmpty();
     }
 
     public void setComplete(boolean complete) {

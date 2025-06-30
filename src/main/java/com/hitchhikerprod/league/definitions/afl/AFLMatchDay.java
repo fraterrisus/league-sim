@@ -38,7 +38,7 @@ public class AFLMatchDay implements LeagueMatchDay {
 
     @Override
     public boolean isComplete() {
-        return complete;
+        return complete && !games.isEmpty();
     }
 
     public void setComplete(boolean complete) {
