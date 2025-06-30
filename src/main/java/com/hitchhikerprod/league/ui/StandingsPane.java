@@ -15,8 +15,10 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class StandingsPane {
     private static final StandingsPane INSTANCE = new StandingsPane();
@@ -54,10 +56,14 @@ public class StandingsPane {
         final ObservableList<Node> children = root.getChildren();
         children.clear();
 
-        for (LeagueDivision div : league.getDivisionTables(matchDayIdx).keySet()) {
-            final Label divName = new Label(div.getName());
-            divName.getStyleClass().add("division-header");
-            children.add(divName);
+        Map<? extends LeagueDivision, List<? extends LeagueTeamData>> divisionMap = league.getDivisionTables(matchDayIdx);
+        final List<LeagueDivision> divisions = divisionMap.keySet().stream()
+                .sorted(Comparator.comparing(LeagueDivision::getName))
+                .collect(Collectors.toList());
+        for (LeagueDivision div : divisions) {
+            final Label divLabel = new Label(div.getName());
+            divLabel.getStyleClass().add("division-header");
+            children.add(divLabel);
 
             final TableView<LeagueTeamData> divTable = new TableView<>();
             divTable.setEditable(false);

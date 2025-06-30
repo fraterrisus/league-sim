@@ -3,6 +3,7 @@ package com.hitchhikerprod.league;
 import com.hitchhikerprod.league.beans.RawLeagueData;
 import com.hitchhikerprod.league.definitions.League;
 import com.hitchhikerprod.league.definitions.afl.AFL2025;
+import com.hitchhikerprod.league.definitions.football.FootballGroupStage;
 import com.hitchhikerprod.league.definitions.ufa.UFA2025;
 import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
@@ -18,6 +19,7 @@ public class LeagueFactory {
 
         return switch (leagueData.league.type) {
             case "afl-2025" -> AFL2025.from(leagueData);
+            case "football-group-stage" -> FootballGroupStage.from(leagueData);
             case "ufa-2025" -> UFA2025.from(leagueData);
             default -> throw new RuntimeException("Unrecognized league format " + leagueData.league.type);
         };
