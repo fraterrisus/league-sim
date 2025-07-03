@@ -13,7 +13,7 @@ import java.util.Map;
 public interface League {
     int getLatestCompleteMatchDay();
     RawLeagueData export();
-    List<String> getMatchDays();
+    List<? extends LeagueMatchDay> getMatchDays();
     Map<? extends LeagueDivision, List<? extends LeagueTeamData>> getDivisionTables(int index);
     List<LeagueColumn<?>> getDivisionColumns();
     List<? extends LeagueGameData> getGames(int matchDayIndex);

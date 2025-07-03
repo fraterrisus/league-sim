@@ -53,8 +53,8 @@ public class FootballGroupStage implements League {
     }
 
     @Override
-    public List<String> getMatchDays() {
-        return LeagueUtils.getMatchDays(matchDays);
+    public List<? extends LeagueMatchDay> getMatchDays() {
+        return matchDays;
     }
 
     @Override

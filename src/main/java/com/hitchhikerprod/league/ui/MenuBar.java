@@ -46,7 +46,7 @@ public class MenuBar {
         newGameMI.setAccelerator(new KeyCharacterCombination("G", KeyCombination.CONTROL_DOWN, KeyCombination.SHIFT_DOWN));
         items.put("game.newGame", newGameMI);
 
-        final MenuItem newMatchDayMI = new MenuItem("Add Match Day...");
+        final MenuItem newMatchDayMI = new MenuItem("Match Days...");
         newMatchDayMI.setDisable(true);
         items.put("game.newMatchDay", newMatchDayMI);
 
@@ -87,6 +87,7 @@ public class MenuBar {
         items.get("file.save").setDisable(false);
         items.get("file.saveAs").setDisable(false);
         items.get("game.newGame").setDisable(false);
+        items.get("game.newMatchDay").setDisable(false);
     }
 
     private void activateFileMenu(LeagueApp app) {
@@ -95,7 +96,7 @@ public class MenuBar {
         items.get("file.save").setOnAction(ev -> app.menuSave());
         items.get("file.saveAs").setOnAction(ev -> app.menuSaveAs());
         items.get("game.newGame").setOnAction(ev -> app.menuNewGame());
-        items.get("game.newMatchDay").setOnAction(ev -> app.menuNewMatchDay());
+        items.get("game.newMatchDay").setOnAction(ev -> app.menuEditMatchDays());
     }
 
     public Node asNode() {

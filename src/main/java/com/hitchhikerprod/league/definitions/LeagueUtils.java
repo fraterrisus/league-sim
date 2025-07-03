@@ -37,10 +37,6 @@ public class LeagueUtils {
         return matchDays.size() - 1;
     }
 
-    public static List<String> getMatchDays(List<? extends LeagueMatchDay> matchDays) {
-        return matchDays.stream().map(LeagueMatchDay::getName).toList();
-    }
-
     @FunctionalInterface
     public interface LeagueFactory<L, T, M> {
         L from(Map<String, T> teamData, RawLeagueData leagueData, List<M> matchDayData);
@@ -70,7 +66,7 @@ public class LeagueUtils {
             matchDay.setGames(gameData);
             matchDay.setComplete(gameData.stream().allMatch(G::isComplete));
             return matchDay;
-        }).toList();
+        }).collect(Collectors.toList());
 
         return leagueFactory.from(teams, leagueData, matchDays);
     }

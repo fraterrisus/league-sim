@@ -2,6 +2,7 @@ package com.hitchhikerprod.league.ui;
 
 import com.hitchhikerprod.league.LeagueApp;
 import com.hitchhikerprod.league.beans.LeagueGameData;
+import com.hitchhikerprod.league.beans.LeagueMatchDay;
 import com.hitchhikerprod.league.definitions.League;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleObjectProperty;
@@ -26,6 +27,7 @@ import javafx.util.converter.IntegerStringConverter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class MatchDayPane {
     private static final MatchDayPane INSTANCE  = new MatchDayPane();
@@ -76,10 +78,25 @@ public class MatchDayPane {
         return root;
     }
 
-    /** Resets the values in the Match Day dropdown. */
-    public void setMatchDays(List<String> strings) {
+    /** Resets the values in the Match Day dropdown, while trying to preserve the selected match day. */
+    public void setMatchDays(League league) {
+        final String selected = matchDaySelector.getSelectionModel().getSelectedItem();
         matchDaySelector.getItems().clear();
-        matchDaySelector.getItems().addAll(strings);
+        matchDaySelector.getItems().addAll(league.getMatchDays().stream()
+                .map(LeagueMatchDay::getName)
+                .toList());
+        if (Objects.nonNull(selected) && !selected.isBlank()) {
+            matchDaySelector.setValue(selected);
+        }
+    }
+
+    /** Resets the values in the Match Day dropdown and sets the selection to the requested index. */
+    public void setMatchDays(League league, int index) {
+        matchDaySelector.getItems().clear();
+        matchDaySelector.getItems().addAll(league.getMatchDays().stream()
+                .map(LeagueMatchDay::getName)
+                .toList());
+        matchDaySelector.getSelectionModel().select(index);
     }
 
     /** Returns the current value of the Match Day dropdown. */

@@ -14,7 +14,7 @@ class LeagueFactoryDataParsingTest {
         final StringBuilder builder = new StringBuilder();
         try (final InputStream is = this.getClass().getClassLoader().getResourceAsStream(resourceName)) {
             final BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-            String line = null;
+            String line;
             while ((line = reader.readLine()) != null) {
                 builder.append(line);
                 builder.append("\n");

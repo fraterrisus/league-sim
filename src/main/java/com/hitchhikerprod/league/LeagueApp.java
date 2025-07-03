@@ -1,9 +1,11 @@
 package com.hitchhikerprod.league;
 
+import com.hitchhikerprod.league.beans.LeagueMatchDay;
 import com.hitchhikerprod.league.beans.LeagueTeamData;
 import com.hitchhikerprod.league.definitions.League;
 import com.hitchhikerprod.league.tasks.ReadLeagueFile;
 import com.hitchhikerprod.league.tasks.SaveLeagueFile;
+import com.hitchhikerprod.league.ui.EditMatchDaysDialog;
 import com.hitchhikerprod.league.ui.MatchDayPane;
 import com.hitchhikerprod.league.ui.NewGameDialog;
 import com.hitchhikerprod.league.ui.RootWindow;
@@ -13,6 +15,8 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -108,8 +112,11 @@ public class LeagueApp extends Application {
         });
     }
 
-    public void menuNewMatchDay() {
-
+    public void menuEditMatchDays() {
+        final ObservableList<? extends LeagueMatchDay> leagueMatchDays = FXCollections.observableList(league.getMatchDays());
+        final EditMatchDaysDialog dialog = new EditMatchDaysDialog(stage, leagueMatchDays);
+        dialog.showAndWait();
+        MatchDayPane.getInstance().setMatchDays(league);
     }
 
     public void menuQuit() {
@@ -206,8 +213,7 @@ public class LeagueApp extends Application {
 
         standingsPane.buildDivisionsPane(league, latestCompleteMatchDay);
         standingsPane.setStandings(league, latestCompleteMatchDay);
-        matchDayPane.setMatchDays(league.getMatchDays());
-        matchDayPane.setSelectedMatchDay(latestCompleteMatchDay);
+        matchDayPane.setMatchDays(league, latestCompleteMatchDay);
         matchDayPane.setGamesList(league, latestCompleteMatchDay);
 
         matchDayPane.setMatchDayCallback(ev -> {
