@@ -5,9 +5,7 @@ import com.hitchhikerprod.league.beans.LeagueDivision;
 import com.hitchhikerprod.league.beans.LeagueGameData;
 import com.hitchhikerprod.league.beans.LeagueMatchDay;
 import com.hitchhikerprod.league.beans.LeagueTeamData;
-import com.hitchhikerprod.league.beans.RawGame;
 import com.hitchhikerprod.league.beans.RawLeagueData;
-import com.hitchhikerprod.league.beans.RawMatchDay;
 import com.hitchhikerprod.league.definitions.League;
 import com.hitchhikerprod.league.definitions.LeagueUtils;
 
@@ -51,23 +49,13 @@ public class UFA2025 implements League {
 
     @Override
     public RawLeagueData export() {
+        final MatchDayToRawConverter matchDayConverter = new MatchDayToRawConverter();
+
         final RawLeagueData doc = new RawLeagueData();
         doc.league = this.leagueData.league;
         doc.teams = this.leagueData.teams;
         doc.divisions = this.leagueData.divisions;
-        doc.matchdays = this.matchDays.stream().map(md -> {
-            final RawMatchDay matchDay = new RawMatchDay();
-            matchDay.setName(md.getName());
-            matchDay.setGames(md.games.stream().map(g -> {
-                final RawGame game = new RawGame();
-                game.awayTeam = g.getAwayTeam().getId();
-                game.awayScore = g.getAwayScore();
-                game.homeTeam = g.getHomeTeam().getId();
-                game.homeScore = g.getHomeScore();
-                return game;
-            }).collect(Collectors.toList()));
-            return matchDay;
-        }).toList();
+        doc.matchdays = this.matchDays.stream().map(matchDayConverter::convert).toList();
         return doc;
     }
 

@@ -43,7 +43,7 @@ public class FootballGroupStage implements League {
         doc.league = this.leagueData.league;
         doc.teams = this.leagueData.teams;
         doc.divisions = this.leagueData.divisions;
-        doc.matchdays = this.matchDays.stream().map(matchDayConverter::convert).collect(Collectors.toList());
+        doc.matchdays = this.matchDays.stream().map(matchDayConverter::convert).toList();
         return doc;
     }
 
