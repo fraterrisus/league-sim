@@ -26,21 +26,13 @@ public class AFL2025 implements League {
     }
 
     public static AFL2025 from(RawLeagueData leagueData) {
-        final Map<String, TeamData> teams = leagueData.teams.stream()
-                .map(t -> new TeamData(t.getId(), t.getName()))
-                .collect(Collectors.toMap(TeamData::getId, t -> t));
-
-        final List<MatchDay> matchDays = leagueData.matchdays.stream().map(md -> {
-            final GameRawConverter rawConverter = new GameRawConverter(teams);
-
-            final MatchDay matchDay = new MatchDay(md.getName());
-            final List<GameData> gameData = md.getGames().stream().map(rawConverter::convert).toList();
-            matchDay.setGames(gameData);
-            matchDay.setComplete(gameData.stream().allMatch(GameData::isComplete));
-            return matchDay;
-        }).toList();
-
-        return new AFL2025(teams, leagueData, matchDays);
+        return LeagueUtils.newLeagueFrom(
+                leagueData,
+                t -> new TeamData(t.getId(), t.getName()),
+                GameRawConverter::new,
+                MatchDay::new,
+                AFL2025::new
+        );
     }
 
     @Override

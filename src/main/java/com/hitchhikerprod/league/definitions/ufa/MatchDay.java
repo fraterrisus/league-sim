@@ -27,9 +27,12 @@ public class MatchDay implements LeagueMatchDay {
         return games;
     }
 
-    public void setGames(List<GameData> games) {
+    public void setGames(List<? extends LeagueGameData> games) throws ClassCastException {
         this.games.clear();
-        this.games.addAll(games);
+        if (games.isEmpty()) return;
+        for (LeagueGameData game : games) {
+            this.games.add((GameData) game);
+        }
     }
 
     public void addGame(GameData game) {

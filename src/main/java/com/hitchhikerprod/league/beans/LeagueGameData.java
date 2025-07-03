@@ -11,6 +11,7 @@ public interface LeagueGameData {
     Integer getHomeScore();
     List<SimpleObjectProperty<Integer>> getAwayScoreProperties();
     List<SimpleObjectProperty<Integer>> getHomeScoreProperties();
+    boolean isComplete();
 
     default boolean hasTeam(LeagueTeamData team) {
         return (getAwayTeam() == team || getHomeTeam() == team);

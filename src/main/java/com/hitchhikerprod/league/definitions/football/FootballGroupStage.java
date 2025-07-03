@@ -26,21 +26,13 @@ public class FootballGroupStage implements League {
     }
 
     public static FootballGroupStage from(RawLeagueData leagueData) {
-        final Map<String, TeamData> teams = leagueData.teams.stream()
-                .map(t -> new TeamData(t.getName(), t.getId()))
-                .collect(Collectors.toMap(TeamData::getId, t -> t));
-
-        final List<MatchDay> matchDays = leagueData.matchdays.stream().map(md -> {
-            final GameRawConverter rawConverter = new GameRawConverter(teams);
-
-            final MatchDay matchDay = new MatchDay(md.getName());
-            final List<GameData> gameData = md.getGames().stream().map(rawConverter::convert).toList();
-            matchDay.setGames(gameData);
-            matchDay.setComplete(gameData.stream().allMatch(GameData::isComplete));
-            return matchDay;
-        }).toList();
-
-        return new FootballGroupStage(teams, leagueData, matchDays);
+        return LeagueUtils.newLeagueFrom(
+                leagueData,
+                t -> new TeamData(t.getName(), t.getId()),
+                GameRawConverter::new,
+                MatchDay::new,
+                FootballGroupStage::new
+        );
     }
 
     @Override

@@ -28,16 +28,15 @@ public class UFA2025 implements League {
     }
 
     public static UFA2025 from(RawLeagueData leagueData) {
-        final Map<String, TeamData> teams = leagueData.teams.stream()
-                .map(t -> new TeamData(t.getName(), t.getId()))
-                .collect(Collectors.toMap(TeamData::getId, t -> t));
-
-        final List<MatchDay> matchDays = new ArrayList<>();
+        return LeagueUtils.newLeagueFrom(
+                leagueData,
+                t -> new TeamData(t.getName(), t.getId()),
+                GameRawConverter::new,
+                MatchDay::new,
+                UFA2025::new
+        );
+/*
         for (RawMatchDay md : leagueData.matchdays) {
-            final MatchDay matchDay = new MatchDay(md.getName());
-            matchDays.add(matchDay);
-            matchDay.setComplete(true);
-
             for (Object game : md.getGames()) {
                 final GameData gameData = switch (game) {
                     case String s -> new GameStringConverter(teams).convert(s);
@@ -45,13 +44,9 @@ public class UFA2025 implements League {
                     case RawGame rawGame -> new GameRawConverter(teams).convert(rawGame);
                     case null, default -> throw new RuntimeException("Can't parse game of unknown type");
                 };
-
-                matchDay.addGame(gameData);
-                if (!gameData.isComplete()) matchDay.setComplete(false);
             }
         }
-
-        return new UFA2025(teams, leagueData, matchDays);
+*/
     }
 
     @Override
