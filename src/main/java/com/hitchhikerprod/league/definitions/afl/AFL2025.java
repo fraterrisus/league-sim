@@ -110,6 +110,11 @@ public class AFL2025 implements League {
     }
 
     @Override
+    public void createTeam(int divisionIndex, String teamName, String teamId) {
+        //divisions.get(divisionIndex).getObservableTeams().add(new TeamData(teamName, teamId));
+    }
+
+    @Override
     public ObservableList<? extends LeagueDivision> getDivisions() {
         return divisions;
     }

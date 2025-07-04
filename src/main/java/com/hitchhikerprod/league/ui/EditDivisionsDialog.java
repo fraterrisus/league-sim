@@ -4,14 +4,15 @@ import com.hitchhikerprod.league.beans.LeagueDivision;
 import com.hitchhikerprod.league.beans.LeagueTeamData;
 import com.hitchhikerprod.league.definitions.League;
 import javafx.beans.Observable;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MultipleSelectionModel;
 import javafx.scene.control.SelectionMode;
@@ -33,7 +34,7 @@ public class EditDivisionsDialog extends Dialog<Void> {
     private final League league;
 
     private final ListView<? extends LeagueDivision> divisionList;
-    private final ListView<? extends LeagueTeamData> teamList;
+    private ListView<? extends LeagueTeamData> teamList;
 
     private final Button divUpButton;
     private final Button divDownButton;
@@ -42,6 +43,8 @@ public class EditDivisionsDialog extends Dialog<Void> {
 
     private final Button teamNewButton;
     private final Button teamDeleteButton;
+
+    private final HBox innerPane;
 
     public EditDivisionsDialog(Window parent, League league) {
         super();
@@ -103,7 +106,7 @@ public class EditDivisionsDialog extends Dialog<Void> {
         final VBox teamButtons = new VBox(teamNewButton, teamDeleteButton);
         teamButtons.setAlignment(Pos.CENTER);
 
-        final HBox innerPane = new HBox(divisionList, divButtons, teamList, teamButtons);
+        innerPane = new HBox(divisionList, divButtons, teamList, teamButtons);
 
         final DialogPane outerPane = super.getDialogPane();
         outerPane.setContent(innerPane);
@@ -111,16 +114,24 @@ public class EditDivisionsDialog extends Dialog<Void> {
         outerPane.getButtonTypes().setAll(ButtonType.OK);
     }
 
-    private <T extends LeagueTeamData> ListCell<T> teamCellFactory(ListView<T> view) {
-        return null;
-    }
-
-    private <T extends LeagueDivision> void getDivisionSelectionHandler(Observable observable, T oldValue, T newValue) {
+    private <D extends LeagueDivision> void getDivisionSelectionHandler(Observable observable, D oldValue, D newValue) {
         final boolean disable = Objects.isNull(newValue);
         divUpButton.setDisable(disable);
         divDownButton.setDisable(disable);
         divDeleteButton.setDisable(disable);
-        setTeamsForDivision(newValue);
+        teamNewButton.setDisable(disable);
+        rebuildTeamList(newValue.getObservableTeams());
+    }
+
+    private void rebuildTeamList(ObservableList<? extends LeagueTeamData> teams) {
+        teamList = new ListView<>(teams);
+        teamList.setCellFactory(CellFactories::nameCellFactory);
+        final MultipleSelectionModel<? extends LeagueTeamData> teamSelectionModel = teamList.getSelectionModel();
+        teamSelectionModel.setSelectionMode(SelectionMode.SINGLE);
+        teamSelectionModel.selectedItemProperty().addListener(this::getTeamSelectionHandler);
+        final ObservableList<Node> children = innerPane.getChildren();
+        children.remove(2);
+        children.add(2, teamList);
     }
 
     private <T extends LeagueTeamData> void getTeamSelectionHandler(Observable observable, T oldValue, T newValue) {
@@ -146,14 +157,14 @@ public class EditDivisionsDialog extends Dialog<Void> {
     }
 
     private EventHandler<ActionEvent> getTeamAddHandler() {
-        return event -> {};
+        return event ->
+            new NewTeamDialog(parent).showAndWait()
+                    .ifPresent(newTeam -> league.createTeam(
+                            divisionList.getSelectionModel().getSelectedIndex(),
+                            newTeam.getKey(), newTeam.getValue()));
     }
 
     private EventHandler<ActionEvent> getTeamDeleteHandler() {
         return event -> {};
-    }
-
-    private <T extends LeagueDivision> void setTeamsForDivision(T division) {
-        if (Objects.isNull(division)) return;
     }
 }

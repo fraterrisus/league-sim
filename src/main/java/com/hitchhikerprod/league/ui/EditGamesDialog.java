@@ -14,7 +14,6 @@ import javafx.scene.control.MultipleSelectionModel;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Window;
-import javafx.util.Pair;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -75,10 +74,8 @@ public class EditGamesDialog extends AbstractListDialog {
     }
 
     private EventHandler<ActionEvent> getAddHandler() {
-        return event -> {
-            final Optional<Pair<String, String>> pair = new NewGameDialog(parent, league.getTeams()).showAndWait();
-            pair.ifPresent(teams -> league.createGame(matchDayIndex, teams.getKey(), teams.getValue()));
-        };
+        return event -> new NewGameDialog(parent, league.getTeams()).showAndWait()
+                .ifPresent(teams -> league.createGame(matchDayIndex, teams.getKey(), teams.getValue()));
     }
 
     private EventHandler<ActionEvent> getDeleteHandler() {

@@ -30,4 +30,5 @@ public interface League {
     void createGame(int matchDayIndex, String awayTeamId, String homeTeamId);
 
     List<? extends LeagueTeamData> getTeams();
+    void createTeam(int divisionIndex, String teamName, String teamId);
 }

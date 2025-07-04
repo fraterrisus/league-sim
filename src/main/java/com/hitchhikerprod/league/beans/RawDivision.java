@@ -1,5 +1,8 @@
 package com.hitchhikerprod.league.beans;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,5 +31,10 @@ public class RawDivision implements LeagueDivision {
 
     public void setTeams(List<String> teams) {
         this.teams = teams;
+    }
+
+    // FIXME
+    public ObservableList<? extends LeagueTeamData> getObservableTeams() {
+        return FXCollections.emptyObservableList();
     }
 }

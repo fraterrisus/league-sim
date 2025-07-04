@@ -31,6 +31,7 @@ public class Division implements LeagueDivision {
         teams.addAll(newTeams);
     }
 
+    @Override
     public ObservableList<TeamData> getObservableTeams() {
         return teams;
     }
