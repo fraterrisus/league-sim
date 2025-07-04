@@ -27,7 +27,7 @@ public class NewGameDialog extends Dialog<Pair<String,String>> {
         super.setResultConverter(this::getSelectedItems);
 
         this.teams = teams;
-        final List<String> teamNames = teams.stream().map(LeagueTeamData::getName).toList();
+        final List<String> teamNames = teams.stream().map(LeagueTeamData::getName).sorted().toList();
         
         final GridPane innerPane = new GridPane();
         innerPane.setHgap(10);

@@ -6,10 +6,10 @@ import com.hitchhikerprod.league.util.Converter;
 import java.util.Map;
 import java.util.Objects;
 
-public class GameRawConverter implements Converter<RawGame, GameData> {
+public class GameDataImporter implements Converter<RawGame, GameData> {
     final Map<String, TeamData> teams;
 
-    public GameRawConverter(Map<String, TeamData> teams) {
+    public GameDataImporter(Map<String, TeamData> teams) {
         this.teams = teams;
     }
 

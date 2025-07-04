@@ -20,7 +20,7 @@ public class LeagueFactory {
         return switch (leagueData.league.type) {
             case "afl-2025" -> AFL2025.from(leagueData);
             case "football-group-stage" -> FootballGroupStage.from(leagueData);
-            case "ufa-2025" -> UFA2025.from(leagueData);
+            case UFA2025.LEAGUE_TYPE -> UFA2025.from(leagueData);
             default -> throw new RuntimeException("Unrecognized league format " + leagueData.league.type);
         };
     }

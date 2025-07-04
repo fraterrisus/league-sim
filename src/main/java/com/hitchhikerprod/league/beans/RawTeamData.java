@@ -4,6 +4,13 @@ public class RawTeamData implements LeagueTeamData {
     private String name;
     private String id;
 
+    public static RawTeamData from(String name, String id) {
+        final RawTeamData out = new RawTeamData();
+        out.name = name;
+        out.id = id;
+        return out;
+    }
+
     public String getName() {
         return name;
     }

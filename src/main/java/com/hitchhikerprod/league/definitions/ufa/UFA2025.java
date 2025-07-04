@@ -6,39 +6,55 @@ import com.hitchhikerprod.league.beans.LeagueGameData;
 import com.hitchhikerprod.league.beans.LeagueMatchDay;
 import com.hitchhikerprod.league.beans.LeagueTeamData;
 import com.hitchhikerprod.league.beans.RawDivision;
+import com.hitchhikerprod.league.beans.RawLeague;
 import com.hitchhikerprod.league.beans.RawLeagueData;
+import com.hitchhikerprod.league.beans.RawMatchDay;
+import com.hitchhikerprod.league.beans.RawTeamData;
 import com.hitchhikerprod.league.definitions.League;
 import com.hitchhikerprod.league.definitions.LeagueUtils;
+import com.hitchhikerprod.league.util.Converter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class UFA2025 implements League {
-    private final Map<String, TeamData> teams;
-    private final RawLeagueData leagueData;
-    private final ObservableList<RawDivision> divisions;
+    public static final String LEAGUE_TYPE = "ufa-2025";
+
+    private final String leagueName;
+    private final ObservableList<Division> divisions;
     private final ObservableList<MatchDay> matchDays;
 
-    private UFA2025(Map<String, TeamData> teams, RawLeagueData leagueData, List<MatchDay> matchDays) {
-        this.teams = teams;
-        this.leagueData = leagueData;
-        this.divisions = FXCollections.observableArrayList(leagueData.divisions);
-        this.matchDays = FXCollections.observableList(matchDays);
+    private UFA2025(String leagueName, List<Division> divisions, List<MatchDay> matchDays) {
+        this.leagueName = leagueName;
+        // observableArrayList is a copy constructor that creates a new ArrayList as a backing store for the ObsList
+        this.divisions = FXCollections.observableArrayList(divisions);
+        this.matchDays = FXCollections.observableArrayList(matchDays);
     }
 
     public static UFA2025 from(RawLeagueData leagueData) {
-        return LeagueUtils.newLeagueFrom(
-                leagueData,
-                t -> new TeamData(t.getName(), t.getId()),
-                GameRawConverter::new,
-                MatchDay::new,
-                UFA2025::new
-        );
-/*
+        final Converter<RawTeamData, TeamData> teamImporter = t -> new TeamData(t.getName(), t.getId());
+        final Map<String, TeamData> importedTeams = leagueData.teams.stream()
+                .map(teamImporter::convert)
+                .collect(Collectors.toMap(TeamData::getId, t1 -> t1));
+
+        final Converter<RawDivision, Division> divisionImporter = new DivisionImporter(importedTeams);
+        final List<Division> importedDivisions = leagueData.divisions.stream()
+                .map(divisionImporter::convert).toList();
+
+        final Converter<RawMatchDay, MatchDay> matchDayImporter = new MatchDayImporter(importedTeams);
+        final List<MatchDay> importedMatchDays = leagueData.matchdays.stream()
+                .map(matchDayImporter::convert).toList();
+
+        return new UFA2025(leagueData.league.name, importedDivisions, importedMatchDays);
+    }
+
+    /*  You can `switch` on classes now:
         for (RawMatchDay md : leagueData.matchdays) {
             for (Object game : md.getGames()) {
                 final GameData gameData = switch (game) {
@@ -50,17 +66,19 @@ public class UFA2025 implements League {
             }
         }
 */
-    }
 
     @Override
     public RawLeagueData export() {
-        final MatchDayToRawConverter matchDayConverter = new MatchDayToRawConverter();
+        final Converter<Division, Stream<RawTeamData>> teamExporter = new TeamExporter();
+        final Converter<Division, RawDivision> divisionExporter = new DivisionExporter();
+        final Converter<MatchDay, RawMatchDay> matchDayExporter = new MatchDayExporter();
 
         final RawLeagueData doc = new RawLeagueData();
-        doc.league = this.leagueData.league;
-        doc.teams = this.leagueData.teams;
-        doc.divisions = this.divisions;
-        doc.matchdays = this.matchDays.stream().map(matchDayConverter::convert).toList();
+        doc.league = RawLeague.from(this.leagueName, LEAGUE_TYPE);
+        doc.teams = this.divisions.stream().flatMap(teamExporter::convert)
+                .sorted(Comparator.comparing(RawTeamData::getName)).toList();
+        doc.divisions = this.divisions.stream().map(divisionExporter::convert).toList();
+        doc.matchdays = this.matchDays.stream().map(matchDayExporter::convert).toList();
         return doc;
     }
 
@@ -109,15 +127,15 @@ public class UFA2025 implements League {
     public void createGame(int matchDayIndex, String awayTeamId, String homeTeamId) {
         if (matchDayIndex < 0) return;
         final MatchDay matchDay = matchDays.get(matchDayIndex);
-        final TeamData awayTeam = teams.get(awayTeamId);
-        final TeamData homeTeam = teams.get(homeTeamId);
+        final TeamData awayTeam = getTeamById(awayTeamId);
+        final TeamData homeTeam = getTeamById(homeTeamId);
         final GameData game = new GameData(awayTeam, homeTeam);
         matchDay.addGame(game);
     }
 
     @Override
     public List<? extends LeagueTeamData> getTeams() {
-        return leagueData.teams;
+        return divisions.stream().flatMap(div -> div.getObservableTeams().stream()).toList();
     }
 
     @Override
@@ -127,12 +145,12 @@ public class UFA2025 implements League {
 
     @Override
     public void addDivision(int index, String name) {
-        divisions.add(index, RawDivision.of(name));
+        divisions.add(index, new Division(name));
     }
 
     @Override
     public void addDivision(String name) {
-        divisions.add(RawDivision.of(name));
+        divisions.add(new Division(name));
     }
 
     @Override
@@ -142,7 +160,7 @@ public class UFA2025 implements League {
 
     @Override
     public Map<? extends LeagueDivision, List<? extends LeagueTeamData>> getDivisionTables(int matchDayIndex) {
-        teams.values().forEach(TeamData::reset);
+        resetTeamData();
 
         for (int idx = 0; idx <= matchDayIndex; idx++) {
             final MatchDay matchDay = matchDays.get(idx);
@@ -160,13 +178,26 @@ public class UFA2025 implements League {
             }
         }
 
-        return divisions.stream().collect(Collectors.toMap(div -> div, div -> rankTeams(div.getTeams())));
+        return divisions.stream().collect(Collectors.toMap(div -> div, div -> rankTeams(div.getObservableTeams())));
     }
 
-    private List<TeamData> rankTeams(List<String> teamsIn) {
+    private TeamData getTeamById(String teamId) {
+        return divisions.stream()
+                .flatMap(div -> div.getObservableTeams().stream())
+                .filter(team -> team.getId().equals(teamId))
+                .findFirst()
+                .orElseThrow();
+    }
+
+    private void resetTeamData() {
+        divisions.stream()
+                .flatMap(div -> div.getObservableTeams().stream())
+                .forEach(TeamData::reset);
+    }
+
+    private List<TeamData> rankTeams(List<TeamData> teamsIn) {
         final TeamComparator tc = new TeamComparator(this.matchDays);
         return teamsIn.stream()
-                .map(this.teams::get)
                 .sorted(tc)
                 .toList()
                 .reversed();
