@@ -2,6 +2,8 @@ package com.hitchhikerprod.league.ui;
 
 import com.hitchhikerprod.league.beans.LeagueMatchDay;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -21,6 +23,7 @@ import java.util.Collections;
 import java.util.Objects;
 
 public class EditMatchDaysDialog extends Dialog<Void> {
+    final ListView<? extends LeagueMatchDay> matchDayView;
 
     public EditMatchDaysDialog(Window parent, ObservableList<? extends LeagueMatchDay> matchDays) {
         super();
@@ -29,10 +32,9 @@ public class EditMatchDaysDialog extends Dialog<Void> {
         super.setResultConverter(buttonType -> null);
         super.setResizable(true);
 
-        final ListView<? extends LeagueMatchDay> matchDayList;
-        matchDayList = new ListView<>(matchDays);
-        matchDayList.setCellFactory(this::cellFactory);
-        matchDayList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        matchDayView = new ListView<>(matchDays);
+        matchDayView.setCellFactory(this::cellFactory);
+        matchDayView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
         final InputStream arrowImageData = Objects.requireNonNull(getClass().getResourceAsStream("arrow-right.png"));
         final Image arrowImage = new Image(arrowImageData, 32, 32, true, true);
@@ -41,19 +43,19 @@ public class EditMatchDaysDialog extends Dialog<Void> {
         upArrowNode.setRotate(-90.0);
         final Button upButton = new Button();
         upButton.setGraphic(upArrowNode);
-        upButton.setOnAction(event -> reorderList(matchDayList, -1));
+        upButton.setOnAction(getReorderHandler(-1));
 
         final ImageView downArrowNode = new ImageView(arrowImage);
         downArrowNode.setRotate(90.0);
         final Button downButton = new Button();
         downButton.setGraphic(downArrowNode);
-        downButton.setOnAction(event -> reorderList(matchDayList, 1));
+        downButton.setOnAction(getReorderHandler(1));
 
         final VBox buttonVBox = new VBox(upButton, upArrowNode, downArrowNode, downButton);
         buttonVBox.setAlignment(Pos.CENTER);
 
         final BorderPane innerPane = new BorderPane();
-        innerPane.setCenter(matchDayList);
+        innerPane.setCenter(matchDayView);
         innerPane.setRight(buttonVBox);
 
         final DialogPane outerPane = super.getDialogPane();
@@ -76,12 +78,13 @@ public class EditMatchDaysDialog extends Dialog<Void> {
         };
     }
 
-    private static <T extends LeagueMatchDay> void reorderList(ListView<T> matchDayView, int delta) {
-        final int oldIndex = matchDayView.getSelectionModel().getSelectedIndex();
-        if (oldIndex == -1) return;
-        final int newIndex = oldIndex + delta;
-        final ObservableList<T> matchDays = matchDayView.getItems();
-        Collections.swap(matchDays, oldIndex, newIndex);
-        matchDayView.getSelectionModel().select(newIndex);
+    private EventHandler<ActionEvent> getReorderHandler(int delta) {
+        return event -> {
+            final int oldIndex = matchDayView.getSelectionModel().getSelectedIndex();
+            if (oldIndex == -1) return;
+            final int newIndex = oldIndex + delta;
+            Collections.swap(matchDayView.getItems(), oldIndex, newIndex);
+            matchDayView.getSelectionModel().select(newIndex);
+        };
     }
 }
