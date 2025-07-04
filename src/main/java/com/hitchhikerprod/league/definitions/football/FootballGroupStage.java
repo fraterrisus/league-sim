@@ -5,6 +5,7 @@ import com.hitchhikerprod.league.beans.LeagueDivision;
 import com.hitchhikerprod.league.beans.LeagueGameData;
 import com.hitchhikerprod.league.beans.LeagueMatchDay;
 import com.hitchhikerprod.league.beans.LeagueTeamData;
+import com.hitchhikerprod.league.beans.RawDivision;
 import com.hitchhikerprod.league.beans.RawLeagueData;
 import com.hitchhikerprod.league.definitions.League;
 import com.hitchhikerprod.league.definitions.LeagueUtils;
@@ -19,11 +20,13 @@ import java.util.stream.Collectors;
 public class FootballGroupStage implements League {
     private final Map<String, TeamData> teams;
     private final RawLeagueData leagueData;
+    private final ObservableList<RawDivision> divisions;
     private final ObservableList<MatchDay> matchDays;
 
     public FootballGroupStage(Map<String, TeamData> teams, RawLeagueData leagueData, List<MatchDay> matchDays) {
         this.teams = teams;
         this.leagueData = leagueData;
+        this.divisions = FXCollections.observableArrayList(leagueData.divisions);
         this.matchDays = FXCollections.observableList(matchDays);
     }
 
@@ -44,7 +47,7 @@ public class FootballGroupStage implements League {
         final RawLeagueData doc = new RawLeagueData();
         doc.league = this.leagueData.league;
         doc.teams = this.leagueData.teams;
-        doc.divisions = this.leagueData.divisions;
+        doc.divisions = this.divisions;
         doc.matchdays = this.matchDays.stream().map(matchDayConverter::convert).toList();
         return doc;
     }
@@ -106,6 +109,11 @@ public class FootballGroupStage implements League {
     }
 
     @Override
+    public ObservableList<? extends LeagueDivision> getDivisions() {
+        return divisions;
+    }
+
+    @Override
     public List<LeagueColumn<?>> getDivisionColumns() {
         return LeagueUtils.getDivisionColumns(TeamData.COLUMNS);
     }
@@ -136,11 +144,7 @@ public class FootballGroupStage implements League {
             }
         }
 
-        return leagueData.divisions.stream()
-                .collect(Collectors.toMap(
-                        div -> div,
-                        div -> rankTeams(div.getTeams())
-                ));
+        return divisions.stream().collect(Collectors.toMap(div -> div, div -> rankTeams(div.getTeams())));
     }
 
     private List<TeamData> rankTeams(List<String> teamsIn) {

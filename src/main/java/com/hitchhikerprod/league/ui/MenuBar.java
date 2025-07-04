@@ -53,7 +53,7 @@ public class MenuBar {
         editGamesMI.setDisable(true);
         items.put("league.editGames", editGamesMI);
 
-        leagueM.getItems().addAll(editMatchDaysMI, editGamesMI);
+        leagueM.getItems().addAll(editDivisionsMI, editMatchDaysMI, editGamesMI);
         return leagueM;
     }
 
@@ -89,8 +89,9 @@ public class MenuBar {
     public void allowSave() {
         items.get("file.save").setDisable(false);
         items.get("file.saveAs").setDisable(false);
-        items.get("league.editGames").setDisable(false);
+        items.get("league.editDivisions").setDisable(false);
         items.get("league.editMatchDays").setDisable(false);
+        items.get("league.editGames").setDisable(false);
     }
 
     private void activateFileMenu(LeagueApp app) {
@@ -99,8 +100,8 @@ public class MenuBar {
         items.get("file.save").setOnAction(ev -> app.menuSave());
         items.get("file.saveAs").setOnAction(ev -> app.menuSaveAs());
         items.get("league.editDivisions").setOnAction(ev -> app.menuEditDivisions());
-        items.get("league.editGames").setOnAction(ev -> app.menuEditGames());
         items.get("league.editMatchDays").setOnAction(ev -> app.menuEditMatchDays());
+        items.get("league.editGames").setOnAction(ev -> app.menuEditGames());
     }
 
     public Node asNode() {

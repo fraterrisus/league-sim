@@ -4,6 +4,7 @@ import com.hitchhikerprod.league.beans.LeagueTeamData;
 import com.hitchhikerprod.league.definitions.League;
 import com.hitchhikerprod.league.tasks.ReadLeagueFile;
 import com.hitchhikerprod.league.tasks.SaveLeagueFile;
+import com.hitchhikerprod.league.ui.EditDivisionsDialog;
 import com.hitchhikerprod.league.ui.EditGamesDialog;
 import com.hitchhikerprod.league.ui.EditMatchDaysDialog;
 import com.hitchhikerprod.league.ui.MatchDayPane;
@@ -96,7 +97,12 @@ public class LeagueApp extends Application {
     }
 
     public void menuEditDivisions() {
-
+        new EditDivisionsDialog(stage, league).showAndWait();
+        final StandingsPane standingsPane = StandingsPane.getInstance();
+        final int selectedMatchDay = MatchDayPane.getInstance().getSelectedMatchDay();;
+        standingsPane.buildDivisionsPane(league);
+        standingsPane.setStandings(league, selectedMatchDay);
+        stage.sizeToScene();
     }
 
     public void menuEditGames() {
@@ -204,7 +210,7 @@ public class LeagueApp extends Application {
         final MatchDayPane matchDayPane = MatchDayPane.getInstance();
         final int latestCompleteMatchDay = league.getLatestCompleteMatchDay();
 
-        standingsPane.buildDivisionsPane(league, latestCompleteMatchDay);
+        standingsPane.buildDivisionsPane(league);
         standingsPane.setStandings(league, latestCompleteMatchDay);
         matchDayPane.setMatchDays(league, latestCompleteMatchDay);
         matchDayPane.setGamesList(league, latestCompleteMatchDay);

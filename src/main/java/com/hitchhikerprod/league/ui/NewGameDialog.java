@@ -30,7 +30,9 @@ public class NewGameDialog extends Dialog<Pair<String,String>> {
         final List<String> teamNames = teams.stream().map(LeagueTeamData::getName).toList();
         
         final GridPane innerPane = new GridPane();
-        
+        innerPane.setHgap(10);
+        innerPane.setVgap(10);
+
         innerPane.add(new Label("Away team:"), 0, 0);
         innerPane.add(new Label("Home team:"), 0, 1);
         awayTeam = new ChoiceBox<>();

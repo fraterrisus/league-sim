@@ -4,8 +4,7 @@ import javafx.collections.ObservableList;
 
 import java.util.List;
 
-public interface LeagueMatchDay {
-    String getName();
+public interface LeagueMatchDay extends Named {
     ObservableList<? extends LeagueGameData> getGames();
     void setGames(List<? extends LeagueGameData> l);
     boolean isComplete();

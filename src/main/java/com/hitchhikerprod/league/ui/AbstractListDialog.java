@@ -38,41 +38,34 @@ public abstract class AbstractListDialog extends Dialog<Void> {
 
         final InputStream arrowImageData = Objects.requireNonNull(getClass().getResourceAsStream("arrow-right.png"));
         final Image arrowImage = new Image(arrowImageData, 32, 32, true, true);
-
-        final ImageView upArrowNode = new ImageView(arrowImage);
-        upArrowNode.setRotate(-90.0);
-        upButton = new Button();
-        upButton.setGraphic(upArrowNode);
-        upButton.setTooltip(new Tooltip("Move up"));
+        upButton = newButton(arrowImage, -90.0, "Move up");
         upButton.setDisable(true);
-
-        final ImageView downArrowNode = new ImageView(arrowImage);
-        downArrowNode.setRotate(90.0);
-        downButton = new Button();
-        downButton.setGraphic(downArrowNode);
-        downButton.setTooltip(new Tooltip("Move down"));
+        downButton = newButton(arrowImage, 90.0, "Move down");
         downButton.setDisable(true);
 
         final InputStream trashCanData = Objects.requireNonNull(getClass().getResourceAsStream("trash-can.png"));
         final Image trashCanImage = new Image(trashCanData, 32, 32, true, true);
-        final ImageView trashCanNode = new ImageView(trashCanImage);
-        trashCanButton = new Button();
-        trashCanButton.setGraphic(trashCanNode);
-        trashCanButton.setTooltip(new Tooltip("Delete"));
+        trashCanButton = newButton(trashCanImage, 0, "Delete");
         trashCanButton.setDisable(true);
 
         final InputStream plusSignData = Objects.requireNonNull(getClass().getResourceAsStream("stack.png"));
         final Image plusSignImage = new Image(plusSignData, 32, 32, true, true);
-        final ImageView plusSignNode = new ImageView(plusSignImage);
-        plusSignButton = new Button();
-        plusSignButton.setGraphic(plusSignNode);
-        plusSignButton.setTooltip(new Tooltip("New"));
+        plusSignButton = newButton(plusSignImage, 0, "New");
 
         buttonVBox = new VBox(upButton, plusSignButton, trashCanButton, downButton);
         buttonVBox.setAlignment(Pos.CENTER);
     }
 
-    protected EventHandler<ActionEvent> getReorderHandler(ListView<?> view, int delta) {
+    static Button newButton(final Image image, double rotation, String tooltip) {
+        final ImageView imageView = new ImageView(image);
+        if (rotation != 0) imageView.setRotate(rotation);
+        final Button button = new Button();
+        button.setGraphic(imageView);
+        button.setTooltip(new Tooltip(tooltip));
+        return button;
+    }
+
+    static EventHandler<ActionEvent> getReorderHandler(ListView<?> view, int delta) {
         return event -> {
             final int oldIndex = view.getSelectionModel().getSelectedIndex();
             if (oldIndex == -1) return;

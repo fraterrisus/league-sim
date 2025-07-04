@@ -8,7 +8,6 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MultipleSelectionModel;
 import javafx.scene.control.SelectionMode;
@@ -27,7 +26,7 @@ public class EditMatchDaysDialog extends AbstractListDialog {
         super.setTitle("Match Days");
 
         matchDayView = new ListView<>(league.getMatchDays());
-        matchDayView.setCellFactory(this::cellFactory);
+        matchDayView.setCellFactory(CellFactories::nameCellFactory);
         final MultipleSelectionModel<? extends LeagueMatchDay> listSelectionModel = matchDayView.getSelectionModel();
         listSelectionModel.setSelectionMode(SelectionMode.SINGLE);
         listSelectionModel.selectedItemProperty().addListener(enableButtons());
@@ -45,20 +44,6 @@ public class EditMatchDaysDialog extends AbstractListDialog {
         outerPane.setContent(innerPane);
         outerPane.getStylesheets().setAll(parent.getScene().getStylesheets());
         outerPane.getButtonTypes().setAll(ButtonType.CLOSE);
-    }
-
-    private <T extends LeagueMatchDay> ListCell<T> cellFactory(ListView<T> view) {
-        return new ListCell<>() {
-            @Override
-            protected void updateItem(T matchDay, boolean empty) {
-                super.updateItem(matchDay, empty);
-                if (empty || Objects.isNull(matchDay)) {
-                    setText("");
-                } else {
-                    setText(matchDay.getName());
-                }
-            }
-        };
     }
 
     private EventHandler<ActionEvent> getAddHandler() {

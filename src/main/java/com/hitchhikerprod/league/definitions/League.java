@@ -17,6 +17,7 @@ public interface League {
     ObservableList<? extends LeagueMatchDay> getMatchDays();
     void addMatchDay(int index, String name);
     void addMatchDay(String name);
+    ObservableList<? extends LeagueDivision> getDivisions();
     Map<? extends LeagueDivision, List<? extends LeagueTeamData>> getDivisionTables(int index);
     List<LeagueColumn<?>> getDivisionColumns();
     ObservableList<? extends LeagueGameData> getGames(int matchDayIndex);

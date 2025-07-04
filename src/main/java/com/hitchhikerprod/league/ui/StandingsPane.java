@@ -15,10 +15,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class StandingsPane {
     private static final StandingsPane INSTANCE = new StandingsPane();
@@ -50,17 +48,12 @@ public class StandingsPane {
         return root;
     }
 
-    /** Rebuilds the TableViews inside the Divisions pane. Should only be called when a new League is loaded
-     * (or if we eventually add "create" functionality). */
-    public void buildDivisionsPane(League league, int matchDayIdx) {
+    /** Rebuilds the TableViews inside the Divisions pane. Should only be called when a new League is loaded. */
+    public void buildDivisionsPane(League league) {
         final ObservableList<Node> children = root.getChildren();
         children.clear();
 
-        Map<? extends LeagueDivision, List<? extends LeagueTeamData>> divisionMap = league.getDivisionTables(matchDayIdx);
-        final List<LeagueDivision> divisions = divisionMap.keySet().stream()
-                .sorted(Comparator.comparing(LeagueDivision::getName))
-                .collect(Collectors.toList());
-        for (LeagueDivision div : divisions) {
+        for (LeagueDivision div : league.getDivisions()) {
             final Label divLabel = new Label(div.getName());
             divLabel.getStyleClass().add("division-header");
             children.add(divLabel);
