@@ -4,9 +4,9 @@ import com.hitchhikerprod.league.beans.LeagueTeamData;
 import com.hitchhikerprod.league.definitions.League;
 import com.hitchhikerprod.league.tasks.ReadLeagueFile;
 import com.hitchhikerprod.league.tasks.SaveLeagueFile;
+import com.hitchhikerprod.league.ui.EditGamesDialog;
 import com.hitchhikerprod.league.ui.EditMatchDaysDialog;
 import com.hitchhikerprod.league.ui.MatchDayPane;
-import com.hitchhikerprod.league.ui.NewGameDialog;
 import com.hitchhikerprod.league.ui.RootWindow;
 import com.hitchhikerprod.league.ui.StandingsPane;
 import com.hitchhikerprod.league.ui.TeamGamesWindow;
@@ -20,7 +20,6 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.util.Pair;
 
 import java.io.File;
 import java.io.IOException;
@@ -96,17 +95,12 @@ public class LeagueApp extends Application {
         runSaveTask(outputFile);
     }
 
-    public void menuNewGame() {
-        final int matchDayIndex = MatchDayPane.getInstance().getSelectedMatchDay();
-        if (matchDayIndex < 0) return;
-
-        final Optional<Pair<String, String>> pair = new NewGameDialog(stage, league.getTeams()).showAndWait();
-        pair.ifPresent(teams -> {
-            league.createGame(matchDayIndex, teams.getKey(), teams.getValue());
-            MatchDayPane.getInstance().setGamesList(league, matchDayIndex);
-            RootWindow.getInstance().setStatusMessage("Created " + teams.getKey() + " v. " + teams.getValue());
-            stage.sizeToScene();
-        });
+    public void menuEditGames() {
+        final MatchDayPane matchDayPane = MatchDayPane.getInstance();
+        final int matchDayIndex = matchDayPane.getSelectedMatchDay();
+        new EditGamesDialog(stage, league, matchDayIndex).showAndWait();
+        matchDayPane.setGamesList(league, matchDayIndex);
+        stage.sizeToScene();
     }
 
     public void menuEditMatchDays() {

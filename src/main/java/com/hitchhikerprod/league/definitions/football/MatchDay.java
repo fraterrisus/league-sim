@@ -2,18 +2,19 @@ package com.hitchhikerprod.league.definitions.football;
 
 import com.hitchhikerprod.league.beans.LeagueGameData;
 import com.hitchhikerprod.league.beans.LeagueMatchDay;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MatchDay implements LeagueMatchDay {
     private final String name;
-    final List<GameData> games;
+    final ObservableList<GameData> games;
     private boolean complete;
 
     public MatchDay(String name) {
         this.name = name;
-        this.games = new ArrayList<>();
+        this.games = FXCollections.observableArrayList();
         this.complete = false;
     }
 
@@ -23,7 +24,7 @@ public class MatchDay implements LeagueMatchDay {
     }
 
     @Override
-    public List<? extends LeagueGameData> getGames() {
+    public ObservableList<? extends LeagueGameData> getGames() {
         return games;
     }
 

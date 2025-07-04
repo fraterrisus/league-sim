@@ -19,7 +19,7 @@ public interface League {
     void addMatchDay(String name);
     Map<? extends LeagueDivision, List<? extends LeagueTeamData>> getDivisionTables(int index);
     List<LeagueColumn<?>> getDivisionColumns();
-    List<? extends LeagueGameData> getGames(int matchDayIndex);
+    ObservableList<? extends LeagueGameData> getGames(int matchDayIndex);
     List<LeagueMatchDay> getGames(LeagueTeamData teamData);
     void createGame(int matchDayIndex, String awayTeamId, String homeTeamId);
     List<? extends LeagueTeamData> getTeams();

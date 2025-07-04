@@ -59,18 +59,17 @@ division (at least for now).
 
 The list of `teams` uses the `id` (short) field.
 ```yaml
-matchdays:
-  - name: Round 1
-    games: []
+matchdays: []
 ```
-Here's where you'll enter the league's calendar of games. I recommend leaving the `games` list empty for now; the UI 
-has a functional system for adding new games to a matchday, and it's kind of painful to enter by hand.
+The `matchdays` entry represents your league's calendar of games. You can leave this empty for now; there's a functional
+UI for adding match days (and games) to your league.
 
-You can split up the calendar however you want. If the league's calendar is complex, I recommend literally doing it by
-calendar days. If there's an easy way to break up "weeks" or "match days" (in the case of a tournament) of games 
-that are all being played "at the same time", you can do that. Or whatever works for you. Match Days are important 
-to the UI because you can scroll through them and edit all the games in a single Match Day all at once. But, again, 
-there's no restrictions on (for example) the number of times a single team can play during any particular match day.  
+You can split up the calendar however you want. If the league's calendar is complex (i.e. Major League Baseball) I
+recommend literally doing it by calendar days. If there's an easy way to break up "weeks" or "match days" (in the case
+of a tournament) of games that are all being played "at the same time", you can do that. Or whatever works for you.
+Match Days are important to the UI because you can scroll through them and edit all the games in a single Match Day all
+at once. But, again, there's no restrictions on (for example) the number of times a single team can play during any
+particular match day.
 
 ### Using the app
 
@@ -78,13 +77,16 @@ Once you have your league file put together, go ahead and start the app and try 
 captured everything that can go wrong during parsing, but hopefully it will at least pop up a dialog box with the 
 Exception message. Good luck.
 
-If the division tables come up and the dropdown on the right is populated with match days, then you're good to go. 
-Head to the Games menu and pick "Add Game" (or Ctrl-Shift-G) to add a game to the current match day. Unfortunately 
-there's not currently any way to edit or reorder games, but you can always save the league file, edit it by hand, and
-reload.
+If the division tables come up, you're good to go. Head to the Games menu and pick "Edit Match Days". Click the stack
+button to create a new Match Day, give it a name, and hit OK. For the sake of demonstration, close that dialog and go
+back to the main window. Make sure your new Match Day is selected in the dropdown.
 
-When you fill in the score for a game (both teams!), the division tables should automatically recalculate. Keep in 
-mind that the tables are only showing you the *current* match day and all previous results. You can see this by 
-cycling through the match day dropdown (or using the arrow buttons on either side to move one match day at a time).
+Now to back to the "Games" menu and pick "Edit Games". Click the stack button to create a new Game, pick the Home and
+Away teams, and click OK. Feel free to do that a few more times, and play around with the reordering buttons too.
+
+Once you're back on the main screen, you can fill in the score for your new games. Once you do that, the division tables
+should automatically recalculate. Keep in mind that the tables are only showing you the *current* match day and all
+previous results. If you have multiple match days with filled out games, you can see this effect by cycling through the
+match day dropdown (or using the arrow buttons on either side to move one match day at a time).
 
 Use File > Save (or Ctrl-S) to save any changes you've made to the league file.

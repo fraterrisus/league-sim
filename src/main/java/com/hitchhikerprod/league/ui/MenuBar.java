@@ -41,12 +41,11 @@ public class MenuBar {
     private Menu makeGamesMenu() {
         final Menu gameM = new Menu("Games");
 
-        final MenuItem newGameMI = new MenuItem("Add Game...");
+        final MenuItem newGameMI = new MenuItem("Edit Games");
         newGameMI.setDisable(true);
-        newGameMI.setAccelerator(new KeyCharacterCombination("G", KeyCombination.CONTROL_DOWN, KeyCombination.SHIFT_DOWN));
         items.put("game.newGame", newGameMI);
 
-        final MenuItem newMatchDayMI = new MenuItem("Match Days...");
+        final MenuItem newMatchDayMI = new MenuItem("Edit Match Days...");
         newMatchDayMI.setDisable(true);
         items.put("game.newMatchDay", newMatchDayMI);
 
@@ -95,7 +94,7 @@ public class MenuBar {
         items.get("file.quit").setOnAction(ev -> app.menuQuit());
         items.get("file.save").setOnAction(ev -> app.menuSave());
         items.get("file.saveAs").setOnAction(ev -> app.menuSaveAs());
-        items.get("game.newGame").setOnAction(ev -> app.menuNewGame());
+        items.get("game.newGame").setOnAction(ev -> app.menuEditGames());
         items.get("game.newMatchDay").setOnAction(ev -> app.menuEditMatchDays());
     }
 

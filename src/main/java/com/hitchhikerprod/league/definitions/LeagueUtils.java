@@ -9,6 +9,8 @@ import com.hitchhikerprod.league.beans.RawLeagueData;
 import com.hitchhikerprod.league.beans.RawTeamData;
 import com.hitchhikerprod.league.util.ColumnDef;
 import com.hitchhikerprod.league.util.Converter;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.util.List;
 import java.util.Map;
@@ -24,8 +26,9 @@ public class LeagueUtils {
                 .collect(Collectors.toUnmodifiableList());
     }
 
-    public static List<? extends LeagueGameData> getGames(int matchDayIndex, List<? extends LeagueMatchDay> matchDays) {
-        if (matchDayIndex < 0) { return List.of(); }
+    public static ObservableList<? extends LeagueGameData> getGames(int matchDayIndex, List<? extends LeagueMatchDay> matchDays) {
+        // Hm.
+        if (matchDayIndex < 0) { return FXCollections.emptyObservableList(); }
         return matchDays.get(matchDayIndex).getGames();
     }
 
