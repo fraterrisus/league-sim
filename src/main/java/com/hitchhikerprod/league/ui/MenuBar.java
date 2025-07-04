@@ -28,7 +28,7 @@ public class MenuBar {
         items = new HashMap<>();
 
         final Menu fileM = makeFileMenu();
-        final Menu gameM = makeGamesMenu();
+        final Menu gameM = makeLeagueMenu();
 
         menuBar = new javafx.scene.control.MenuBar(fileM, gameM);
         VBox.setVgrow(menuBar, Priority.NEVER);
@@ -38,19 +38,23 @@ public class MenuBar {
         activateFileMenu(app);
     }
 
-    private Menu makeGamesMenu() {
-        final Menu gameM = new Menu("Games");
+    private Menu makeLeagueMenu() {
+        final Menu leagueM = new Menu("League");
 
-        final MenuItem newGameMI = new MenuItem("Edit Games");
-        newGameMI.setDisable(true);
-        items.put("game.newGame", newGameMI);
+        final MenuItem editDivisionsMI = new MenuItem("Divisions…");
+        editDivisionsMI.setDisable(true);
+        items.put("league.editDivisions", editDivisionsMI);
+        
+        final MenuItem editMatchDaysMI = new MenuItem("Match Days…");
+        editMatchDaysMI.setDisable(true);
+        items.put("league.editMatchDays", editMatchDaysMI);
 
-        final MenuItem newMatchDayMI = new MenuItem("Edit Match Days...");
-        newMatchDayMI.setDisable(true);
-        items.put("game.newMatchDay", newMatchDayMI);
+        final MenuItem editGamesMI = new MenuItem("Games…");
+        editGamesMI.setDisable(true);
+        items.put("league.editGames", editGamesMI);
 
-        gameM.getItems().addAll(newMatchDayMI, newGameMI);
-        return gameM;
+        leagueM.getItems().addAll(editMatchDaysMI, editGamesMI);
+        return leagueM;
     }
 
     private Menu makeFileMenu() {
@@ -85,8 +89,8 @@ public class MenuBar {
     public void allowSave() {
         items.get("file.save").setDisable(false);
         items.get("file.saveAs").setDisable(false);
-        items.get("game.newGame").setDisable(false);
-        items.get("game.newMatchDay").setDisable(false);
+        items.get("league.editGames").setDisable(false);
+        items.get("league.editMatchDays").setDisable(false);
     }
 
     private void activateFileMenu(LeagueApp app) {
@@ -94,8 +98,9 @@ public class MenuBar {
         items.get("file.quit").setOnAction(ev -> app.menuQuit());
         items.get("file.save").setOnAction(ev -> app.menuSave());
         items.get("file.saveAs").setOnAction(ev -> app.menuSaveAs());
-        items.get("game.newGame").setOnAction(ev -> app.menuEditGames());
-        items.get("game.newMatchDay").setOnAction(ev -> app.menuEditMatchDays());
+        items.get("league.editDivisions").setOnAction(ev -> app.menuEditDivisions());
+        items.get("league.editGames").setOnAction(ev -> app.menuEditGames());
+        items.get("league.editMatchDays").setOnAction(ev -> app.menuEditMatchDays());
     }
 
     public Node asNode() {

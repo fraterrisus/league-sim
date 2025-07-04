@@ -62,7 +62,7 @@ The list of `teams` uses the `id` (short) field.
 matchdays: []
 ```
 The `matchdays` entry represents your league's calendar of games. You can leave this empty for now; there's a functional
-UI for adding match days (and games) to your league.
+UI for adding match days to your league (and games to each match day).
 
 You can split up the calendar however you want. If the league's calendar is complex (i.e. Major League Baseball) I
 recommend literally doing it by calendar days. If there's an easy way to break up "weeks" or "match days" (in the case

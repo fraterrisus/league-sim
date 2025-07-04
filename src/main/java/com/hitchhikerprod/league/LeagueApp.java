@@ -95,6 +95,10 @@ public class LeagueApp extends Application {
         runSaveTask(outputFile);
     }
 
+    public void menuEditDivisions() {
+
+    }
+
     public void menuEditGames() {
         final MatchDayPane matchDayPane = MatchDayPane.getInstance();
         final int matchDayIndex = matchDayPane.getSelectedMatchDay();
