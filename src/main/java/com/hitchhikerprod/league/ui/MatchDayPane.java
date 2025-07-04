@@ -81,12 +81,16 @@ public class MatchDayPane {
     /** Resets the values in the Match Day dropdown, while trying to preserve the selected match day. */
     public void setMatchDays(League league) {
         final String selected = matchDaySelector.getSelectionModel().getSelectedItem();
-        matchDaySelector.getItems().clear();
-        matchDaySelector.getItems().addAll(league.getMatchDays().stream()
+        final ObservableList<String> items = matchDaySelector.getItems();
+        items.clear();
+        items.addAll(league.getMatchDays().stream()
                 .map(LeagueMatchDay::getName)
                 .toList());
         if (Objects.nonNull(selected) && !selected.isBlank()) {
             matchDaySelector.setValue(selected);
+        }
+        if (!items.contains(selected)) {
+            matchDaySelector.getSelectionModel().selectLast();
         }
     }
 

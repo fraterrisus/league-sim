@@ -8,6 +8,8 @@ import com.hitchhikerprod.league.beans.LeagueTeamData;
 import com.hitchhikerprod.league.beans.RawLeagueData;
 import com.hitchhikerprod.league.definitions.League;
 import com.hitchhikerprod.league.definitions.LeagueUtils;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,12 +19,12 @@ import java.util.stream.Collectors;
 public class FootballGroupStage implements League {
     private final Map<String, TeamData> teams;
     private final RawLeagueData leagueData;
-    private final List<MatchDay> matchDays;
+    private final ObservableList<MatchDay> matchDays;
 
     public FootballGroupStage(Map<String, TeamData> teams, RawLeagueData leagueData, List<MatchDay> matchDays) {
         this.teams = teams;
         this.leagueData = leagueData;
-        this.matchDays = matchDays;
+        this.matchDays = FXCollections.observableList(matchDays);
     }
 
     public static FootballGroupStage from(RawLeagueData leagueData) {
@@ -53,8 +55,18 @@ public class FootballGroupStage implements League {
     }
 
     @Override
-    public List<? extends LeagueMatchDay> getMatchDays() {
+    public ObservableList<? extends LeagueMatchDay> getMatchDays() {
         return matchDays;
+    }
+
+    @Override
+    public void addMatchDay(int index, String name) {
+        matchDays.add(index, new MatchDay(name));
+    }
+
+    @Override
+    public void addMatchDay(String name) {
+        matchDays.add(new MatchDay(name));
     }
 
     @Override

@@ -6,6 +6,7 @@ import com.hitchhikerprod.league.beans.LeagueGameData;
 import com.hitchhikerprod.league.beans.LeagueMatchDay;
 import com.hitchhikerprod.league.beans.LeagueTeamData;
 import com.hitchhikerprod.league.beans.RawLeagueData;
+import javafx.collections.ObservableList;
 
 import java.util.List;
 import java.util.Map;
@@ -13,7 +14,9 @@ import java.util.Map;
 public interface League {
     int getLatestCompleteMatchDay();
     RawLeagueData export();
-    List<? extends LeagueMatchDay> getMatchDays();
+    ObservableList<? extends LeagueMatchDay> getMatchDays();
+    void addMatchDay(int index, String name);
+    void addMatchDay(String name);
     Map<? extends LeagueDivision, List<? extends LeagueTeamData>> getDivisionTables(int index);
     List<LeagueColumn<?>> getDivisionColumns();
     List<? extends LeagueGameData> getGames(int matchDayIndex);

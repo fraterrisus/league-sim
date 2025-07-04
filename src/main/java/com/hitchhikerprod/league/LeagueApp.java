@@ -1,6 +1,5 @@
 package com.hitchhikerprod.league;
 
-import com.hitchhikerprod.league.beans.LeagueMatchDay;
 import com.hitchhikerprod.league.beans.LeagueTeamData;
 import com.hitchhikerprod.league.definitions.League;
 import com.hitchhikerprod.league.tasks.ReadLeagueFile;
@@ -15,8 +14,6 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.StringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -113,9 +110,7 @@ public class LeagueApp extends Application {
     }
 
     public void menuEditMatchDays() {
-        final ObservableList<? extends LeagueMatchDay> leagueMatchDays = FXCollections.observableList(league.getMatchDays());
-        final EditMatchDaysDialog dialog = new EditMatchDaysDialog(stage, leagueMatchDays);
-        dialog.showAndWait();
+        new EditMatchDaysDialog(stage, league).showAndWait();
         MatchDayPane.getInstance().setMatchDays(league);
     }
 
