@@ -12,16 +12,22 @@ import java.util.List;
 import java.util.Map;
 
 public interface League {
-    int getLatestCompleteMatchDay();
     RawLeagueData export();
+
     ObservableList<? extends LeagueMatchDay> getMatchDays();
-    void addMatchDay(int index, String name);
     void addMatchDay(String name);
+    void addMatchDay(int index, String name);
+    int getLatestCompleteMatchDay();
+
     ObservableList<? extends LeagueDivision> getDivisions();
+    void addDivision(String name);
+    void addDivision(int index, String name);
     Map<? extends LeagueDivision, List<? extends LeagueTeamData>> getDivisionTables(int index);
     List<LeagueColumn<?>> getDivisionColumns();
+
     ObservableList<? extends LeagueGameData> getGames(int matchDayIndex);
     List<LeagueMatchDay> getGames(LeagueTeamData teamData);
     void createGame(int matchDayIndex, String awayTeamId, String homeTeamId);
+
     List<? extends LeagueTeamData> getTeams();
 }

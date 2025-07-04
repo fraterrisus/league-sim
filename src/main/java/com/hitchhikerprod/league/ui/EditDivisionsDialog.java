@@ -4,6 +4,8 @@ import com.hitchhikerprod.league.beans.LeagueDivision;
 import com.hitchhikerprod.league.beans.LeagueTeamData;
 import com.hitchhikerprod.league.definitions.League;
 import javafx.beans.Observable;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -13,6 +15,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MultipleSelectionModel;
 import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -20,6 +23,7 @@ import javafx.stage.Window;
 
 import java.io.InputStream;
 import java.util.Objects;
+import java.util.Optional;
 
 import static com.hitchhikerprod.league.ui.AbstractListDialog.getReorderHandler;
 import static com.hitchhikerprod.league.ui.AbstractListDialog.newButton;
@@ -36,8 +40,6 @@ public class EditDivisionsDialog extends Dialog<Void> {
     private final Button divNewButton;
     private final Button divDeleteButton;
 
-    private final Button teamUpButton;
-    private final Button teamDownButton;
     private final Button teamNewButton;
     private final Button teamDeleteButton;
 
@@ -75,25 +77,30 @@ public class EditDivisionsDialog extends Dialog<Void> {
         divUpButton = newButton(arrowImage, -90, "Move up");
         divUpButton.setDisable(true);
         divUpButton.setOnAction(getReorderHandler(divisionList, -1));
+
         divDownButton = newButton(arrowImage, 90, "Move down");
         divDownButton.setDisable(true);
         divDownButton.setOnAction(getReorderHandler(divisionList, 1));
+
         divNewButton = newButton(plusSignImage, 0, "New");
+        divNewButton.setOnAction(getDivisionAddHandler());
+
         divDeleteButton = newButton(trashCanImage, 0, "Delete");
         divDeleteButton.setDisable(true);
+        divDeleteButton.setOnAction(getDivisionDeleteHandler());
 
         final VBox divButtons = new VBox(divUpButton, divNewButton, divDeleteButton, divDownButton);
         divButtons.setAlignment(Pos.CENTER);
 
-        teamUpButton = newButton(arrowImage, -90, "Move up");
-        teamUpButton.setDisable(true);
-        teamDownButton = newButton(arrowImage, 90, "Move down");
-        teamDownButton.setDisable(true);
         teamNewButton = newButton(plusSignImage, 0, "New");
+        teamNewButton.setDisable(true);
+        teamNewButton.setOnAction(getTeamAddHandler());
+
         teamDeleteButton = newButton(trashCanImage, 0, "Delete");
         teamDeleteButton.setDisable(true);
+        teamDeleteButton.setOnAction(getTeamDeleteHandler());
 
-        final VBox teamButtons = new VBox(teamUpButton, teamNewButton, teamDeleteButton, teamDownButton);
+        final VBox teamButtons = new VBox(teamNewButton, teamDeleteButton);
         teamButtons.setAlignment(Pos.CENTER);
 
         final HBox innerPane = new HBox(divisionList, divButtons, teamList, teamButtons);
@@ -102,6 +109,10 @@ public class EditDivisionsDialog extends Dialog<Void> {
         outerPane.setContent(innerPane);
         outerPane.getStylesheets().setAll(parent.getScene().getStylesheets());
         outerPane.getButtonTypes().setAll(ButtonType.OK);
+    }
+
+    private <T extends LeagueTeamData> ListCell<T> teamCellFactory(ListView<T> view) {
+        return null;
     }
 
     private <T extends LeagueDivision> void getDivisionSelectionHandler(Observable observable, T oldValue, T newValue) {
@@ -116,8 +127,30 @@ public class EditDivisionsDialog extends Dialog<Void> {
 
     }
 
-    private <T extends LeagueTeamData> ListCell<T> teamCellFactory(ListView<T> view) {
-        return null;
+    private EventHandler<ActionEvent> getDivisionAddHandler() {
+        return event -> {
+            final int index = divisionList.getSelectionModel().getSelectedIndex();
+            final TextInputDialog nameDialog = new TextInputDialog();
+            nameDialog.setTitle("New Division");
+            nameDialog.setHeaderText("New division name:");
+            final Optional<String> newName = nameDialog.showAndWait();
+            newName.ifPresent(name -> {
+                if (index == -1) league.addDivision(name);
+                else league.addDivision(index, name);
+            });
+        };
+    }
+
+    private EventHandler<ActionEvent> getDivisionDeleteHandler() {
+        return event -> {};
+    }
+
+    private EventHandler<ActionEvent> getTeamAddHandler() {
+        return event -> {};
+    }
+
+    private EventHandler<ActionEvent> getTeamDeleteHandler() {
+        return event -> {};
     }
 
     private <T extends LeagueDivision> void setTeamsForDivision(T division) {

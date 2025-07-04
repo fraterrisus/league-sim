@@ -115,6 +115,16 @@ public class AFL2025 implements League {
     }
 
     @Override
+    public void addDivision(int index, String name) {
+        divisions.add(index, RawDivision.of(name));
+    }
+
+    @Override
+    public void addDivision(String name) {
+        divisions.add(RawDivision.of(name));
+    }
+
+    @Override
     public List<LeagueColumn<?>> getDivisionColumns() {
         return LeagueUtils.getDivisionColumns(TeamData.COLUMNS);
     }
