@@ -8,7 +8,7 @@ public class DivisionExporter implements Converter<Division, RawDivision> {
     public RawDivision convert(Division that) {
         final RawDivision rawDivision = new RawDivision();
         rawDivision.setName(that.getName());
-        rawDivision.setTeams(that.getObservableTeams().stream().map(TeamData::getName).toList());
+        rawDivision.setTeams(that.getObservableTeams().stream().map(TeamData::getId).toList());
         return rawDivision;
     }
 }
