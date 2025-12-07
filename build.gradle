@@ -1,4 +1,5 @@
 plugins {
+    id "java"
     id "application"
     id "org.openjfx.javafxplugin" version "0.1.0"
     id "org.beryx.jlink" version "3.1.1"
@@ -19,8 +20,14 @@ dependencies {
     testImplementation "org.junit.jupiter:junit-jupiter"
 }
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(24)
+    }
+}
+
 javafx {
-    version = "21"
+    version = "25"
     modules = ["javafx.controls", "javafx.fxml"]
 }
 
@@ -40,4 +47,7 @@ jlink {
 application {
     mainClass = "com.hitchhikerprod.league.LeagueApp"
     mainModule = "leaguesim"
+    applicationDefaultJvmArgs = [
+        "--enable-native-access=javafx.graphics" // ,javafx.media,javafx.web
+    ]
 }
