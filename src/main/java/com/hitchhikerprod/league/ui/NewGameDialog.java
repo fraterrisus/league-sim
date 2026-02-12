@@ -2,16 +2,13 @@ package com.hitchhikerprod.league.ui;
 
 import com.hitchhikerprod.league.beans.LeagueTeamData;
 import javafx.event.ActionEvent;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.DialogPane;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Window;
 import javafx.util.Pair;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 public class NewGameDialog extends Dialog<Pair<String,String>> {
     final List<? extends LeagueTeamData> teams;
@@ -27,7 +24,10 @@ public class NewGameDialog extends Dialog<Pair<String,String>> {
         super.setResultConverter(this::getSelectedItems);
 
         this.teams = teams;
-        final List<String> teamNames = teams.stream().map(LeagueTeamData::getName).sorted().toList();
+        final List<String> teamNames = Stream.concat(
+                Stream.of(""),
+                teams.stream().map(LeagueTeamData::getName).sorted()
+        ).toList();
         
         final GridPane innerPane = new GridPane();
         innerPane.setHgap(10);
@@ -52,8 +52,10 @@ public class NewGameDialog extends Dialog<Pair<String,String>> {
     }
 
     private void enableOkButton(ActionEvent event) {
-        final boolean disable = awayTeam.getSelectionModel().getSelectedIndex() == -1 ||
-                homeTeam.getSelectionModel().getSelectedIndex() == -1;
+        // -1: no selection
+        //  0: blank entry
+        final boolean disable = awayTeam.getSelectionModel().getSelectedIndex() < 1 ||
+                homeTeam.getSelectionModel().getSelectedIndex() < 1;
         outerPane.lookupButton(ButtonType.OK).setDisable(disable);
     }
 

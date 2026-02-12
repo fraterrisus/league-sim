@@ -1,6 +1,7 @@
 package com.hitchhikerprod.league.beans;
 
 import java.util.List;
+import java.util.Objects;
 
 public class RawMatchDay {
     private String name;
@@ -15,6 +16,7 @@ public class RawMatchDay {
     }
 
     public List<RawGame> getGames() {
+        if (Objects.isNull(games)) return List.of();
         return games;
     }
 

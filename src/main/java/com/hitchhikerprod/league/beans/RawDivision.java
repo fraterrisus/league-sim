@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class RawDivision implements LeagueDivision {
     private String name;
@@ -26,6 +27,7 @@ public class RawDivision implements LeagueDivision {
     }
 
     public List<String> getTeams() {
+        if (Objects.isNull(teams)) return List.of();
         return teams;
     }
 
