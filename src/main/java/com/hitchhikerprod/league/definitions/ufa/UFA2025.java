@@ -102,14 +102,14 @@ public class UFA2025 implements League {
             final String matchDayDate = titleMatcher.group(2);
 
             sb.append("===").append(matchDayTitle).append("===\n");
-            sb.append("{|class=\"wikitable\" style=\"font-size: 95%;\"\n");
-            sb.append("!Date !Home !Goals !Goals !Away |-\n");
+            sb.append("{|class=\"wikitable\" style=\"text-align:center;\"\n");
+            sb.append("!Date\n!Home\n!Goals\n!Goals\n!Away\n|-\n");
             for (var game : matchDay.games) {
-                sb.append("!").append(matchDayDate);
+                sb.append("!").append(matchDayDate).append("\n");
                 sb.append("|[[").append(game.getHomeTeam().getName()).append("]]");
-                sb.append("|").append(game.getHomeScore());
-                sb.append("|").append(game.getAwayScore());
-                sb.append("|[[").append(game.getAwayTeam().getName()).append("]] |-\n");
+                sb.append("||").append(game.getHomeScore());
+                sb.append("||").append(game.getAwayScore());
+                sb.append("||[[").append(game.getAwayTeam().getName()).append("]]\n|-\n");
             }
             sb.append("|}\n\n");
         }
@@ -123,13 +123,20 @@ public class UFA2025 implements League {
             sb.append("!width=30  |{{Tooltip|W|Wins}}\n");
             sb.append("!width=30  |{{Tooltip|L|Losses}}\n");
             sb.append("!width=30  |{{Tooltip|GD|Goal Difference}}\n");
-            sb.append("!width=200 |Qualifying position\n");
+            sb.append("!width=200 |Qualification\n");
 
+            int counter = 0;
             for (var teamData : entry.getValue()) {
                 final TeamData td = (TeamData)teamData;
-                sb.append("|-\n| style=\"text-align:left;\" | ");
-                sb.append(String.format("[[%s]]\n", td.getName()));
-                sb.append(String.format("|%d |%d |%+d\n", td.getWins(), td.getLosses(), td.getGoalDifference()));
+                sb.append("|-");
+                if (counter == 0) sb.append("style=\"background:#afa\"");
+                if (counter == 1 || counter == 2) sb.append("style=\"background:#cfc\"");
+                sb.append("\n| style=\"text-align:left;\"");
+                sb.append(String.format("|[[%s]]", td.getName()));
+                sb.append(String.format(" ||%d ||%d ||%+d\n", td.getWins(), td.getLosses(), td.getGoalDifference()));
+                if (counter == 0) sb.append("|First round bye\n");
+                if (counter == 1) sb.append("|rowspan=2|Playoffs\n");
+                counter++;
             }
             sb.append("|-\n|}\n\n");
         }
