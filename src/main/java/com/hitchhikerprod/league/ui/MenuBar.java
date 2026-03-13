@@ -2,9 +2,7 @@ package com.hitchhikerprod.league.ui;
 
 import com.hitchhikerprod.league.LeagueApp;
 import javafx.scene.Node;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.SeparatorMenuItem;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCharacterCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.Priority;
@@ -76,19 +74,24 @@ public class MenuBar {
         items.put("file.saveAs", saveAsMI);
         saveAsMI.setDisable(true);
 
+        final MenuItem exportMI = new MenuItem("Export...");
+        items.put("file.export", exportMI);
+        exportMI.setDisable(true);
+
         final SeparatorMenuItem sepMI = new SeparatorMenuItem();
 
         final MenuItem quitMI = new MenuItem("Quit");
         quitMI.setAccelerator(new KeyCharacterCombination("Q", KeyCombination.CONTROL_DOWN));
         items.put("file.quit", quitMI);
 
-        fileM.getItems().addAll(newMI, openMI, saveMI, saveAsMI, sepMI, quitMI);
+        fileM.getItems().addAll(newMI, openMI, saveMI, saveAsMI, exportMI, sepMI, quitMI);
         return fileM;
     }
 
     public void allowSave() {
         items.get("file.save").setDisable(false);
         items.get("file.saveAs").setDisable(false);
+        items.get("file.export").setDisable(false);
         items.get("league.editDivisions").setDisable(false);
         items.get("league.editMatchDays").setDisable(false);
         items.get("league.editGames").setDisable(false);
@@ -99,6 +102,7 @@ public class MenuBar {
         items.get("file.quit").setOnAction(ev -> app.menuQuit());
         items.get("file.save").setOnAction(ev -> app.menuSave());
         items.get("file.saveAs").setOnAction(ev -> app.menuSaveAs());
+        items.get("file.export").setOnAction(ev -> app.menuExport());
         items.get("league.editDivisions").setOnAction(ev -> app.menuEditDivisions());
         items.get("league.editMatchDays").setOnAction(ev -> app.menuEditMatchDays());
         items.get("league.editGames").setOnAction(ev -> app.menuEditGames());

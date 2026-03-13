@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -82,6 +84,59 @@ public class UFA2025 implements League {
         return doc;
     }
 
+    private static final Pattern matchDayTitle = Pattern.compile(
+            "(Week \\d+)\\s*-\\s*[A-Za-z]{3}\\s+([0-9/]+)"
+    );
+
+    @Override
+    public String exportWiki() {
+        final StringBuilder sb = new StringBuilder();
+
+        sb.append("==Regular Season==\n");
+
+        for (var matchDay : matchDays) {
+            final Matcher titleMatcher = matchDayTitle.matcher(matchDay.getName());
+            if (!titleMatcher.matches())
+                throw new RuntimeException("no match");
+            final String matchDayTitle = titleMatcher.group(1);
+            final String matchDayDate = titleMatcher.group(2);
+
+            sb.append("===").append(matchDayTitle).append("===\n");
+            sb.append("{|class=\"wikitable\" style=\"font-size: 95%;\"\n");
+            sb.append("!Date !Home !Goals !Goals !Away |-\n");
+            for (var game : matchDay.games) {
+                sb.append("!").append(matchDayDate);
+                sb.append("|[[").append(game.getHomeTeam().getName()).append("]]");
+                sb.append("|").append(game.getHomeScore());
+                sb.append("|").append(game.getAwayScore());
+                sb.append("|[[").append(game.getAwayTeam().getName()).append("]] |-\n");
+            }
+            sb.append("|}\n\n");
+        }
+
+        sb.append("==Standings==\n\n");
+
+        for (var entry : getDivisionTables(matchDays.size() - 1).entrySet()) {
+            sb.append(String.format("===%s===\n", entry.getKey().getName()));
+            sb.append("{|class=\"wikitable\" style=\"text-align: center;\"\n");
+            sb.append("|-\n!width=250 |Team\n");
+            sb.append("!width=30  |{{Tooltip|W|Wins}}\n");
+            sb.append("!width=30  |{{Tooltip|L|Losses}}\n");
+            sb.append("!width=30  |{{Tooltip|GD|Goal Difference}}\n");
+            sb.append("!width=200 |Qualifying position\n");
+
+            for (var teamData : entry.getValue()) {
+                final TeamData td = (TeamData)teamData;
+                sb.append("|-\n| style=\"text-align:left;\" | ");
+                sb.append(String.format("[[%s]]\n", td.getName()));
+                sb.append(String.format("|%d |%d |%+d\n", td.getWins(), td.getLosses(), td.getGoalDifference()));
+            }
+            sb.append("|-\n|}\n\n");
+        }
+
+        return sb.toString();
+    }
+    
     @Override
     public int getLatestCompleteMatchDay() {
         return LeagueUtils.getLatestCompleteMatchDay(matchDays);

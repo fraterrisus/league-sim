@@ -13,6 +13,9 @@ import java.util.Map;
 
 public interface League {
     RawLeagueData export();
+    default String exportWiki() {
+        throw new UnsupportedOperationException();
+    }
 
     ObservableList<? extends LeagueMatchDay> getMatchDays();
     void addMatchDay(String name);

@@ -4,6 +4,7 @@ import com.hitchhikerprod.league.beans.LeagueTeamData;
 import com.hitchhikerprod.league.definitions.League;
 import com.hitchhikerprod.league.tasks.ReadLeagueFile;
 import com.hitchhikerprod.league.tasks.SaveLeagueFile;
+import com.hitchhikerprod.league.tasks.WikiExportLeagueFile;
 import com.hitchhikerprod.league.ui.EditDivisionsDialog;
 import com.hitchhikerprod.league.ui.EditGamesDialog;
 import com.hitchhikerprod.league.ui.EditMatchDaysDialog;
@@ -16,15 +17,14 @@ import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
@@ -96,6 +96,16 @@ public class LeagueApp extends Application {
         runSaveTask(outputFile);
     }
 
+    public void menuExport() {
+        if (league == null) return;
+
+        final File outputFile = runExportFileDialog();
+        if (Objects.isNull(outputFile)) return;
+        if (!updateFileName(outputFile)) return;
+
+        runExportTask(outputFile);
+    }
+
     public void menuEditDivisions() {
         new EditDivisionsDialog(stage, league).showAndWait();
         final StandingsPane standingsPane = StandingsPane.getInstance();
@@ -143,6 +153,14 @@ public class LeagueApp extends Application {
         fileChooser.setTitle("Save League File");
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("YAML Files", "*.yml", "*.yaml"),
+                new FileChooser.ExtensionFilter("All Files", "*.*"));
+        return fileChooser.showSaveDialog(this.stage);
+    }
+
+    private File runExportFileDialog() {
+        final FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Export for Wikipedia");
+        fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("All Files", "*.*"));
         return fileChooser.showSaveDialog(this.stage);
     }
@@ -196,6 +214,18 @@ public class LeagueApp extends Application {
         final SaveLeagueFile writer = new SaveLeagueFile(league, outputFile);
         writer.setOnSucceeded(event -> {
             root.setStatusMessage("Saved " + outputFile.getName(), false);
+        });
+        writer.setOnFailed(event -> {
+            final Alert alert = new Alert(Alert.AlertType.ERROR, writer.getException().getMessage() );
+            alert.showAndWait();
+        });
+        new Thread(writer).start();
+    }
+
+    private void runExportTask(File outputFile) {
+        final WikiExportLeagueFile writer = new WikiExportLeagueFile(league, outputFile);
+        writer.setOnSucceeded(event -> {
+            root.setStatusMessage("Exported " + outputFile.getName(), false);
         });
         writer.setOnFailed(event -> {
             final Alert alert = new Alert(Alert.AlertType.ERROR, writer.getException().getMessage() );
