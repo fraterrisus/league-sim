@@ -15,6 +15,7 @@ import javafx.collections.ObservableList;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class FootballGroupStage implements League {
@@ -164,10 +165,16 @@ public class FootballGroupStage implements League {
 
     private List<TeamData> rankTeams(List<String> teamsIn) {
         final TeamComparator tc = new TeamComparator(matchDays);
-        return teamsIn.stream()
-                .map(this.teams::get)
-                .sorted(tc)
-                .toList()
-                .reversed();
+
+        final List<TeamData> teams = new ArrayList<>();
+        for (String shortName : teamsIn) {
+            final TeamData team = this.teams.get(shortName);
+            if (Objects.isNull(team)) {
+                throw new RuntimeException("Team '" + shortName + "' does not exist");
+            }
+            teams.add(team);
+        }
+
+        return teams.stream().sorted(tc).toList().reversed();
     }
 }

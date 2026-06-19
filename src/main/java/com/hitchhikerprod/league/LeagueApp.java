@@ -240,10 +240,16 @@ public class LeagueApp extends Application {
         final MatchDayPane matchDayPane = MatchDayPane.getInstance();
         final int latestCompleteMatchDay = league.getLatestCompleteMatchDay();
 
-        standingsPane.buildDivisionsPane(league);
-        standingsPane.setStandings(league, latestCompleteMatchDay);
-        matchDayPane.setMatchDays(league, latestCompleteMatchDay);
-        matchDayPane.setGamesList(league, latestCompleteMatchDay);
+        try {
+            standingsPane.buildDivisionsPane(league);
+            standingsPane.setStandings(league, latestCompleteMatchDay);
+            matchDayPane.setMatchDays(league, latestCompleteMatchDay);
+            matchDayPane.setGamesList(league, latestCompleteMatchDay);
+        } catch (RuntimeException e) {
+            final Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
+            alert.showAndWait();
+            return;
+        }
 
         matchDayPane.setMatchDayCallback(ev -> {
             final int matchDayIndex = matchDayPane.getSelectedMatchDay();

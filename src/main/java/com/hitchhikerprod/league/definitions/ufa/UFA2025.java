@@ -85,7 +85,7 @@ public class UFA2025 implements League {
     }
 
     private static final Pattern matchDayTitle = Pattern.compile(
-            "(Week \\d+)\\s*-\\s*[A-Za-z]{3}\\s+([0-9/]+)"
+            "(Week \\d+)\\s*[—-]\\s*[A-Za-z]{3}\\s+([0-9/]+)"
     );
 
     @Override
@@ -106,10 +106,10 @@ public class UFA2025 implements League {
             sb.append("!Date\n!Home\n!Goals\n!Goals\n!Away\n|-\n");
             for (var game : matchDay.games) {
                 sb.append("!").append(matchDayDate).append("\n");
-                sb.append("|[[").append(game.getHomeTeam().getName()).append("]]");
+                sb.append("|").append(game.getHomeTeam().getName()).append("");
                 sb.append("||").append(game.getHomeScore());
                 sb.append("||").append(game.getAwayScore());
-                sb.append("||[[").append(game.getAwayTeam().getName()).append("]]\n|-\n");
+                sb.append("||").append(game.getAwayTeam().getName()).append("\n|-\n");
             }
             sb.append("|}\n\n");
         }
@@ -122,6 +122,7 @@ public class UFA2025 implements League {
             sb.append("|-\n!width=250 |Team\n");
             sb.append("!width=30  |{{Tooltip|W|Wins}}\n");
             sb.append("!width=30  |{{Tooltip|L|Losses}}\n");
+            sb.append("!width=30  |{{Tooltip|%|Win Percentage}}\n");
             sb.append("!width=30  |{{Tooltip|GD|Goal Difference}}\n");
             sb.append("!width=200 |Qualification\n");
 
@@ -133,7 +134,8 @@ public class UFA2025 implements League {
                 if (counter == 1 || counter == 2) sb.append("style=\"background:#cfc\"");
                 sb.append("\n| style=\"text-align:left;\"");
                 sb.append(String.format("|[[%s]]", td.getName()));
-                sb.append(String.format(" ||%d ||%d ||%+d\n", td.getWins(), td.getLosses(), td.getGoalDifference()));
+                sb.append(String.format(" ||%d ||%d ||%05.3f ||%+d\n", td.getWins(), td.getLosses(),
+                        td.getWinPercentage(), td.getGoalDifference()));
                 if (counter == 0) sb.append("|First round bye\n");
                 if (counter == 1) sb.append("|rowspan=2|Playoffs\n");
                 counter++;

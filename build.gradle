@@ -16,7 +16,8 @@ dependencies {
     implementation "org.yaml:snakeyaml:2.4"
     //implementation 'io.github.palexdev:materialfx:11.17.0'
 
-    testImplementation platform("org.junit:junit-bom:5.10.0")
+    testImplementation platform("org.junit:junit-bom:6.1.0")
+    testImplementation "org.junit.platform:junit-platform-launcher"
     testImplementation "org.junit.jupiter:junit-jupiter"
 }
 
