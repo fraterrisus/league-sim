@@ -9,9 +9,7 @@ import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
@@ -26,16 +24,23 @@ public class StandingsPane {
     }
 
     private LeagueApp app;
-    private final VBox root;
+    private final VBox container;
+    private final ScrollPane root;
 
     private StandingsPane() {
         final TableView<LeagueTeamData> divTable = new TableView<>();
         divTable.setEditable(false);
 
-        root = new VBox(divTable);
-        root.setFillWidth(true);
-        root.setAlignment(Pos.CENTER);
-        root.setSpacing(10);
+        container = new VBox(divTable);
+        container.setFillWidth(true);
+        container.setAlignment(Pos.CENTER);
+        container.setSpacing(10);
+
+        root = new ScrollPane(container);
+        root.setFitToWidth(true); // force child to resize to my width
+        root.setFitToHeight(false); // do not force child's height
+        root.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        root.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
     }
 
     /** Post-construction setter to make sure we have a handle to the Application object. */
@@ -50,7 +55,7 @@ public class StandingsPane {
 
     /** Rebuilds the TableViews inside the Divisions pane. Should only be called when a new League is loaded. */
     public void buildDivisionsPane(League league) {
-        final ObservableList<Node> children = root.getChildren();
+        final ObservableList<Node> children = container.getChildren();
         children.clear();
 
         for (LeagueDivision div : league.getDivisions()) {
@@ -83,7 +88,7 @@ public class StandingsPane {
     public void setStandings(League league, int matchDayIdx) {
         final Map<? extends LeagueDivision, List<? extends LeagueTeamData>> divisions =
                 league.getDivisionTables(matchDayIdx);
-        final ObservableList<Node> children = root.getChildren();
+        final ObservableList<Node> children = container.getChildren();
         int i = 0;
         while (i < children.size()) {
             final Label divLabel = (Label)children.get(i);

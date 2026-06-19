@@ -20,8 +20,8 @@ public class RootWindow {
     private RootWindow() {
         pane = new BorderPane();
         pane.setTop(MenuBar.getInstance().asNode());
-        pane.setLeft(StandingsPane.getInstance().asNode());
-        pane.setCenter(MatchDayPane.getInstance().asNode());
+        pane.setCenter(StandingsPane.getInstance().asNode());
+        pane.setRight(MatchDayPane.getInstance().asNode());
         pane.setBottom(StatusBar.getInstance().asNode());
     }
 

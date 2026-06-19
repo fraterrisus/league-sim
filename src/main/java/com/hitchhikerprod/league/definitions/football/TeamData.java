@@ -87,6 +87,6 @@ public class TeamData implements LeagueTeamData {
             new ColumnDef<>(Integer.class, "Pts", Pos.CENTER, Optional.empty(), TeamData::getPoints),
             new ColumnDef<>(Integer.class, "GF", Pos.CENTER, Optional.empty(), TeamData::getGoalsFor),
             new ColumnDef<>(Integer.class, "GA", Pos.CENTER, Optional.empty(), TeamData::getGoalsAgainst),
-            new ColumnDef<>(Integer.class, "FD", Pos.CENTER, Optional.empty(), TeamData::getGoalDifference)
+            new ColumnDef<>(Integer.class, "GD", Pos.CENTER, Optional.empty(), TeamData::getGoalDifference)
     );
 }

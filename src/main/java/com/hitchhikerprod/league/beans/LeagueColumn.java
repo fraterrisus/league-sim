@@ -2,8 +2,7 @@ package com.hitchhikerprod.league.beans;
 
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.geometry.Pos;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
+import javafx.scene.control.*;
 import javafx.util.Callback;
 
 public class LeagueColumn<T> {
@@ -61,6 +60,7 @@ public class LeagueColumn<T> {
 
     public TableColumn<LeagueTeamData, T> getColumn() {
         TableColumn<LeagueTeamData, T> col = new TableColumn<>(header);
+        col.setMaxWidth(75);
         col.setCellValueFactory(ltd -> new ReadOnlyObjectWrapper<>(ltd.getValue().getData(klass, fieldNum)));
         col.setCellFactory(formattingCellFactory(klass, formatString, alignment));
         return col;
