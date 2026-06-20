@@ -11,11 +11,14 @@ import com.hitchhikerprod.league.definitions.League;
 import com.hitchhikerprod.league.definitions.LeagueUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.util.Pair;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class FootballGroupStage implements League {
@@ -23,22 +26,22 @@ public class FootballGroupStage implements League {
     private final RawLeagueData leagueData;
     private final ObservableList<RawDivision> divisions;
     private final ObservableList<MatchDay> matchDays;
+    private final TeamComparatorFactory teamComparatorFactory;
 
-    public FootballGroupStage(Map<String, TeamData> teams, RawLeagueData leagueData, List<MatchDay> matchDays) {
+    @FunctionalInterface
+    public interface TeamComparatorFactory extends Function<List<MatchDay>, Comparator<TeamData>> {}
+
+    public FootballGroupStage(
+            Map<String, TeamData> teams,
+            RawLeagueData leagueData,
+            List<MatchDay> matchDays,
+            TeamComparatorFactory comparatorFactory
+    ) {
         this.teams = teams;
         this.leagueData = leagueData;
         this.divisions = FXCollections.observableArrayList(leagueData.divisions);
         this.matchDays = FXCollections.observableList(matchDays);
-    }
-
-    public static FootballGroupStage from(RawLeagueData leagueData) {
-        return LeagueUtils.newLeagueFrom(
-                leagueData,
-                t -> new TeamData(t.getName(), t.getId()),
-                GameRawConverter::new,
-                MatchDay::new,
-                FootballGroupStage::new
-        );
+        this.teamComparatorFactory = comparatorFactory;
     }
 
     @Override
@@ -163,8 +166,18 @@ public class FootballGroupStage implements League {
         return divisions.stream().collect(Collectors.toMap(div -> div, div -> rankTeams(div.getTeams())));
     }
 
+    static Pair<Integer, Integer> getPoints(int score1, int score2) {
+        if (score1 == score2) {
+            return new Pair<>(1, 1);
+        } else if (score1 > score2) {
+            return new Pair<>(3, 0);
+        } else {
+            return new Pair<>(0, 3);
+        }
+    }
+
     private List<TeamData> rankTeams(List<String> teamsIn) {
-        final TeamComparator tc = new TeamComparator(matchDays);
+        final Comparator<TeamData> tc = teamComparatorFactory.apply(matchDays);
 
         final List<TeamData> teams = new ArrayList<>();
         for (String shortName : teamsIn) {

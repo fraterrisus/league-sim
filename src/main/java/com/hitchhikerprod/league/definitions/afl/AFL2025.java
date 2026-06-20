@@ -18,6 +18,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class AFL2025 implements League {
+    public static final String LEAGUE_TYPE = "afl-2025";
+
     private final Map<String, TeamData> teams;
     private final RawLeagueData leagueData;
     private final ObservableList<RawDivision> divisions;
