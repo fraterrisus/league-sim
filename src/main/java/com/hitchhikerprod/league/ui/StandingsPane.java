@@ -10,6 +10,7 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
@@ -67,7 +68,8 @@ public class StandingsPane {
             divTable.setEditable(false);
             divTable.setMinWidth(400);
             divTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
-            divTable.setContextMenu(new TeamContextMenu(app, divTable).asContextMenu());
+            //divTable.setContextMenu(new TeamContextMenu(app, divTable).asContextMenu());
+            divTable.setOnMouseClicked(event -> tableClickHandler(event, divTable));
             VBox.setVgrow(divTable, Priority.ALWAYS);
 
             final ObservableList<TableColumn<LeagueTeamData, ?>> columns = divTable.getColumns();
@@ -81,6 +83,16 @@ public class StandingsPane {
                     .toList());
 
             children.add(divTable);
+        }
+    }
+
+    //final PauseTransition singleClickDelay = new PauseTransition(Duration.millis(200));
+    private void tableClickHandler(MouseEvent event, TableView<LeagueTeamData> target) {
+        final int clickCount = event.getClickCount();
+        // if (clickCount == 1) { singleClickDelay.setOnFinished(ev -> doSomething()); }
+        if (clickCount == 2) {
+            // singleClickDelay.stop();
+            app.contextMenuShowGames(target);
         }
     }
 

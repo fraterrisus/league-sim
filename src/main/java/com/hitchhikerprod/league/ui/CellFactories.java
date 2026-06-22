@@ -1,8 +1,7 @@
 package com.hitchhikerprod.league.ui;
 
 import com.hitchhikerprod.league.beans.Named;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 
 import java.util.Objects;
 
