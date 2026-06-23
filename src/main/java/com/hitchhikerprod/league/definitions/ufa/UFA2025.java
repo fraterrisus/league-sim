@@ -246,8 +246,7 @@ public class UFA2025 implements League {
                 game.getHomeTeam().goalDifference += game.getHomeScore() - game.getAwayScore();
             }
         }
-
-        return divisions.stream().collect(Collectors.toMap(div -> div, div -> rankTeams(div.getObservableTeams())));
+        return divisions.stream().collect(Collectors.toMap(div -> div, div -> rankDivision(div.getObservableTeams())));
     }
 
     private TeamData getTeamById(String teamId) {
@@ -270,5 +269,9 @@ public class UFA2025 implements League {
                 .sorted(tc)
                 .toList()
                 .reversed();
+    }
+
+    private List<TeamData> rankDivision(List<TeamData> teamsIn) {
+        return new DivisionComparator(this.matchDays, teamsIn).rank().reversed();
     }
 }

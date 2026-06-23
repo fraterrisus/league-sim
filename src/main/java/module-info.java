@@ -2,6 +2,7 @@ module leaguesim {
     requires javafx.controls;
     requires javafx.fxml;
     requires org.yaml.snakeyaml;
+    requires org.apache.commons.lang3;
 
     opens com.hitchhikerprod.league to javafx.fxml;
     opens com.hitchhikerprod.league.definitions to javafx.fxml;
