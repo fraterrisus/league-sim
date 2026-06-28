@@ -22,6 +22,10 @@ public class RawDivision implements LeagueDivision {
         return name;
     }
 
+    public boolean isDynamic() {
+        return false;
+    }
+
     public void setName(String name) {
         this.name = name;
     }

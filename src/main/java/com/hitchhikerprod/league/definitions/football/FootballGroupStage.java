@@ -5,7 +5,6 @@ import com.hitchhikerprod.league.beans.LeagueDivision;
 import com.hitchhikerprod.league.beans.LeagueGameData;
 import com.hitchhikerprod.league.beans.LeagueMatchDay;
 import com.hitchhikerprod.league.beans.LeagueTeamData;
-import com.hitchhikerprod.league.beans.RawDivision;
 import com.hitchhikerprod.league.beans.RawLeagueData;
 import com.hitchhikerprod.league.definitions.League;
 import com.hitchhikerprod.league.definitions.LeagueUtils;
@@ -24,7 +23,7 @@ import java.util.stream.Collectors;
 public class FootballGroupStage implements League {
     private final Map<String, TeamData> teams;
     private final RawLeagueData leagueData;
-    private final ObservableList<RawDivision> divisions;
+    private final ObservableList<Division> divisions;
     private final ObservableList<MatchDay> matchDays;
     private final TeamComparatorFactory teamComparatorFactory;
 
@@ -34,24 +33,29 @@ public class FootballGroupStage implements League {
     public FootballGroupStage(
             Map<String, TeamData> teams,
             RawLeagueData leagueData,
+            List<Division> divisions,
             List<MatchDay> matchDays,
             TeamComparatorFactory comparatorFactory
     ) {
         this.teams = teams;
         this.leagueData = leagueData;
-        this.divisions = FXCollections.observableArrayList(leagueData.divisions);
+        this.divisions = FXCollections.observableArrayList(divisions);
         this.matchDays = FXCollections.observableList(matchDays);
         this.teamComparatorFactory = comparatorFactory;
     }
 
     @Override
     public RawLeagueData export() {
-        final MatchDayToRawConverter matchDayConverter = new MatchDayToRawConverter();
+        final MatchDayExporter matchDayConverter = new MatchDayExporter();
+        final DivisionExporter divisionConverter = new DivisionExporter();
 
         final RawLeagueData doc = new RawLeagueData();
         doc.league = this.leagueData.league;
         doc.teams = this.leagueData.teams;
-        doc.divisions = this.divisions;
+        doc.divisions = this.divisions.stream()
+                .filter(div -> !div.isDynamic())
+                .map(divisionConverter::convert)
+                .toList();
         doc.matchdays = this.matchDays.stream().map(matchDayConverter::convert).toList();
         return doc;
     }
@@ -124,12 +128,12 @@ public class FootballGroupStage implements League {
 
     @Override
     public void addDivision(int index, String name) {
-        divisions.add(index, RawDivision.of(name));
+        divisions.add(index, new Division(name, false));
     }
 
     @Override
     public void addDivision(String name) {
-        divisions.add(RawDivision.of(name));
+        divisions.add(new Division(name, false));
     }
 
     @Override
@@ -163,7 +167,9 @@ public class FootballGroupStage implements League {
             }
         }
 
-        return divisions.stream().collect(Collectors.toMap(div -> div, div -> rankTeams(div.getTeams())));
+        return divisions.stream()
+                .filter(div -> !div.isDynamic())
+                .collect(Collectors.toMap(div -> div, div -> rankTeams(div.getTeams())));
     }
 
     static Pair<Integer, Integer> getPoints(int score1, int score2) {

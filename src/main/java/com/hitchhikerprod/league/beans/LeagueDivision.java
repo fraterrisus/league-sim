@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import java.util.List;
 
 public interface LeagueDivision extends Named {
+    boolean isDynamic();
     List<String> getTeams();
     ObservableList<? extends LeagueTeamData> getObservableTeams();
 }

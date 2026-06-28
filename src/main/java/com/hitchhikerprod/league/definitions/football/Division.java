@@ -1,4 +1,4 @@
-package com.hitchhikerprod.league.definitions.ufa;
+package com.hitchhikerprod.league.definitions.football;
 
 import com.hitchhikerprod.league.beans.LeagueDivision;
 import javafx.collections.FXCollections;
@@ -10,10 +10,12 @@ import java.util.stream.Collectors;
 public class Division implements LeagueDivision {
     private final String name;
     private final ObservableList<TeamData> teams;
+    private final boolean isDynamic;
 
-    public Division(String name) {
+    public Division(String name, boolean isDynamic) {
         this.name = name;
         this.teams = FXCollections.observableArrayList();
+        this.isDynamic = isDynamic;
     }
 
     @Override
@@ -23,12 +25,12 @@ public class Division implements LeagueDivision {
 
     @Override
     public boolean isDynamic() {
-        return false;
+        return isDynamic;
     }
 
     @Override
     public List<String> getTeams() {
-        return teams.stream().map(TeamData::getName).collect(Collectors.toList());
+        return teams.stream().map(TeamData::getId).collect(Collectors.toList());
     }
 
     public void setTeams(List<TeamData> newTeams) {
@@ -40,4 +42,5 @@ public class Division implements LeagueDivision {
     public ObservableList<TeamData> getObservableTeams() {
         return teams;
     }
+
 }

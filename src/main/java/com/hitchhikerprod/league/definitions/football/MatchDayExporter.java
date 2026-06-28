@@ -5,10 +5,10 @@ import com.hitchhikerprod.league.util.Converter;
 
 import java.util.stream.Collectors;
 
-public class MatchDayToRawConverter implements Converter<MatchDay, RawMatchDay> {
+public class MatchDayExporter implements Converter<MatchDay, RawMatchDay> {
     @Override
     public RawMatchDay convert(MatchDay that) {
-        final GameToRawConverter gameConverter = new GameToRawConverter();
+        final GameExporter gameConverter = new GameExporter();
 
         final RawMatchDay matchDay = new RawMatchDay();
         matchDay.setName(that.getName());
