@@ -21,10 +21,10 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class FootballGroupStage implements League {
-    private final Map<String, TeamData> teams;
-    private final RawLeagueData leagueData;
-    private final ObservableList<Division> divisions;
-    private final ObservableList<MatchDay> matchDays;
+    protected final Map<String, TeamData> teams;
+    protected final RawLeagueData leagueData;
+    protected final ObservableList<Division> divisions;
+    protected final ObservableList<MatchDay> matchDays;
     private final TeamComparatorFactory teamComparatorFactory;
 
     @FunctionalInterface
@@ -167,9 +167,7 @@ public class FootballGroupStage implements League {
             }
         }
 
-        return divisions.stream()
-                .filter(div -> !div.isDynamic())
-                .collect(Collectors.toMap(div -> div, div -> rankTeams(div.getTeams())));
+        return rankDivisions();
     }
 
     static Pair<Integer, Integer> getPoints(int score1, int score2) {
@@ -180,6 +178,12 @@ public class FootballGroupStage implements League {
         } else {
             return new Pair<>(0, 3);
         }
+    }
+
+    protected Map<Division, List<? extends LeagueTeamData>> rankDivisions() {
+        return divisions.stream()
+                .filter(div -> !div.isDynamic())
+                .collect(Collectors.toMap(div -> div, div -> rankTeams(div.getTeams())));
     }
 
     private List<TeamData> rankTeams(List<String> teamsIn) {

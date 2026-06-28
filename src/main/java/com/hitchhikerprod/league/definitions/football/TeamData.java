@@ -100,7 +100,7 @@ public class TeamData implements LeagueTeamData {
 
     protected record HeadToHeadData(int t1Points, int t2Points, int t1Goals, int t2Goals, int t1Diff, int t2Diff) {}
 
-    protected static HeadToHeadData getHeadToHeadData(List<MatchDay> matchDays, TeamData t1, TeamData t2) {
+    protected static HeadToHeadData getHeadToHeadData(Iterable<MatchDay> matchDays, TeamData t1, TeamData t2) {
         // Note that, in theory, FIFA breaks three-team ties by including all teams in the "head-to-head" count,
         // so this method doesn't quite work because we can only compare two teams at a time.
         int t1Points = 0;
